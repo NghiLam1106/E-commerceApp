@@ -1,18 +1,19 @@
 import 'package:go_router/go_router.dart';
-import '../../presentation/pages/home_page.dart';
+import 'package:front_end/presentation/screens/login/login.dart';
+import 'package:front_end/presentation/screens/signup/signup.dart';
 
 final GoRouter appRouter = GoRouter(
+  initialLocation: '/', 
   routes: [
     GoRoute(
+      name: 'login',
       path: '/',
-      builder: (context, state) => HomePage(),
+      builder: (context, state) => const LoginScreen(),
     ),
-   /* GoRoute(
-      path: '/detail/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return DetailPage(id: id);
-      },
-    ),*/
+    GoRoute(
+      name: 'signup',
+      path: '/signup',
+      builder: (context, state) => const SignupScreen(),
+    ),
   ],
 );

@@ -1,0 +1,1 @@
+C:\E-commerceApp\front_end\build\app\intermediates\cxx\Debug\2g2q616c\obj\arm64-v8a
