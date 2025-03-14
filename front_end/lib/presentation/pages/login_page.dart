@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/core/constants/api_constants.dart';
+import 'package:front_end/controller/auth/auth_controller.dart';
+import 'package:front_end/core/constants/sizes.dart';
+import 'package:front_end/core/utils/validatiors/validation.dart';
 import 'package:front_end/presentation/pages/register_page.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,7 +16,14 @@ class LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  // String _inputText = '';
+  bool _obscureText = true; // Biến trạng thái kiểm soát hiển thị mật khẩu
+
+  // Chuyển đổi trạng thái ẩn/hiện mật khẩu
+  void _togglePasswordVisibility() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
@@ -23,25 +31,8 @@ class LoginScreenState extends State<LoginScreen> {
       final String email = emailController.text.trim();
       final String password = passwordController.text.trim();
 
-      // Gửi email và password lên server
-      final response = await http.post(
-        Uri.parse(ApiConstants.apiLogin),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'email': email, 'password': password}),
-      );
-
-      if (response.statusCode == 201) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Đăng nhập thành công!')),
-        );
-        // Navigator.of(context).pushReplacement(
-        //   MaterialPageRoute(builder: (context) => const LoginScreen()),
-        // );
-      } else {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   const SnackBar(content: Text('Đăng ký thất bại!')),
-        // );
-      }
+      final authController = AuthController();
+      await authController.signIn(context, email, password);
     }
   }
 
@@ -60,7 +51,7 @@ class LoginScreenState extends State<LoginScreen> {
               const Text(
                 'Đăng nhập',
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 35,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -84,14 +75,7 @@ class LoginScreenState extends State<LoginScreen> {
                         fillColor: Color(0xFFF1F4FF),
                       ),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Nhập đầy đủ thông tin';
-                        } else if (!RegExp(
-                                r'^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
-                            .hasMatch(value)) {
-                          return 'Email không hợp lệ';
-                        }
-                        return null;
+                        AppValidator.validateEmail(value);
                       },
                       // onSaved: (value) {
                       //   _inputText = value!;
@@ -110,15 +94,19 @@ class LoginScreenState extends State<LoginScreen> {
                         ),
                         filled: true,
                         fillColor: const Color(0xFFF1F4FF),
+                        suffixIcon: IconButton(
+                          onPressed: _togglePasswordVisibility,
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: Colors.grey,
+                          ),
+                        ),
                       ),
                       obscureText: true, // Ẩn mật khẩu
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Nhập đầy đủ thông tin';
-                        } else if (value.length < 6) {
-                          return 'Mật khẩu phải có ít nhất 6 ký tự';
-                        }
-                        return null;
+                        AppValidator.validatePassword(value);
                       },
                       // onSaved: (value) {
                       //   _inputText = value!;
@@ -127,6 +115,7 @@ class LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
+              const SizedBox(height: 5),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -135,11 +124,14 @@ class LoginScreenState extends State<LoginScreen> {
                   },
                   child: Text(
                     'Quên mật khẩu?',
-                    style: TextStyle(color: Color(0xFF1F41BB)),
+                    style: TextStyle(
+                      color: Color(0xFF1F41BB),
+                      fontSize: AppSizes.fontSizeMd,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               ElevatedButton(
                 onPressed: () {
                   _submit();
@@ -148,7 +140,7 @@ class LoginScreenState extends State<LoginScreen> {
                   backgroundColor: const Color(0xFF1F41BB), // Màu nền
                   foregroundColor: Colors.white, // Màu chữ
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 125, vertical: 25),
+                      const EdgeInsets.symmetric(horizontal: 125, vertical: 20),
                   textStyle: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
@@ -162,16 +154,20 @@ class LoginScreenState extends State<LoginScreen> {
                     'Chưa có tài khoản? ',
                     style: TextStyle(
                       fontWeight: FontWeight.w400,
+                      fontSize: AppSizes.fontSizeMd,
                     ),
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const RegisterScreen()));
+                      // Chuyển hướng đến trang đăng ký
+                      context.go('/register');
                     },
                     child: const Text(
                       'Đăng ký',
-                      style: TextStyle(color: Color(0xFF1F41BB)),
+                      style: TextStyle(
+                        color: Color(0xFF1F41BB),
+                        fontSize: AppSizes.fontSizeMd,
+                      ),
                     ),
                   ),
                 ],
@@ -182,6 +178,7 @@ class LoginScreenState extends State<LoginScreen> {
                   'Hoặc đăng nhập bằng',
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
+                    fontSize: AppSizes.fontSizeMd,
                   ),
                 ),
               ),

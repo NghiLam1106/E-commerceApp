@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/core/constants/api_constants.dart';
-import 'package:front_end/presentation/pages/login_page.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:front_end/controller/auth/auth_controller.dart';
+import 'package:front_end/core/constants/sizes.dart';
+import 'package:front_end/core/utils/validatiors/validation.dart';
+import 'package:go_router/go_router.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -20,36 +20,19 @@ class RegisterScreenState extends State<RegisterScreen> {
       TextEditingController(); // Controller để lưu giá trị email
   final TextEditingController fullnameController =
       TextEditingController(); // Controller để lưu giá trị full name
+  final TextEditingController confirmPasswordController =
+      TextEditingController(); // Controller để lưu giá trị nhập lại mật khẩu
 
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+
       final String email = emailController.text.trim();
       final String password = passwordController.text.trim();
 
-      // Gửi email và password lên server
-      final response = await http.post(
-        Uri.parse(ApiConstants.apiRegister),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-          'fullname': fullnameController.text.trim()
-        }),
-      );
-
-      if (response.statusCode == 201) {
-        //   ScaffoldMessenger.of(context).showSnackBar(
-        //     const SnackBar(content: Text('Đăng ký thành công!')),
-        //   );
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
-        );
-      } else {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   const SnackBar(content: Text('Đăng ký thất bại!')),
-        // );
-      }
+      final authController = AuthController();
+      await authController.signUp(
+          context, fullnameController.text, email, password);
     }
   }
 
@@ -64,14 +47,14 @@ class RegisterScreenState extends State<RegisterScreen> {
             mainAxisAlignment: MainAxisAlignment.center, // Căn giữa nội dung
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              const SizedBox(height: 30),
               const Text(
                 'Đăng ký',
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 35,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 30),
               const SizedBox(height: 50),
               Form(
                 key: _formKey,
@@ -118,14 +101,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         fillColor: Color(0xFFF1F4FF),
                       ),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Nhập đầy đủ thông tin';
-                        } else if (!RegExp(
-                                r'^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
-                            .hasMatch(value)) {
-                          return 'Email không hợp lệ';
-                        }
-                        return null;
+                        return AppValidator.validateEmail(value);
                       },
                       // onChanged: (value) {
                       //   emailErrorText =
@@ -148,15 +124,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       ),
                       obscureText: true, // Ẩn mật khẩu
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Nhập đầy đủ thông tin';
-                        } else if (value.length < 6) {
-                          return 'Mật khẩu phải có ít nhất 6 ký tự';
-                        } else if (!RegExp(r'^(?=.*[0-9])(?=.*[A-Z]).{7,50}$')
-                            .hasMatch(value)) {
-                          return 'Mật khẩu không hợp lệ';
-                        }
-                        return null;
+                        AppValidator.validatePassword(value);
                       },
                       // onSaved: (value) {
                       //   password = value!;
@@ -165,6 +133,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: 20),
                     // Confirm password
                     TextFormField(
+                      controller: confirmPasswordController,
                       decoration: InputDecoration(
                         labelText: 'Confirm password',
                         border: OutlineInputBorder(
@@ -179,8 +148,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Nhập đầy đủ thông tin';
-                        } else if (value.length < 6) {
-                          return 'Mật khẩu phải có ít nhất 6 ký tự';
                         } else if (value != passwordController.text) {
                           return 'Mật khẩu không khớp';
                         }
@@ -202,7 +169,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   backgroundColor: const Color(0xFF1F41BB), // Màu nền
                   foregroundColor: Colors.white, // Màu chữ
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 135, vertical: 25),
+                      const EdgeInsets.symmetric(horizontal: 135, vertical: 20),
                   textStyle: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold),
                 ),
@@ -220,12 +187,15 @@ class RegisterScreenState extends State<RegisterScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const LoginScreen()));
+                      // Chuyển hướng đến trang đăng nhập
+                      context.go('/login');
                     },
                     child: const Text(
                       'Đăng nhập',
-                      style: TextStyle(color: Color(0xFF1F41BB)),
+                      style: TextStyle(
+                        color: Color(0xFF1F41BB),
+                        fontSize: AppSizes.fontSizeMd,
+                      ),
                     ),
                   ),
                 ],
@@ -236,6 +206,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   'Hoặc đăng nhập bằng',
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
+                    fontSize: AppSizes.fontSizeMd,
                   ),
                 ),
               ),
