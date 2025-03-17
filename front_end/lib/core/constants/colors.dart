@@ -5,6 +5,8 @@ class AppColors{
 
   // App Basic Colors
   static const Color primary = Color(0xFF4b68ff);
+  static const Color secondary = Color(0xFFFFF248);
+  
 
   static const Gradient linerGradient = LinearGradient(
     begin: Alignment(0, 0),

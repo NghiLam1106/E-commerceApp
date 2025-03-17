@@ -1,6 +1,6 @@
 class AppTexts {
   // - Home text
-  static const String homeAppbarTitle = "";
+  static const String logo = "Megaphone";
 
   static const String submit = "Submit";
   static const String appName = "";

@@ -4,6 +4,7 @@ import 'package:front_end/core/constants/text_string.dart';
 import 'package:front_end/presentation/screens/login/widgets/login_form.dart';
 import 'package:front_end/presentation/styles/spacing_styles.dart';
 import 'package:front_end/presentation/widgets/login_signup/form_dividers.dart';
+import 'package:front_end/presentation/widgets/login_signup/logo.dart';
 import 'package:front_end/presentation/widgets/login_signup/social_buttons.dart';
 import 'package:get/get_utils/get_utils.dart';
 
@@ -19,6 +20,9 @@ class LoginScreen extends StatelessWidget {
         padding: AppSpacingStyles.paddingWithAppbarHeight,
         child: Column(
           children: [
+              // Logo
+              Logo(),
+
             // Form
             AppLoginForm(),
 

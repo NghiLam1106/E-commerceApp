@@ -1,8 +1,13 @@
 class AppImages{
 
-  // Logo image path
-  static const String logo = "images/logo_light.png";
+  //logo
+  static const String logoLight = 'assets/logo_light.png';
+  static const String logoDark = "assets/logo_dark.png";
+  static const String google = "assets/google.png";
 
-  static const String google = "assets/images/google.png";
-  
+  //categories
+  static const String phone = "assets/phone.png";
+
+  // Popular product
+  static const String iphone = 'assets/iphone_16pro_large.png';
 }
