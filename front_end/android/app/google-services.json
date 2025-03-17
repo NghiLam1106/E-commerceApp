@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "833322629143",
+    "project_id": "e-commerce-cfcab",
+    "storage_bucket": "e-commerce-cfcab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833322629143:android:e0a9e05f77b28751464452",
+        "android_client_info": {
+          "package_name": "com.example.front_end"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjDP3ISwqC4lUhgacT9CEhWWFKQ23e3Jo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
