@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/core/themes/custom_themes/bottom_sheet_theme.dart';
+import 'package:front_end/core/themes/custom_themes/check_box.dart';
 import 'package:front_end/core/themes/custom_themes/chip_theme.dart';
 import 'package:front_end/core/themes/custom_themes/elevated_buttons_theme.dart';
 import 'package:front_end/core/themes/custom_themes/outlined_button_theme.dart';
@@ -20,7 +21,11 @@ class AppTheme {
       bottomSheetTheme: AppBottomSheetTheme.lightBottomSheetTheme,
       inputDecorationTheme: AppTextFormFieldTheme.lightTextFormFieldTheme,
       outlinedButtonTheme: AppOutlinedButtonTheme.lightOutlinedButtonTheme,
-      elevatedButtonTheme: AppElevatedButtonTheme.lightElevatedButtonTheme);
+      elevatedButtonTheme: AppElevatedButtonTheme.lightElevatedButtonTheme,
+      checkboxTheme: AppCheckBoxTheme.lightCheckBoxTheme,
+      );
+      
+
   static ThemeData darkTheme = ThemeData(
       useMaterial3: true,
       fontFamily: "Poppins",
@@ -32,5 +37,7 @@ class AppTheme {
       bottomSheetTheme: AppBottomSheetTheme.darkBottomSheetTheme,
       inputDecorationTheme: AppTextFormFieldTheme.darkTextFormFieldTheme,
       outlinedButtonTheme: AppOutlinedButtonTheme.darkOutlinedButtonTheme,
-      elevatedButtonTheme: AppElevatedButtonTheme.darkElevatedButtonTheme);
+      elevatedButtonTheme: AppElevatedButtonTheme.darkElevatedButtonTheme,
+      checkboxTheme: AppCheckBoxTheme.darkCheckBoxTheme,
+      );
 }

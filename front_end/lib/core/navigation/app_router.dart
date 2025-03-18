@@ -1,29 +1,31 @@
-import 'package:front_end/presentation/pages/login_page.dart';
-import 'package:front_end/presentation/pages/register_page.dart';
+import 'package:front_end/navigation_menu.dart';
+import 'package:front_end/presentation/screens/home/home.dart';
+import 'package:front_end/presentation/screens/login/login_page.dart';
+import 'package:front_end/presentation/screens/signup/register_page.dart';
 import 'package:go_router/go_router.dart';
-import '../../presentation/pages/home_page.dart';
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/login', // Đường dẫn mặc định khi khởi chạy ứng dụng
+  initialLocation: '/', 
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => HomePage(),
+      builder: (context, state) => const NavigationMenu(),
     ),
     GoRoute(
-      path: '/register',
-      builder: (context, state) => const RegisterScreen(),
-    ),
-    GoRoute(
+      name: 'login',
       path: '/login',
       builder: (context, state) => const LoginScreen(),
     ),
-    /* GoRoute(
-      path: '/detail/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return DetailPage(id: id);
-      },
-    ),*/
+    GoRoute(
+      name: 'signup',
+      path: '/signup',
+      builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
+      name: 'home',
+      path: '/home',
+      builder: (context, state) => const HomeScreen(),
+    ),
+
   ],
 );
