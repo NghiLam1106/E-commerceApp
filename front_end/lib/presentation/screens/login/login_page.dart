@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front_end/controller/auth/auth_controller.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/validatiors/validation.dart';
-import 'package:front_end/presentation/pages/register_page.dart';
+import 'package:front_end/presentation/screens/signup/register_page.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
