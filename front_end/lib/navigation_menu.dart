@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
+import 'package:front_end/presentation/screens/favourite/favourite.dart';
 import 'package:front_end/presentation/screens/home/home.dart';
 import 'package:front_end/presentation/screens/login/login.dart';
 import 'package:front_end/presentation/screens/store/store.dart';
@@ -34,7 +35,7 @@ class NavigationMenu extends StatelessWidget {
                   NavigationDestination(
                       icon: Icon(Iconsax.shop), label: "Store"),
                   NavigationDestination(
-                      icon: Icon(Iconsax.heart), label: "Wishlist"),
+                      icon: Icon(Iconsax.heart), label: "Favourite"),
                   NavigationDestination(
                       icon: Icon(Iconsax.user), label: "Profile"),
                 ])),
@@ -50,7 +51,7 @@ class NavigationController extends GetxController {
   final screen = [
     HomeScreen(),
     StoreScreen(),
-    Container(color: Colors.white),
+    FavouriteScreen(),
     LoginScreen(),
   ];
 }
