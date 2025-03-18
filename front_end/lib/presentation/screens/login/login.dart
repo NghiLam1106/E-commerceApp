@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:front_end/controller/auth/auth_controller.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/validatiors/validation.dart';
-import 'package:front_end/presentation/screens/signup/register_page.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -75,7 +74,8 @@ class LoginScreenState extends State<LoginScreen> {
                         fillColor: Color(0xFFF1F4FF),
                       ),
                       validator: (value) {
-                        AppValidator.validateEmail(value);
+                        
+                        return AppValidator.validateEmail(value);
                       },
                       // onSaved: (value) {
                       //   _inputText = value!;
@@ -106,7 +106,7 @@ class LoginScreenState extends State<LoginScreen> {
                       ),
                       obscureText: true, // Ẩn mật khẩu
                       validator: (value) {
-                        AppValidator.validatePassword(value);
+                        return AppValidator.validatePassword(value);
                       },
                       // onSaved: (value) {
                       //   _inputText = value!;

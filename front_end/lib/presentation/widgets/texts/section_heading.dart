@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/core/constants/sizes.dart';
 
 class AppSectionHeading extends StatelessWidget {
   const AppSectionHeading({

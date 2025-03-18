@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/colors.dart';
-import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/presentation/screens/home/controllers/home_controller.dart';
 import 'package:front_end/presentation/widgets/container/circular_container.dart';
