@@ -124,7 +124,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       ),
                       obscureText: true, // Ẩn mật khẩu
                       validator: (value) {
-                        AppValidator.validatePassword(value);
+                        return AppValidator.validatePassword(value);
                       },
                       // onSaved: (value) {
                       //   password = value!;

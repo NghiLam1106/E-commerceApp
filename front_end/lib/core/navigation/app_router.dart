@@ -1,7 +1,7 @@
 import 'package:front_end/navigation_menu.dart';
 import 'package:front_end/presentation/screens/home/home.dart';
-import 'package:front_end/presentation/screens/login/login_page.dart';
-import 'package:front_end/presentation/screens/signup/register_page.dart';
+import 'package:front_end/presentation/screens/login/login.dart';
+import 'package:front_end/presentation/screens/register/register.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter appRouter = GoRouter(

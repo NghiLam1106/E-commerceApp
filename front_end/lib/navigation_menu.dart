@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
 import 'package:front_end/presentation/screens/home/home.dart';
-import 'package:front_end/presentation/screens/login/login_page.dart';
+import 'package:front_end/presentation/screens/login/login.dart';
+import 'package:front_end/presentation/screens/store/store.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
@@ -48,7 +49,7 @@ class NavigationController extends GetxController {
 
   final screen = [
     HomeScreen(),
-    Container(color: Colors.black),
+    StoreScreen(),
     Container(color: Colors.white),
     LoginScreen(),
   ];
