@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/sizes.dart';
+import 'package:front_end/presentation/screens/product_detail/widgets/product_add_to_cart.dart';
 import 'package:front_end/presentation/screens/product_detail/widgets/product_image_slider.dart';
 import 'package:front_end/presentation/screens/product_detail/widgets/product_meta_data.dart';
 import 'package:front_end/presentation/screens/product_detail/widgets/rating_and_share.dart';
@@ -13,8 +14,8 @@ class ProductDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet: ProductAddToCart(),
       body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             // Product image slider
@@ -33,14 +34,17 @@ class ProductDetailScreen extends StatelessWidget {
                   ProductMetaData(),
 
                   // Colors
-                   const Column(
+                  const Column(
                     children: [
                       AppSectionHeading(title: 'Colors'),
                       SizedBox(height: AppSizes.spaceBtwItems / 2), //8
-                      CustomChoiceChip(text: 'Green', isSelected: true),
-                      CustomChoiceChip(text: 'Red', isSelected: true),
-                      CustomChoiceChip(text: 'Blue', isSelected: true),
-                      CustomChoiceChip(text: 'Yellow', isSelected: true),
+                      Wrap(
+                        children: [
+                          CustomChoiceChip(text: 'Green', isSelected: false),
+                          CustomChoiceChip(text: 'Red', isSelected: true),
+                          CustomChoiceChip(text: 'Blue', isSelected: false),
+                        ],
+                      )
                     ],
                   ),
 
@@ -81,7 +85,7 @@ class ProductDetailScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  const SizedBox(height: AppSizes.spaceBtwSections), // 32
+                  const SizedBox(height: AppSizes.spaceBtwSections), // 32    
                 ],
               ),
             )

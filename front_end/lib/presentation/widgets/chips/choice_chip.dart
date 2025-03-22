@@ -34,6 +34,7 @@ class CustomChoiceChip extends StatelessWidget {
         shape: isColor ? const CircleBorder() : null,
         labelPadding: isColor ? EdgeInsets.all(0) : null,
         backgroundColor: isColor ? AppHelperFunction.getColor(text) : null,
+        padding: isColor ? const EdgeInsets.all(0) : null,
       ),
     );
   }

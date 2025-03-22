@@ -16,7 +16,7 @@ class RatingAndShare extends StatelessWidget {
         Row(
           
           children: [
-            Icon(Icons.star, color: AppColors.primary, size: 24),
+            Icon(Icons.star, color: Colors.amber, size: 24),
             const SizedBox(width: AppSizes.spaceBtwItems / 2),
             Text.rich(TextSpan(children: [
               TextSpan(

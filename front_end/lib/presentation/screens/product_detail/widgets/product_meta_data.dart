@@ -40,7 +40,7 @@ class ProductMetaData extends StatelessWidget {
         const SizedBox(height: AppSizes.spaceBtwItems / 1.5), // 10
 
         // Brand
-       /* SizedBox(
+        /*SizedBox(
             width: double.infinity,
             child: Row(children: [
               CircularImages(

@@ -22,24 +22,25 @@ class ProductAddToCart extends StatelessWidget {
         ),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(children: [
             // minus button
             CircularIcon(
-                icon: Iconsax.minus,
+                icon: Icons.exposure_minus_1,
                 backgroundColor: AppColors.darkgrey,
                 width: 40,
                 height: 40,
                 color: AppColors.white),
             const SizedBox(width: AppSizes.spaceBtwItems), // 16
             // quantity
-            Text('1', style: Theme.of(context).textTheme.titleSmall),
+            Text('1', style: Theme.of(context).textTheme.titleMedium),
 
             const SizedBox(width: AppSizes.spaceBtwItems), // 16
             // plus button
             CircularIcon(
-                icon: Iconsax.add,
-                backgroundColor: AppColors.darkgrey,
+                icon: Icons.exposure_plus_1,
+                backgroundColor: AppColors.black,
                 width: 40,
                 height: 40,
                 color: AppColors.white),

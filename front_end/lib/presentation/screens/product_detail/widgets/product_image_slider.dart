@@ -16,8 +16,7 @@ class ProductImageSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dark = AppHelperFunction.isDarkMode(context);
-    return CurvedEdgeWidget(
-        child: Container(
+    return Container(
       color: dark ? AppColors.darkerGrey : AppColors.lightGrey,
       child: Stack(
         children: [
@@ -26,7 +25,7 @@ class ProductImageSlider extends StatelessWidget {
             height: 400,
             child: Padding(
               padding: EdgeInsets.all(AppSizes.productImageRadius * 2), // 32
-              child: Center(child: Image(image: AssetImage(AppImages.iphone))))),
+              child: Center(child: Image(image: AssetImage(AppImages.phone))))),
     
           // image slider
           Positioned(
@@ -41,11 +40,11 @@ class ProductImageSlider extends StatelessWidget {
                 physics: const AlwaysScrollableScrollPhysics(),
                 separatorBuilder: (_, __) =>
                   const SizedBox(width: AppSizes.spaceBtwItems),
-                  itemCount: 4,
+                  itemCount: 6,
                   itemBuilder: (_, index) => RoundedImage(
                   imageUrl: AppImages.iphone,
                   width: 80,
-                  backgroundColor: dark ? AppColors.black : AppColors.white,
+                  
                   border: Border.all(color: AppColors.primary),
                   padding: const EdgeInsets.all(AppSizes.sm))),
             ),
@@ -57,10 +56,10 @@ class ProductImageSlider extends StatelessWidget {
             actions: [
               IconButton(
                 onPressed: () {},
-                icon: Icon(Icons.favorite_border, color: AppColors.primary))],
+                icon: Icon(Icons.favorite_border, color: AppColors.darkerGrey))],
           )
         ],
       ),
-    ));
+    );
   }
 }
