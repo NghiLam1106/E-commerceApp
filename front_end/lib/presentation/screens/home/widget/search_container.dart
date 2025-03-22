@@ -3,13 +3,12 @@ import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
 import 'package:front_end/core/utils/divice/divice_utils.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class AppSearchContainer extends StatelessWidget {
   const AppSearchContainer({
     super.key,
     required this.text,
-    this.icon = Iconsax.search_normal,
+    this.icon = Icons.search,
     this.showBackground = true,
     this.showBorder = true,
     this.onTap,

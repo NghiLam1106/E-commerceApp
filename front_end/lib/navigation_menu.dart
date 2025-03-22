@@ -4,6 +4,8 @@ import 'package:front_end/core/utils/Helper/helper_functions.dart';
 import 'package:front_end/presentation/screens/favourite/favourite.dart';
 import 'package:front_end/presentation/screens/home/home.dart';
 import 'package:front_end/presentation/screens/login/login.dart';
+import 'package:front_end/presentation/screens/profile/profile.dart';
+import 'package:front_end/presentation/screens/setting/setting.dart';
 import 'package:front_end/presentation/screens/store/store.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -48,10 +50,11 @@ class NavigationMenu extends StatelessWidget {
 class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
 
-  final screen = [
+  final List<Widget> screen = [
     HomeScreen(),
     StoreScreen(),
     FavouriteScreen(),
-    LoginScreen(),
+    SettingScreen(), // Sau khi dang nhap thanh cong
+    // LoginScreen(), // Khi chua dang nhap
   ];
 }

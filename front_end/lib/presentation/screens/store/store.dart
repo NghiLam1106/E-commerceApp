@@ -26,6 +26,7 @@ class StoreScreen extends StatelessWidget {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Logo
               Text(
                 AppTexts.logo,
                 style: TextStyle(
@@ -37,6 +38,7 @@ class StoreScreen extends StatelessWidget {
             ],
           ),
           actions: [
+            // cart
             AppCartCounterIcon(
               onPressed: () {},
               iconColor: AppColors.black,
@@ -49,7 +51,7 @@ class StoreScreen extends StatelessWidget {
                 SliverAppBar(
                     pinned: true,
                     floating: true,
-                    expandedHeight: 440,
+                    expandedHeight: 420,
                     automaticallyImplyLeading: false,
                     backgroundColor: dark ? AppColors.black : AppColors.white,
                     flexibleSpace: Padding(
@@ -59,7 +61,6 @@ class StoreScreen extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         children: [
                           // Search bar
-                          const SizedBox(height: AppSizes.spaceBtwItems),
                           const AppSearchContainer(
                             text: "Search in store",
                             showBorder: true,
@@ -86,39 +87,54 @@ class StoreScreen extends StatelessWidget {
                     bottom: AppTabBar(
                       tabs: const [
                         Tab(child: Text('tab 1')),
-                        Tab(child: Text('tab 1')),
-                        Tab(child: Text('tab 1')),
-                        Tab(child: Text('tab 1')),
+                        Tab(child: Text('tab 2')),
+                        Tab(child: Text('tab 3')),
+                        Tab(child: Text('tab 4')),
+                        Tab(child: Text('tab 5')),
                       ],
                     )),
               ];
             },
             body: TabBarView(children: [
-              Padding(
-                  padding: const EdgeInsets.all(AppSizes.defaultSpace),
-                  child: Column(children: [
-                    ListView(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.all(AppSizes.defaultSpace),
-                            child: Column(
-                              children: [
-                                AppGridLayout(
-                                itemCount: 6,
-                                itemBuilder: (_, index) =>
-                                    ProductCardVertical()),
-                                const SizedBox(height: AppSizes.spaceBtwSections),
-                              ],
-                            )
-                                  
-                          )
-                        ])
-                  ]))
+              CategoryTab()
             ])),
       ),
     );
   }
 }
+
+class CategoryTab extends StatelessWidget {
+  const CategoryTab({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              Padding(
+          padding: const EdgeInsets.all(AppSizes.defaultSpace),
+          child: Column(children: [
+            
+                Padding(
+                  padding: const EdgeInsets.all(AppSizes.defaultSpace),
+                  child: Column(
+      children: [
+        AppSectionHeading(title: 'You might like', onPressed: (){}),
+        const SizedBox(height: AppSizes.spaceBtwItems),
+      
+        AppGridLayout(
+        itemCount: 4,
+        itemBuilder: (_, index) => ProductCardVertical()),
+        const SizedBox(height: AppSizes.spaceBtwSections),
+      ],
+                  )
+                )
+              ])
+          ),
+    ]);
+  }
+}
+
