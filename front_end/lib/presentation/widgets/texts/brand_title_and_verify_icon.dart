@@ -24,21 +24,24 @@ class BrandTitleAndVerifyIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Flexible(
-          child: BrandTitleText(
-            title: title,
-            color: textColor,
-            maxLines: maxLines,
-            textAlign: textAlign,
-            brandTextSize: brandTextSize,
+    return SizedBox(
+      width: double.infinity,
+      child: Row(
+        children: [
+          Flexible(
+            child: BrandTitleText(
+              title: title,
+              color: textColor,
+              maxLines: maxLines,
+              textAlign: textAlign,
+              brandTextSize: brandTextSize,
+            ),
           ),
-        ),
-        const SizedBox(width: AppSizes.xs),
-        Icon(Iconsax.verify,
-            color: iconColor, size: AppSizes.iconXs)
-      ],
+          const SizedBox(width: AppSizes.xs),
+          Icon(Iconsax.verify,
+              color: iconColor, size: AppSizes.iconXs)
+        ],
+      ),
     );
   }
 }

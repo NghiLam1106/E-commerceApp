@@ -11,6 +11,7 @@ import 'package:front_end/presentation/widgets/image/rounded_image.dart';
 import 'package:front_end/presentation/widgets/texts/brand_title_and_verify_icon.dart';
 import 'package:front_end/presentation/widgets/texts/product_price_text.dart';
 import 'package:front_end/presentation/widgets/texts/product_title_text.dart';
+import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class ProductCardVertical extends StatelessWidget {
@@ -21,7 +22,9 @@ class ProductCardVertical extends StatelessWidget {
     final dark = AppHelperFunction.isDarkMode(context);
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        context.go('/detail');
+      },
       child: Container(
         width: 100,
         padding: const EdgeInsets.all(1),
@@ -42,21 +45,6 @@ class ProductCardVertical extends StatelessWidget {
                   // Thumbnail Image
                   const RoundedImage(
                       imageUrl: AppImages.iphone, applyImageRadius: true),
-
-                  // Sale Tag
-                  Positioned(
-                      top: 12,
-                      child: RoundedContainer(
-                          radius: AppSizes.sm,
-                          backgroundColor: AppColors.secondary.withOpacity(0.8),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: AppSizes.sm, vertical: AppSizes.xs),
-                          child: Text(
-                            "25%",
-                            style: Theme.of(context).textTheme.bodyLarge!.apply(
-                                  color: AppColors.black,
-                                ),
-                          ))),
 
                   // Favourite Icon Button
                   Positioned(
@@ -110,7 +98,7 @@ class ProductCardVertical extends StatelessWidget {
                     height: AppSizes.iconLg,
                     child: Center(
                         child: Icon(
-                      Iconsax.add,
+                      Icons.add,
                       color: AppColors.white,
                     )),
                   ),
