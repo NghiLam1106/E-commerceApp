@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/enums.dart';
 import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
-import 'package:front_end/core/utils/Helper/helper_functions.dart';
 import 'package:front_end/presentation/widgets/container/rounded_container.dart';
 import 'package:front_end/presentation/widgets/image/circular_image.dart';
 import 'package:front_end/presentation/widgets/texts/brand_title_and_verify_icon.dart';
@@ -16,11 +14,9 @@ class BrandCard extends StatelessWidget {
 
   final bool showBorder;
   final void Function()? onTap;
-  
 
   @override
   Widget build(BuildContext context) {
-    final dark = AppHelperFunction.isDarkMode(context);
     return GestureDetector(
       onTap: onTap,
       child: RoundedContainer(
@@ -34,7 +30,6 @@ class BrandCard extends StatelessWidget {
               child: CircularImages(
                 isNetworkImage: false,
                 image: AppImages.phone,
-                overlayColor: dark ? AppColors.black : AppColors.white,
               ),
             ),
             const SizedBox(height: AppSizes.spaceBtwItems / 2),
