@@ -20,7 +20,7 @@ class StoreScreen extends StatelessWidget {
     final dark = AppHelperFunction.isDarkMode(context);
 
     return DefaultTabController(
-      length: 5,
+      length: 4,
       child: Scaffold(
         appBar: AppbarCustom(
           title: Column(
