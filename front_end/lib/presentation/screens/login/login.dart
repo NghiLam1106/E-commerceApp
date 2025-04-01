@@ -160,7 +160,7 @@ class LoginScreenState extends State<LoginScreen> {
                   TextButton(
                     onPressed: () {
                       // Chuyển hướng đến trang đăng ký
-                      context.go('/register');
+                      context.push('/register');
                     },
                     child: const Text(
                       'Đăng ký',

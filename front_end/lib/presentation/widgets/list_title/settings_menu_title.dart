@@ -17,11 +17,14 @@ class SettingsMenuTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon, size: 28, color: AppColors.primary),
-      title: Text(title, style: Theme.of(context).textTheme.titleMedium),
-      subtitle: Text(title, style: Theme.of(context).textTheme.bodyMedium),
-      trailing: trailing,
+    return GestureDetector(
+      onTap: onTap,
+      child: ListTile(
+        leading: Icon(icon, size: 28, color: AppColors.primary),
+        title: Text(title, style: Theme.of(context).textTheme.titleMedium),
+        subtitle: Text(title, style: Theme.of(context).textTheme.bodyMedium),
+        trailing: trailing,
+      ),
     );
   }
 }

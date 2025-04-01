@@ -37,7 +37,7 @@ class AuthController {
 
       // Chuyển hướng đến màn hình đăng nhập
       // ignore: use_build_context_synchronously
-      context.go('/login');
+      context.push('/login');
     } catch (e) {
       // Hiển thị lỗi nếu đăng ký thất bại
       // ignore: use_build_context_synchronously
@@ -65,7 +65,7 @@ class AuthController {
 
       // Chuyển hướng tới trang chủ (HomeScreen) bằng GoRouter
       // ignore: use_build_context_synchronously
-      context.go('/');
+      context.push('/');
     } catch (e) {
       // Hiển thị lỗi nếu đăng nhập thất bại
       // ignore: use_build_context_synchronously

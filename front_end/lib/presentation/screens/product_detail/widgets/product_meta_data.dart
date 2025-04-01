@@ -26,23 +26,11 @@ class ProductMetaData extends StatelessWidget {
         const SizedBox(height: AppSizes.spaceBtwItems / 1.5), // 10
 
         // Title
-        ProductTitleText(title: 'Iphone 12 Pro Max'),
-        const SizedBox(height: AppSizes.spaceBtwItems / 1.5), // 10
-
-        // Stock
-        Row(
-          children: [
-            const ProductTitleText(title: 'Status'),
-            const SizedBox(width: AppSizes.spaceBtwItems), // 16
-            Text('In stock', style: Theme.of(context).textTheme.titleMedium)
-          ],
-        ),
+        Text('Iphone 16 pro max', style: Theme.of(context).textTheme.titleLarge,),
         const SizedBox(height: AppSizes.spaceBtwItems / 1.5), // 10
 
         // Brand
-        /*SizedBox(
-            width: double.infinity,
-            child: Row(children: [
+        Row(children: [
               CircularImages(
                 image: AppImages.google,
                 width: 32,
@@ -51,7 +39,7 @@ class ProductMetaData extends StatelessWidget {
               ),
               const BrandTitleAndVerifyIcon(
                   title: 'Iphone', brandTextSize: TextSizes.medium)
-            ])),*/
+            ])
       ],
     );
   }

@@ -27,7 +27,7 @@ class ProductAddToCart extends StatelessWidget {
           Row(children: [
             // minus button
             CircularIcon(
-                icon: Icons.exposure_minus_1,
+                icon: Icons.remove,
                 backgroundColor: AppColors.darkgrey,
                 width: 40,
                 height: 40,
@@ -39,7 +39,7 @@ class ProductAddToCart extends StatelessWidget {
             const SizedBox(width: AppSizes.spaceBtwItems), // 16
             // plus button
             CircularIcon(
-                icon: Icons.exposure_plus_1,
+                icon: Icons.add,
                 backgroundColor: AppColors.black,
                 width: 40,
                 height: 40,
