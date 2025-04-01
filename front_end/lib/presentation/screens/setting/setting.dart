@@ -32,7 +32,7 @@ class SettingScreen extends StatelessWidget {
                 // User Profile
                 UserProfileTitle(onPressed: () {
                       // Chuyển hướng đến trang đăng nhập
-                      context.go('/profile');
+                      context.push('/profile');
                     }),
                 const SizedBox(height: AppSizes.spaceBtwItems) // 16
               ],
