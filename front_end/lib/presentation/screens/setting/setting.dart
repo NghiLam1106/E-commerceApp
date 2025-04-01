@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/controller/auth/auth_controller.dart';
 import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';
-import 'package:front_end/presentation/widgets/container/primary_header_container.dart';
 import 'package:front_end/presentation/widgets/list_title/settings_menu_title.dart';
 import 'package:front_end/presentation/widgets/list_title/user_profile_title.dart';
 import 'package:front_end/presentation/widgets/texts/section_heading.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -20,7 +20,6 @@ class SettingScreen extends StatelessWidget {
           children: [
             Column(
               children: [
-
                 // Appbar
                 AppbarCustom(
                   title: Text("Account",
@@ -32,9 +31,9 @@ class SettingScreen extends StatelessWidget {
 
                 // User Profile
                 UserProfileTitle(onPressed: () {
-                      // Chuyển hướng đến trang đăng nhập
-                      context.go('/profile');
-                    }),
+                  // Chuyển hướng đến trang đăng nhập
+                  context.go('/profile');
+                }),
                 const SizedBox(height: AppSizes.spaceBtwItems) // 16
               ],
             ),
@@ -48,7 +47,7 @@ class SettingScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const AppSectionHeading(title: "Account settings"),
-                  const SizedBox(height: AppSizes.spaceBtwItems),  // 16
+                  const SizedBox(height: AppSizes.spaceBtwItems), // 16
                   SettingsMenuTitle(
                     icon: Iconsax.safe_home,
                     title: 'My Addresses',
@@ -83,9 +82,13 @@ class SettingScreen extends StatelessWidget {
                   // Logout Button
                   const SizedBox(height: AppSizes.spaceBtwSections), // 32
                   SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(onPressed: (){}, child: const Text('Logout'))
-                  ),
+                      width: double.infinity,
+                      child: OutlinedButton(
+                          onPressed: () {
+                            final authController = AuthController();
+                            authController.signOut(context);
+                          },
+                          child: const Text('Logout'))),
 
                   const SizedBox(height: AppSizes.spaceBtwSections * 2.5), // 80
                 ],

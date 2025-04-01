@@ -122,7 +122,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                         filled: true,
                         fillColor: Color(0xFFF1F4FF),
                       ),
-                      obscureText: true, // Ẩn mật khẩu
                       validator: (value) {
                         return AppValidator.validatePassword(value);
                       },
@@ -144,7 +143,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                         filled: true,
                         fillColor: Color(0xFFF1F4FF),
                       ),
-                      obscureText: true, // Ẩn mật khẩu
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Nhập đầy đủ thông tin';

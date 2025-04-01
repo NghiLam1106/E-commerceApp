@@ -74,12 +74,8 @@ class LoginScreenState extends State<LoginScreen> {
                         fillColor: Color(0xFFF1F4FF),
                       ),
                       validator: (value) {
-                        
                         return AppValidator.validateEmail(value);
                       },
-                      // onSaved: (value) {
-                      //   _inputText = value!;
-                      // },
                     ),
                     const SizedBox(height: 20),
                     // Password
@@ -104,13 +100,10 @@ class LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      obscureText: true, // Ẩn mật khẩu
+                      obscureText: _obscureText, // Ẩn mật khẩu
                       validator: (value) {
                         return AppValidator.validatePassword(value);
                       },
-                      // onSaved: (value) {
-                      //   _inputText = value!;
-                      // },
                     ),
                   ],
                 ),
@@ -206,7 +199,8 @@ class LoginScreenState extends State<LoginScreen> {
                   const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
-                      // Logic khi nhấn nút
+                      final authController = AuthController();
+                      authController.signInWithGoogle(context);
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white, // Màu nền
