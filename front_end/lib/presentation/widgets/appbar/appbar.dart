@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/divice/divice_utils.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/utils.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
-
+import 'package:go_router/go_router.dart';
 class AppbarCustom extends StatelessWidget implements PreferredSizeWidget {
   const AppbarCustom(
       {super.key,
@@ -28,7 +25,7 @@ class AppbarCustom extends StatelessWidget implements PreferredSizeWidget {
         automaticallyImplyLeading: false,
         leading: showBackArrow
             ? IconButton(
-                onPressed: () => Get.back(),
+                onPressed: () => context.pop(),
                 icon: const Icon(Icons.arrow_back))
             : leadingIcon != null
                 ? IconButton(

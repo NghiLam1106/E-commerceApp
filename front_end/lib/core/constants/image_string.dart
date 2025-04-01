@@ -10,4 +10,8 @@ class AppImages{
 
   // Popular product
   static const String iphone = 'assets/iphone_16pro_large.png';
+
+  //Success Screen
+  static const String checked = 'assets/checked.png.png';
+
 }

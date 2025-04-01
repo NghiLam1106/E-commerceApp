@@ -186,7 +186,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   TextButton(
                     onPressed: () {
                       // Chuyển hướng đến trang đăng nhập
-                      context.go('/login');
+                      context.push('/login');
                     },
                     child: const Text(
                       'Đăng nhập',
