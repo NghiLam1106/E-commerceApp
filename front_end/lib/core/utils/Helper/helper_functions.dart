@@ -83,9 +83,14 @@ class AppHelperFunction {
     return MediaQuery.of(Get.context!).size.height;
   }
 
-  static double screenWith() {
-    return MediaQuery.of(Get.context!).size.width;
+static double screenWith() {
+  BuildContext? context = Get.context;
+  if (context == null) {
+    return 375.0; // Giá trị mặc định, tránh lỗi null
   }
+  return MediaQuery.of(context).size.width;
+}
+
 
   static String getFormattedDate(DateTime date,
       {String format = 'dd MMM yyyy'}) {

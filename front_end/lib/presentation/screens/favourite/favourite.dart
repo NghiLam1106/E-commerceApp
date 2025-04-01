@@ -16,7 +16,7 @@ class FavouriteScreen extends StatelessWidget {
       appBar: AppbarCustom(
         title: Text("Favourite",style: Theme.of(context).textTheme.headlineMedium,),
         actions: [
-          CircularIcon(icon: Iconsax.add, onPressed: () {context.go('/homne');},)
+          CircularIcon(icon: Iconsax.add, onPressed: () {context.push('/homne');},)
         ],
       ),
       body: SingleChildScrollView(
