@@ -6,8 +6,8 @@ import 'package:front_end/presentation/widgets/appbar/appbar.dart';
 import 'package:front_end/presentation/widgets/list_title/settings_menu_title.dart';
 import 'package:front_end/presentation/widgets/list_title/user_profile_title.dart';
 import 'package:front_end/presentation/widgets/texts/section_heading.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({super.key});
@@ -84,7 +84,8 @@ class SettingScreen extends StatelessWidget {
                       width: double.infinity,
                       child: OutlinedButton(
                           onPressed: () {
-                            logout();
+                            final authController = AuthController();
+                            authController.signOut(context);
                           },
                           child: const Text('Logout'))),
 

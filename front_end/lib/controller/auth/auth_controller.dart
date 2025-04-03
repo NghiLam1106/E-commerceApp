@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:front_end/model/user_model.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -75,19 +76,60 @@ class AuthController {
     }
   }
 
-  // 🚀 Đăng xuất người dùng
-  Future<void> signOut(BuildContext context) async {
+  // Đăng ký bằng google
+  Future<void> signInWithGoogle(BuildContext context) async {
     try {
-      await _auth.signOut(); // Đăng xuất khỏi Firebase
+      // Hiển thị giao diện đăng nhập Google
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Đăng xuất thành công!')),
+      // Nếu người dùng đóng hộp thoại đăng nhập, trả về null
+      if (googleUser == null) {
+        print("Người dùng đã hủy đăng nhập Google.");
+        return; // Không tiếp tục xử lý đăng nhập
+      }
+
+      // Lấy xác thực từ Google
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Tạo thông tin đăng nhập từ Google
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
       );
 
-      context.push('/login'); // Chuyển hướng về màn hình đăng nhập
+      // Đăng nhập với Firebase Authentication
+      await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
+      print("Lỗi khi đăng nhập Google: $e");
+      return; // Trả về null nếu có lỗi
+    }
+  }
+
+  // Đăng xuất người dùng
+  Future<void> signOut(BuildContext context) async {
+    final user = _auth.currentUser;
+    try {
+      // Kiểm tra xem người dùng có đăng nhập bằng Google không
+      bool isGoogleUser =
+          user!.providerData.any((info) => info.providerId == 'google.com');
+
+      if (isGoogleUser) {
+        await GoogleSignIn().signOut(); // Đăng xuất khỏi Google
+      }
+
+      await _auth.signOut(); // Đăng xuất khỏi Firebase
+
+      // Hiển thị thông báo
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Đăng xuất thành công!')),
+        );
+      }
+    } catch (e) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi khi đăng xuất: $e')),
+        SnackBar(content: Text('Lỗi: $e')),
       );
     }
   }
