@@ -74,4 +74,21 @@ class AuthController {
       );
     }
   }
+
+  // 🚀 Đăng xuất người dùng
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await _auth.signOut(); // Đăng xuất khỏi Firebase
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Đăng xuất thành công!')),
+      );
+
+      context.push('/login'); // Chuyển hướng về màn hình đăng nhập
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Lỗi khi đăng xuất: $e')),
+      );
+    }
+  }
 }

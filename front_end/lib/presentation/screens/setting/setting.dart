@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/controller/auth/auth_controller.dart';
 import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';
@@ -13,13 +14,17 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void logout() async {
+      final authController = AuthController();
+      await authController.signOut(context);
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
             Column(
               children: [
-
                 // Appbar
                 AppbarCustom(
                   title: Text("Account",
@@ -31,9 +36,9 @@ class SettingScreen extends StatelessWidget {
 
                 // User Profile
                 UserProfileTitle(onPressed: () {
-                      // Chuyển hướng đến trang đăng nhập
-                      context.push('/profile');
-                    }),
+                  // Chuyển hướng đến trang đăng nhập
+                  context.push('/profile');
+                }),
                 const SizedBox(height: AppSizes.spaceBtwItems) // 16
               ],
             ),
@@ -47,32 +52,41 @@ class SettingScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const AppSectionHeading(title: "Account settings"),
-                  const SizedBox(height: AppSizes.spaceBtwItems),  // 16
+                  const SizedBox(height: AppSizes.spaceBtwItems), // 16
                   SettingsMenuTitle(
                     icon: Iconsax.safe_home,
                     title: 'My Addresses',
                     subtitle: 'Set shopping delevery address',
-                    onTap: () {context.push('/address');},
+                    onTap: () {
+                      context.push('/address');
+                    },
                   ),
                   SettingsMenuTitle(
                     icon: Iconsax.shopping_cart,
                     title: 'My cart',
                     subtitle: 'Add, remove products',
-                    onTap: () {context.push('/cart');},
+                    onTap: () {
+                      context.push('/cart');
+                    },
                   ),
                   SettingsMenuTitle(
                     icon: Iconsax.bag_tick,
                     title: 'My Orders',
                     subtitle: 'In-progress and Completed Orders',
-                    onTap: () {context.push('/myOrder');},
+                    onTap: () {
+                      context.push('/myOrder');
+                    },
                   ),
 
                   // Logout Button
                   const SizedBox(height: AppSizes.spaceBtwSections), // 32
                   SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(onPressed: (){}, child: const Text('Logout'))
-                  ),
+                      width: double.infinity,
+                      child: OutlinedButton(
+                          onPressed: () {
+                            logout();
+                          },
+                          child: const Text('Logout'))),
 
                   const SizedBox(height: AppSizes.spaceBtwSections * 2.5), // 80
                 ],
