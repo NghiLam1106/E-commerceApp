@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/colors.dart';
-import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
-import 'package:front_end/navigation_menu.dart';
 import 'package:front_end/presentation/screens/cart/widgets/cart_item.dart';
 import 'package:front_end/presentation/screens/checkout/widgets/billing_address_section.dart';
 import 'package:front_end/presentation/screens/checkout/widgets/billing_payment_section.dart';
 import 'package:front_end/presentation/screens/checkout/widgets/billing_amount_section.dart';
-import 'package:front_end/presentation/screens/success_screen/success_screen.dart';
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';
 import 'package:front_end/presentation/widgets/container/rounded_container.dart';
-import 'package:front_end/presentation/widgets/product/cart/cart_item.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class CheckoutScreen extends StatelessWidget {
