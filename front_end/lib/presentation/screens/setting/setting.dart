@@ -14,6 +14,11 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void logout() async {
+      final authController = AuthController();
+      await authController.signOut(context);
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -31,9 +36,9 @@ class SettingScreen extends StatelessWidget {
 
                 // User Profile
                 UserProfileTitle(onPressed: () {
-                      // Chuyển hướng đến trang đăng nhập
-                      context.push('/profile');
-                    }),
+                  // Chuyển hướng đến trang đăng nhập
+                  context.push('/profile');
+                }),
                 const SizedBox(height: AppSizes.spaceBtwItems) // 16
               ],
             ),
@@ -52,19 +57,25 @@ class SettingScreen extends StatelessWidget {
                     icon: Iconsax.safe_home,
                     title: 'My Addresses',
                     subtitle: 'Set shopping delevery address',
-                    onTap: () {context.push('/address');},
+                    onTap: () {
+                      context.push('/address');
+                    },
                   ),
                   SettingsMenuTitle(
                     icon: Iconsax.shopping_cart,
                     title: 'My cart',
                     subtitle: 'Add, remove products',
-                    onTap: () {context.push('/cart');},
+                    onTap: () {
+                      context.push('/cart');
+                    },
                   ),
                   SettingsMenuTitle(
                     icon: Iconsax.bag_tick,
                     title: 'My Orders',
                     subtitle: 'In-progress and Completed Orders',
-                    onTap: () {context.push('/myOrder');},
+                    onTap: () {
+                      context.push('/myOrder');
+                    },
                   ),
 
                   // Logout Button
