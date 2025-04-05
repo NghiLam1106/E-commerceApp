@@ -136,6 +136,12 @@ class AuthController {
         // Lưu thông tin vào Firestore (collection: 'users')
         await _firestore.collection('users').doc(uid).set(newUser.toMap());
 
+        // Hiển thị thông báo thành công
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Đăng nhập thành công!')),
+        );
+
         // Chuyển hướng tới trang chủ (HomeScreen) bằng GoRouter
         // ignore: use_build_context_synchronously
         context.push('/');
@@ -165,6 +171,10 @@ class AuthController {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Đăng xuất thành công!')),
         );
+
+        // Chuyển hướng tới trang chủ (HomeScreen) bằng GoRouter
+        // ignore: use_build_context_synchronously
+        context.push('/');
       }
     } catch (e) {
       // ignore: use_build_context_synchronously
