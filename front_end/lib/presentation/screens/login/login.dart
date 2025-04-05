@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/controller/auth/auth_controller.dart';
+import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/validatiors/validation.dart';
+import 'package:front_end/presentation/widgets/image/circular_image.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -153,7 +155,7 @@ class LoginScreenState extends State<LoginScreen> {
                   TextButton(
                     onPressed: () {
                       // Chuyển hướng đến trang đăng ký
-                      context.push('/register');
+                      context.push('/signup');
                     },
                     child: const Text(
                       'Đăng ký',
@@ -188,12 +190,12 @@ class LoginScreenState extends State<LoginScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15), // Bo góc
                         ),
-                        padding: const EdgeInsets.all(25),
+                        padding: const EdgeInsets.all(1),
                         shadowColor: Colors.grey),
-                    child: Icon(
-                      Icons.facebook,
-                      color: Color(0xFF1F41BB),
-                      size: 25,
+                    child: CircularImages(
+                      image: AppImages.facebook,
+                      width: 60,
+                      height: 60,
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -207,12 +209,12 @@ class LoginScreenState extends State<LoginScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15), // Bo góc
                         ),
-                        padding: const EdgeInsets.all(25),
+                        padding: const EdgeInsets.all(5),
                         shadowColor: Colors.grey),
-                    child: Icon(
-                      Icons.email,
-                      color: Colors.black,
-                      size: 25,
+                    child: CircularImages(
+                      image: AppImages.google,
+                      width: 50,
+                      height: 50,
                     ),
                   ),
                 ],

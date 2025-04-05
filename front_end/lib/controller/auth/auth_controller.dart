@@ -20,12 +20,22 @@ class AuthController {
         password: password,
       );
 
+      await userCredential.user?.updateDisplayName(name);
+      await userCredential.user?.reload(); // Tải lại dữ liệu người dùng
+
       // Lấy UID người dùng
       String uid = userCredential.user!.uid;
 
       // Tạo đối tượng UserModel
-      UserModel newUser =
-          UserModel(uid: uid, name: name, email: email, avatar: '');
+      UserModel newUser = UserModel(
+        uid: uid,
+        name: name,
+        email: email,
+        avatar: '',
+        phoneNumber: '',
+        address: '',
+        role: 'user', // Mặc định là 'user'
+      );
 
       // Lưu thông tin vào Firestore (collection: 'users')
       await _firestore.collection('users').doc(uid).set(newUser.toMap());
@@ -99,7 +109,37 @@ class AuthController {
       );
 
       // Đăng nhập với Firebase Authentication
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Lấy thông tin người dùng
+      User? user = userCredential.user;
+
+      if (user != null) {
+        String name = user.displayName ?? '';
+        String email = user.email ?? '';
+
+        // Lấy UID người dùng
+        String uid = userCredential.user!.uid;
+
+        // Tạo đối tượng UserModel
+        UserModel newUser = UserModel(
+          uid: uid,
+          name: name,
+          email: email,
+          avatar: '',
+          phoneNumber: '',
+          address: '',
+          role: 'user', // Mặc định là 'user'
+        );
+
+        // Lưu thông tin vào Firestore (collection: 'users')
+        await _firestore.collection('users').doc(uid).set(newUser.toMap());
+
+        // Chuyển hướng tới trang chủ (HomeScreen) bằng GoRouter
+        // ignore: use_build_context_synchronously
+        context.push('/');
+      }
     } catch (e) {
       print("Lỗi khi đăng nhập Google: $e");
       return; // Trả về null nếu có lỗi
