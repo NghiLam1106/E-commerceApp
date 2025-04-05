@@ -20,7 +20,7 @@ class StoreScreen extends StatelessWidget {
     final dark = AppHelperFunction.isDarkMode(context);
 
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: Scaffold(
         appBar: AppbarCustom(
           title: Column(
@@ -96,6 +96,10 @@ class StoreScreen extends StatelessWidget {
               ];
             },
             body: TabBarView(children: [
+              CategoryTab(),
+              CategoryTab(),
+              CategoryTab(),
+              CategoryTab(),
               CategoryTab()
             ])),
       ),
@@ -111,30 +115,26 @@ class CategoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              Padding(
-          padding: const EdgeInsets.all(AppSizes.defaultSpace),
-          child: Column(children: [
-            
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          Padding(
+              padding: const EdgeInsets.all(AppSizes.defaultSpace),
+              child: Column(children: [
                 Padding(
-                  padding: const EdgeInsets.all(AppSizes.defaultSpace),
-                  child: Column(
-      children: [
-        AppSectionHeading(title: 'You might like', onPressed: (){}),
-        const SizedBox(height: AppSizes.spaceBtwItems),
-      
-        AppGridLayout(
-        itemCount: 4,
-        itemBuilder: (_, index) => ProductCardVertical()),
-        const SizedBox(height: AppSizes.spaceBtwSections),
-      ],
-                  )
-                )
-              ])
-          ),
-    ]);
+                    padding: const EdgeInsets.all(AppSizes.defaultSpace),
+                    child: Column(
+                      children: [
+                        AppSectionHeading(
+                            title: 'You might like', onPressed: () {}),
+                        const SizedBox(height: AppSizes.spaceBtwItems),
+                        AppGridLayout(
+                            itemCount: 4,
+                            itemBuilder: (_, index) => ProductCardVertical()),
+                        const SizedBox(height: AppSizes.spaceBtwSections),
+                      ],
+                    ))
+              ])),
+        ]);
   }
 }
-

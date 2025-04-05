@@ -2,12 +2,19 @@ class UserModel {
   final String uid;
   final String name;
   final String email;
+  final String avatar;
+  final String phoneNumber;
+  final String address;
+  final String role;
 
   UserModel({
     required this.uid,
     required this.name,
     required this.email,
-    required avatar,
+    required this.avatar,
+    required this.phoneNumber,
+    required this.address,
+    required this.role,
   });
 
   // Chuyển đổi từ Map (Firestore) thành đối tượng UserModel
@@ -17,6 +24,9 @@ class UserModel {
       name: data['name'] ?? '',
       email: data['email'] ?? '',
       avatar: data['avatar'] ?? '',
+      phoneNumber: data['phoneNumber'] ?? '',
+      address: data['address'] ?? '',
+      role: data['role'] ?? 'user',
     );
   }
 
@@ -25,6 +35,10 @@ class UserModel {
     return {
       'name': name,
       'email': email,
+      'avatar': '',
+      'phoneNumber': '',
+      'address': address,
+      'role': role,
       'createdAt': DateTime.now(),
     };
   }
