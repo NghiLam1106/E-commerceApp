@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/colors.dart';
-import 'package:front_end/core/constants/enums.dart';
 import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';

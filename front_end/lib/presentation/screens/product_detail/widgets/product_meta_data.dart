@@ -6,7 +6,6 @@ import 'package:front_end/core/utils/Helper/helper_functions.dart';
 import 'package:front_end/presentation/widgets/image/circular_image.dart';
 import 'package:front_end/presentation/widgets/texts/brand_title_and_verify_icon.dart';
 import 'package:front_end/presentation/widgets/texts/product_price_text.dart';
-import 'package:front_end/presentation/widgets/texts/product_title_text.dart';
 import 'package:flutter/material.dart';
 
 class ProductMetaData extends StatelessWidget {
