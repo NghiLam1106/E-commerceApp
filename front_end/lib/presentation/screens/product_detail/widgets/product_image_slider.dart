@@ -4,7 +4,6 @@ import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';
-import 'package:front_end/presentation/widgets/container/primary_header_container.dart';
 import 'package:front_end/presentation/widgets/image/rounded_image.dart';
 
 class ProductImageSlider extends StatelessWidget {

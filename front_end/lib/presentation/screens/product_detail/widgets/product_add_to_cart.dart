@@ -3,7 +3,6 @@ import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
 import 'package:front_end/presentation/widgets/icon/circular_icon.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class ProductAddToCart extends StatelessWidget {
   const ProductAddToCart({super.key});

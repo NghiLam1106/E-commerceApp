@@ -1,18 +1,19 @@
 class AppImages{
 
   //logo
-  static const String logoLight = 'assets/logo_light.png';
-  static const String logoDark = "assets/logo_dark.png";
-  static const String google = "assets/google.png";
-  static const String facebook = "assets/facebook.png";
+  static const String logoLight = 'assets/images/logo_light.png';
+  static const String logoDark = "assets/images/logo_dark.png";
+  static const String google = "assets/images/google.png";
+  static const String facebook = "assets/images/facebook.png";
+    static const String add = "assets/images/add.png";
 
   //categories
-  static const String phone = "assets/phone.png";
+  static const String phone = "assets/images/phone.png";
 
   // Popular product
-  static const String iphone = 'assets/iphone_16pro_large.png';
+  static const String iphone = 'assets/images/iphone_16pro_large.png';
 
   //Success Screen
-  static const String checked = 'assets/checked.png.png';
+  static const String checked = 'assets/images/checked.png.png';
 
 }
