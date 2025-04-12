@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/enums.dart';
-import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
+import 'package:front_end/model/brand_model.dart';
 import 'package:front_end/presentation/widgets/container/rounded_container.dart';
 import 'package:front_end/presentation/widgets/image/circular_image.dart';
 import 'package:front_end/presentation/widgets/texts/brand_title_and_verify_icon.dart';
@@ -9,11 +9,12 @@ import 'package:front_end/presentation/widgets/texts/brand_title_and_verify_icon
 class BrandCard extends StatelessWidget {
   const BrandCard({
     super.key,
-    required this.showBorder, this.onTap,
+    required this.showBorder, this.onTap, required this.brand,
   });
 
   final bool showBorder;
   final void Function()? onTap;
+  final BrandModel brand;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,13 @@ class BrandCard extends StatelessWidget {
         showBorder: showBorder,
         backgroundColor: Colors.transparent,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Icon
             Flexible(
               child: CircularImages(
-                isNetworkImage: false,
-                image: AppImages.phone,
+                isNetworkImage: true,
+                image: brand.imageUrl,
               ),
             ),
             const SizedBox(height: AppSizes.spaceBtwItems / 2),
@@ -40,10 +42,7 @@ class BrandCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const BrandTitleAndVerifyIcon(title: "Iphone", brandTextSize: TextSizes.large),
-                  Text('256 Products',
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelMedium)
+                  BrandTitleAndVerifyIcon(title: brand.name, brandTextSize: TextSizes.large),
                 ],
                                       
               ),

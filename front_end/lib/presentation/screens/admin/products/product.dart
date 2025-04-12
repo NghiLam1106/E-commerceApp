@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/product/product_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
 import 'package:front_end/core/utils/dialog_utils.dart';
 import 'package:front_end/presentation/screens/admin/products/widgets/listview_product.dart';
 import 'package:front_end/presentation/screens/admin/products/widgets/product_dialog.dart';
@@ -82,7 +82,7 @@ class _ProductScreenState extends State<ProductScreen> {
           name: data['name'],
           categoryId: data['categoryId'],
           price: data['price'],
-          imageURL: data['imageUrl'][0],
+          imageURL: data['imageUrls'][0],
           id: doc.id,
           onDelete: () => showDeleteConfirmationDialog(
             context: context,
@@ -97,9 +97,9 @@ class _ProductScreenState extends State<ProductScreen> {
             name: data['name'],
             categoryId: data['categoryId'],
             price: data['price'],
-            imageURLs: (data['imageUrl'] as List<dynamic>).cast<String>(),       
+            imageURLs: (data['imageUrls'] as List<dynamic>).cast<String>(),       
             description: data['description'],
-            brand: data['brand'],
+            brandId: data['brandId'],
             colors: (data['colors'] as List<dynamic>).cast<String>(),    
           )
           )

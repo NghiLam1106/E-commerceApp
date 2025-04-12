@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/product/product_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
 import 'package:front_end/model/product_model.dart';
 import 'package:go_router/go_router.dart';
 
@@ -50,7 +50,6 @@ class _SearchAnchorCustomState extends State<SearchAnchorCustom> {
             trailing: Text('${result.price} VND'),
             title: Text(result.name),
             onTap: () {
-              // Handle the tap event, e.g., navigate to a product detail page
               context.push('/detail/${result.id}');
             },
           );

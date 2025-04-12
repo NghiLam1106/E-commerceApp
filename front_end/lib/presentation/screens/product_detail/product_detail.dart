@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/product/product_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/model/product_model.dart';
 import 'package:front_end/presentation/screens/product_detail/widgets/product_add_to_cart.dart';
@@ -33,8 +33,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   Future<void> _getData() async {
-    final products =
-        await productController.getProductById(id: widget.productId);
+    final products = await productController.getProductById(id: widget.productId);
     setState(() {
       _productData = products;
       _isLoading = false;
@@ -77,7 +76,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                     // Price, title, stock, brand
                     ProductMetaData(
-                        title: _productData.name, price: _productData.price),
+                        title: _productData.name, price: _productData.price, brandId: _productData.brandId,),
 
                     // Colors
                     Column(

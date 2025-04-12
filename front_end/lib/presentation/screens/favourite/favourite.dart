@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/product/product_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/model/product_model.dart';
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';

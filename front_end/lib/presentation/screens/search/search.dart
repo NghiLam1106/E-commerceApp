@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/category/category_controller.dart';
-import 'package:front_end/controller/product/product_controller.dart';
+import 'package:front_end/controller/brand_controller.dart';
+import 'package:front_end/controller/category_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
 import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/constants/text_string.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
+import 'package:front_end/model/brand_model.dart';
 import 'package:front_end/model/categories_model.dart';
 import 'package:front_end/model/product_model.dart';
 import 'package:front_end/presentation/screens/search/widgets/search_anchor.dart';
@@ -25,18 +27,30 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   List<CategoryModel> _categoriesList = [];
+  List<BrandModel> _brandsList = [];
   final CategoryController categoryController = CategoryController();
+  final BrandController brandController = BrandController();
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _getProductsList();
+    _getBrandList();
   }
 
   Future<void> _getProductsList() async {
     final categories = await categoryController.getCategories();
     setState(() {
       _categoriesList = categories;
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _getBrandList() async {
+    final brands = await brandController.getBrands();
+    setState(() {
+      _brandsList = brands;
     });
   }
 
@@ -44,11 +58,9 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final dark = AppHelperFunction.isDarkMode(context);
 
-      if (_categoriesList.isEmpty) {
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()),
-    );
-  }
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return DefaultTabController(
       length: _categoriesList.length,
@@ -100,10 +112,13 @@ class _SearchScreenState extends State<SearchScreen> {
                           onPressed: () {}),
                       const SizedBox(height: AppSizes.spaceBtwItems / 1.55),
                       AppGridLayout(
-                        itemCount: 4,
+                        itemCount: _brandsList.length,
                         mainAxisExtent: 80,
                         itemBuilder: (_, index) {
-                          return const BrandCard(showBorder: true);
+                          return BrandCard(
+                            showBorder: true,
+                            brand: _brandsList[index],
+                          );
                         },
                       )
                     ],
@@ -129,7 +144,6 @@ class _SearchScreenState extends State<SearchScreen> {
 }
 
 class CategoryTab extends StatefulWidget {
-
   final String? categoryId;
 
   const CategoryTab({super.key, required this.categoryId});
@@ -141,6 +155,7 @@ class CategoryTab extends StatefulWidget {
 class _CategoryTabState extends State<CategoryTab> {
   List<ProductModel> _productsList = [];
   final ProductController productController = ProductController();
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -152,43 +167,50 @@ class _CategoryTabState extends State<CategoryTab> {
     final products = await productController.getProductsByCategory(categoryId: widget.categoryId!);
     setState(() {
       _productsList = products;
+      _isLoading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return _productsList.isEmpty
-        ? const Center(child: CircularProgressIndicator())
-        : ListView(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_productsList.isEmpty) {
+      return const Center(child: Text('Không có sản phẩm nào.'));
+    }
+
+    return ListView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(AppSizes.defaultSpace),
+          child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(AppSizes.defaultSpace),
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(AppSizes.defaultSpace),
-                      child: Column(
-                        children: [
-                          AppSectionHeading(
-                            title: 'Bạn có thể thích',
-                            onPressed: () {},
-                          ),
-                          const SizedBox(height: AppSizes.spaceBtwItems),
-                          AppGridLayout(
-                            itemCount: _productsList.length,
-                            itemBuilder: (_, index) => ProductCardVertical(
-                                product: _productsList[index]),
-                          ),
-                          const SizedBox(height: AppSizes.spaceBtwSections),
-                        ],
-                      ),
-                    )
+                    AppSectionHeading(
+                      title: 'Bạn có thể thích',
+                      onPressed: () {},
+                    ),
+                    const SizedBox(height: AppSizes.spaceBtwItems),
+                    AppGridLayout(
+                      itemCount: _productsList.length,
+                      itemBuilder: (_, index) =>
+                          ProductCardVertical(product: _productsList[index]),
+                    ),
+                    const SizedBox(height: AppSizes.spaceBtwSections),
                   ],
                 ),
-              ),
+              )
             ],
-          );
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -1,19 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/category_controller.dart';
+import 'package:front_end/controller/brand_controller.dart';
 import 'package:front_end/core/utils/dialog_utils.dart';
-import 'package:front_end/presentation/screens/admin/categories/widgets/category_dialog.dart';
-import 'package:front_end/presentation/screens/admin/categories/widgets/listview_category.dart';
+import 'package:front_end/presentation/screens/admin/brands/widgets/brand_dialog.dart';
+import 'package:front_end/presentation/screens/admin/brands/widgets/listview_brand.dart';
 
-class CategoriesScreen extends StatefulWidget {
-  const CategoriesScreen({super.key});
+class BrandScreen extends StatefulWidget {
+  const BrandScreen({super.key});
 
   @override
-  State<CategoriesScreen> createState() => _CategoriesScreenState();
+  State<BrandScreen> createState() => _BrandScreenState();
 }
 
-class _CategoriesScreenState extends State<CategoriesScreen> {
-  final CategoryController categoryController = CategoryController();
+class _BrandScreenState extends State<BrandScreen> {
+  final BrandController brandController = BrandController();
   final TextEditingController searchController = TextEditingController();
 
   bool isPriceDescending = true;
@@ -31,7 +31,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               child: TextField(
                 controller: searchController,
                 decoration: InputDecoration(
-                  hintText: 'Tìm kiếm loại sản phẩm...',
+                  hintText: 'Tìm kiếm thương hiệu sản phẩm...',
                   border: InputBorder.none,
                   prefixIcon: Icon(Icons.search),
                 ),
@@ -57,7 +57,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: categoryController.getcategories(
+        stream: brandController.getBrandsList(
           name: searchController.text,
           isPriceDescending: isPriceDescending,
         ),
@@ -67,7 +67,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text("Không tìm thấy loại sản phẩm nào."));
+            return Center(child: Text("Không tìm thấy thương hiệu sản phẩm nào."));
           }
 
           List<DocumentSnapshot> productsList = snapshot.data!.docs;
@@ -78,19 +78,19 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               DocumentSnapshot doc = productsList[index];
               Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-              return ListviewCategory(
+              return ListviewBrand(
                   name: data['name'],
                   imageURL: data['imageUrl'],
                   id: doc.id,
                   onDelete: () => showDeleteConfirmationDialog(
                         context: context,
                         onConfirm: () {
-                          categoryController.removeCategory(doc.id);
+                          brandController.removeBrand(doc.id);
                         },
                       ),
                   onEdit: () => showDialog(
                         context: context,
-                        builder: (context) => CategoryDialog(
+                        builder: (context) => BrandDialog(
                           id: doc.id,
                           name: data['name'],
                           imageURL: data['imageUrl'],
@@ -104,7 +104,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => CategoryDialog(),
+            builder: (context) => BrandDialog(),
           );
         },
         child: const Icon(Icons.add),

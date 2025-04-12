@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:front_end/controller/brand_controller.dart';
 import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
+import 'package:front_end/model/brand_model.dart';
 import 'package:front_end/model/product_model.dart';
 import 'package:front_end/presentation/styles/shadows.dart';
 import 'package:front_end/presentation/widgets/container/rounded_container.dart';
@@ -13,10 +15,33 @@ import 'package:front_end/presentation/widgets/texts/product_title_text.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
-class ProductCardVertical extends StatelessWidget {
+class ProductCardVertical extends StatefulWidget {
   final ProductModel product;
 
   const ProductCardVertical({super.key, required this.product});
+
+  @override
+  State<ProductCardVertical> createState() => _ProductCardVerticalState();
+}
+
+class _ProductCardVerticalState extends State<ProductCardVertical> {
+  final BrandController brandController = BrandController();
+  BrandModel? brand;
+  bool _isLoadingBrand = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBrand();
+  }
+
+  Future<void> _loadBrand() async {
+    final fetchedBrand = await brandController.getBrandById(widget.product.brandId);
+    setState(() {
+      brand = fetchedBrand;
+      _isLoadingBrand = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +49,7 @@ class ProductCardVertical extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        context.push('/detail/${product.id}');
+        context.push('/detail/${widget.product.id}');
       },
       child: Container(
         width: 100,
@@ -36,61 +61,56 @@ class ProductCardVertical extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Thumbnail, Favourite Icon Button
+            // Thumbnail + Heart icon
             RoundedContainer(
               height: 180,
               padding: const EdgeInsets.all(AppSizes.sm),
               backgroundColor: dark ? AppColors.dark : AppColors.light,
               child: Stack(
                 children: [
-                  // Thumbnail Image
                   RoundedImage(
-                    imageUrl: product.imageUrls[0],
+                    imageUrl: widget.product.imageUrls[0],
                     applyImageRadius: true,
                     isNetworkImage: true,
                   ),
-
-                  // Favourite Icon Button
-                  Positioned(
-                      top: 0,
-                      right: 0,
-                      child: CircularIcon(
-                        icon: Iconsax.heart,
-                        color: Colors.red,
-                      ))
+                  const Positioned(
+                    top: 0,
+                    right: 0,
+                    child: CircularIcon(
+                      icon: Iconsax.heart,
+                      color: Colors.red,
+                    ),
+                  )
                 ],
               ),
             ),
             const SizedBox(height: AppSizes.spaceBtwItems / 2),
 
-            // Detail
+            // Product Info
             Padding(
               padding: const EdgeInsets.only(left: AppSizes.sm),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProductTitleText(title: product.name, smallSize: true),
-                  SizedBox(height: AppSizes.spaceBtwItems / 2),
-                  BrandTitleAndVerifyIcon(
-                    title: product.brand,
-                  ),
+                  ProductTitleText(title: widget.product.name, smallSize: true),
+                  const SizedBox(height: AppSizes.spaceBtwItems / 2),
+                  _isLoadingBrand
+                      ? const SizedBox(height: 20)
+                      : BrandTitleAndVerifyIcon(title: brand?.name ?? ''),
                 ],
               ),
             ),
+
             const Spacer(),
-            //Price row
+
+            // Price + Add button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Price
                 Padding(
-                  padding: EdgeInsets.only(left: AppSizes.sm),
-                  child: ProductPriceText(
-                    price: product.price,
-                  ),
+                  padding: const EdgeInsets.only(left: AppSizes.sm),
+                  child: ProductPriceText(price: widget.product.price),
                 ),
-
-                //Add to cart button
                 Container(
                   decoration: const BoxDecoration(
                     color: AppColors.dark,
@@ -103,12 +123,10 @@ class ProductCardVertical extends StatelessWidget {
                     width: AppSizes.iconLg,
                     height: AppSizes.iconLg,
                     child: Center(
-                        child: Icon(
-                      Icons.add,
-                      color: AppColors.white,
-                    )),
+                      child: Icon(Icons.add, color: AppColors.white),
+                    ),
                   ),
-                )
+                ),
               ],
             )
           ],

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/category_controller.dart';
+import 'package:front_end/controller/brand_controller.dart';
 import 'dart:io';
 import 'package:front_end/controller/image/image_controller.dart';
 import 'package:front_end/core/constants/image_string.dart';
 
-class CategoryDialog extends StatefulWidget {
+class BrandDialog extends StatefulWidget {
   final String? id;
   final String? name;
   final String? imageURL;
 
-  const CategoryDialog({
+  const BrandDialog({
     super.key,
     this.id,
     this.name,
@@ -17,13 +17,13 @@ class CategoryDialog extends StatefulWidget {
   });
 
   @override
-  _CategoryDialogState createState() => _CategoryDialogState();
+  _BrandDialogState createState() => _BrandDialogState();
 }
 
-class _CategoryDialogState extends State<CategoryDialog> {
+class _BrandDialogState extends State<BrandDialog> {
   // Khai báo các controller
   final imageController = ImageController();
-  final CategoryController categoryController = CategoryController();
+  final BrandController brandController = BrandController();
 
   // Khai báo các TextEditingController
   final TextEditingController nameController = TextEditingController();
@@ -60,7 +60,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(
-          widget.id != null ? 'Cập nhật loại sản phẩm' : 'Thêm loại sản phẩm'),
+          widget.id != null ? 'Cập nhật thương hiệu sản phẩm' : 'Thêm thương hiệu sản phẩm'),
       content: SingleChildScrollView(
         child: Column(
           children: [
@@ -104,12 +104,12 @@ class _CategoryDialogState extends State<CategoryDialog> {
                 _imageURL != null &&
                 nameController.text.isNotEmpty) {
               // Nếu không có id thì thêm mới
-              categoryController.addCategory(nameController.text, _imageURL!);
+              brandController.addBrand(nameController.text, _imageURL!);
             } else if (widget.id != null &&
                 _imageURL != null &&
                 nameController.text.isNotEmpty) {
               // Nếu có id thì cập nhật
-              categoryController.updateCategory(
+              brandController.updateBrand(
                 widget.id!,
                 nameController.text,
                 _imageURL!,

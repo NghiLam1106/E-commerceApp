@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:front_end/model/categories_model.dart';
+import 'package:front_end/model/brand_model.dart';
 
-class CategoryController {
+class BrandController {
   // Get collection
   final CollectionReference catogories =
-      FirebaseFirestore.instance.collection('catogories');
+      FirebaseFirestore.instance.collection('brands');
 
   // create
-  Future<void> addCategory(String name, String imageURL) {
+  Future<void> addBrand(String name, String imageURL) {
     return catogories.add({
       'name': name,
       'imageUrl': imageURL,
@@ -16,7 +16,7 @@ class CategoryController {
   }
 
   // update
-  Future<void> updateProduct(String id, String name, String imageURL) {
+  Future<void> updateBrand(String id, String name, String imageURL) {
     return catogories.doc(id).update({
       'name': name,
       'imageUrl': imageURL,
@@ -24,11 +24,11 @@ class CategoryController {
   }
 
   // delete
-  Future<void> removeProduct(String id) {
+  Future<void> removeBrand(String id) {
     return catogories.doc(id).delete();
   }
 
-  Stream<QuerySnapshot> getcategories({String? name, bool? isPriceDescending}) {
+  Stream<QuerySnapshot> getBrandsList({String? name, bool? isPriceDescending}) {
     Query query = catogories;
 
     // Tìm kiếm theo tên nếu có nhập
@@ -46,15 +46,15 @@ class CategoryController {
     return query.snapshots();
   }
 
-Future<List<CategoryModel>> getCategories() async {
-  final snapshot = await catogories.orderBy('timestamp', descending: true).get();
-  return snapshot.docs.map((doc) => CategoryModel.fromDocument(doc)).toList();
-}
+  Future<List<BrandModel>> getBrands() async {
+    final snapshot =
+        await catogories.orderBy('timestamp', descending: true).limit(4).get();
+    return snapshot.docs.map((doc) => BrandModel.fromDocument(doc)).toList();
+  }
 
-
-  Future<CategoryModel> getCategoryById(String id) async {
+  Future<BrandModel> getBrandById(String id) async {
     final snapshot = await catogories.doc(id).get();
 
-    return CategoryModel.fromDocument(snapshot);
+    return BrandModel.fromDocument(snapshot);
   }
 }

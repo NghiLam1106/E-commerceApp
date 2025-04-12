@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
-  final String? id; // Null khi tạo mới
+  final String? id;
   final String name;
   final String price;
   final String categoryId;
   final List<String> imageUrls;
   final String description;
-  final String brand;
+  final String brandId;
   final List<String> colors;
-  final Timestamp? timestamp; // Thời gian tạo mới
+  final Timestamp? timestamp;
 
   ProductModel({
     this.id,
@@ -18,7 +18,7 @@ class ProductModel {
     required this.categoryId,
     required this.imageUrls,
     required this.description,
-    required this.brand,
+    required this.brandId,
     required this.colors,
     this.timestamp,
   });
@@ -33,7 +33,7 @@ class ProductModel {
       price: data['price'] ?? '',
       imageUrls: List<String>.from(data['imageUrls'] ?? []),
       description: data['description'] ?? '',
-      brand: data['brand'] ?? '',
+      brandId: data['brandId'] ?? '',
       colors: List<String>.from(data['colors'] ?? []),
       timestamp: Timestamp.now(),
     );
@@ -46,10 +46,10 @@ class ProductModel {
       'categoryId': categoryId,
       'price': price,
       'imageUrls': imageUrls,
-      'timestamp': timestamp,
       'description': description,
-      'brand': brand,
+      'brandId': brandId,
       'colors': colors,
+      'timestamp': timestamp,
     };
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/controller/auth/auth_controller.dart';
-import 'package:front_end/controller/category/category_controller.dart';
-import 'package:front_end/controller/product/product_controller.dart';
+import 'package:front_end/controller/category_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
 import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/model/categories_model.dart';

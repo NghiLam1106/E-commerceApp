@@ -2,6 +2,7 @@ import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/navigation/navigation_menu.dart';
 import 'package:front_end/presentation/screens/address/add_new_address.dart';
 import 'package:front_end/presentation/screens/address/address.dart';
+import 'package:front_end/presentation/screens/admin/brands/brands.dart';
 import 'package:front_end/presentation/screens/admin/categories/categories.dart';
 import 'package:front_end/presentation/screens/admin/dashboard/dashboard.dart';
 import 'package:front_end/presentation/screens/admin/products/product.dart';
@@ -123,6 +124,11 @@ final GoRouter appRouter = GoRouter(
           name: 'categories',
           path: 'categories',
           builder: (context, state) => const CategoriesScreen(),
+        ),
+        GoRoute(
+          name: 'brands',
+          path: 'brands',
+          builder: (context, state) => const BrandScreen(),
         ),
       ],
     ),
