@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/category/category_controller.dart';
+import 'package:front_end/controller/brand_controller.dart';
+import 'package:front_end/controller/category_controller.dart';
 import 'dart:io';
 import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/controller/image/image_controller.dart';
-import 'package:front_end/controller/product/product_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
 import 'package:front_end/core/constants/sizes.dart';
+import 'package:front_end/model/brand_model.dart';
 import 'package:front_end/model/categories_model.dart';
 import 'package:front_end/model/product_model.dart';
 
@@ -15,7 +17,7 @@ class ProductDialog extends StatefulWidget {
   final String? price;
   final List<String>? imageURLs;
   final String? description;
-  final String? brand;
+  final String? brandId;
   final List<String>? colors;
 
   const ProductDialog({
@@ -26,7 +28,7 @@ class ProductDialog extends StatefulWidget {
     this.price,
     this.imageURLs,
     this.description,
-    this.brand,
+    this.brandId,
     this.colors,
   });
 
@@ -39,16 +41,19 @@ class _ProductDialogState extends State<ProductDialog> {
   final imageController = ImageController();
   final ProductController productController = ProductController();
   final CategoryController categoryController = CategoryController();
+  final BrandController brandController = BrandController();
 
   // Khai báo các TextEditingController
   final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController brandController = TextEditingController();
 
   // Khai báo biến để lưu danh sách loại sản phẩm và ID loại sản phẩm đã chọn
   List<CategoryModel> _categories = [];
+  List<BrandModel> _brands = [];
+
   String? _selectedCategoryId;
+  String? _selectedBrandId;
 
   // Khai báo biến để lưu hình ảnh và URL hình ảnh
   final List<String> _imageURLs = [];
@@ -66,14 +71,15 @@ class _ProductDialogState extends State<ProductDialog> {
   void initState() {
     super.initState();
     nameController.text = widget.name ?? '';
-    _selectedCategoryId = widget.categoryId ?? '';
+    descriptionController.text = widget.description ?? '';
     priceController.text = widget.price ?? '';
     _imageURLs.addAll(widget.imageURLs ?? []);
-    descriptionController.text = widget.description ?? '';
-    brandController.text = widget.brand ?? '';
+    _selectedCategoryId = widget.categoryId ?? '';
+    _selectedBrandId = widget.brandId ?? '';
     _selectedColors.addAll(widget.colors ?? []);
 
     _getCategoryNames();
+    _getBrandNames();
   }
 
   // Hàm để chọn hình ảnh và lưu trên Cloudinary
@@ -96,6 +102,12 @@ class _ProductDialogState extends State<ProductDialog> {
       _categories = categories;
     });
   }
+  Future<void> _getBrandNames() async {
+    final brands = await brandController.getBrands();
+    setState(() {
+      _brands = brands;
+    });
+  }
 
   Future<bool> _validation() async {
     if (nameController.text.isEmpty) {
@@ -110,7 +122,7 @@ class _ProductDialogState extends State<ProductDialog> {
     if (descriptionController.text.isEmpty) {
       return false;
     }
-    if (brandController.text.isEmpty) {
+    if (_selectedBrandId == null) {
       return false;
     }
     if (_imageURLs.isEmpty) {
@@ -134,15 +146,31 @@ class _ProductDialogState extends State<ProductDialog> {
                 controller: nameController,
                 decoration: InputDecoration(hintText: 'Tên sản phẩm')),
             SizedBox(height: AppSizes.spaceBtwItems),
+
             // Mô tả sản phẩm
             TextField(
                 controller: descriptionController,
                 decoration: InputDecoration(hintText: 'Giới thiệu sản phẩm')),
             SizedBox(height: AppSizes.spaceBtwItems),
+
             // Thương hiệu sản phẩm
-            TextField(
-                controller: brandController,
-                decoration: InputDecoration(hintText: 'Thương hiệu sản phẩm')),
+            DropdownButtonFormField<String>(
+              value: _selectedBrandId!.isEmpty
+                  ? null
+                  : _selectedBrandId, // Sử dụng null nếu không có giá trị
+              hint: const Text('Chọn thương hiệu'),
+              items: _brands.map((brand) {
+                return DropdownMenuItem<String>(
+                  value: brand.id,
+                  child: Text(brand.name),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  _selectedBrandId = value ?? '';
+                });
+              },
+            ),
 
             // Loại sản phẩm
             SizedBox(height: AppSizes.spaceBtwItems),
@@ -289,7 +317,7 @@ class _ProductDialogState extends State<ProductDialog> {
                 categoryId: _selectedCategoryId ?? '',
                 imageUrls: _imageURLs,
                 description: descriptionController.text,
-                brand: brandController.text,
+                brandId: _selectedBrandId ?? '',
                 colors: _selectedColors,
               );
 
@@ -306,7 +334,7 @@ class _ProductDialogState extends State<ProductDialog> {
                   categoryId: _selectedCategoryId ?? '',
                   imageUrls: _imageURLs,
                   description: descriptionController.text,
-                  brand: brandController.text,
+                  brandId: _selectedBrandId ?? '',
                   colors: _selectedColors,
                 ),
               );
@@ -324,11 +352,11 @@ class _ProductDialogState extends State<ProductDialog> {
             _imageURLs.clear();
             _selectedColors.clear();
             descriptionController.clear();
-            brandController.clear();
+            _selectedBrandId = null;
             Navigator.of(context).pop();
           },
           child: Padding(
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.all(2),
               child: Text(widget.id != null ? 'Cập nhật' : 'Thêm')),
         ),
       ],

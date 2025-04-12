@@ -29,10 +29,10 @@ class ScaffoldWithNavBar extends StatelessWidget {
             : AppColors.black.withOpacity(0.1),
         backgroundColor: darkMode ? AppColors.black : AppColors.white,
         destinations: const [
-          NavigationDestination(icon: Icon(Iconsax.home), label: "Home"),
-          NavigationDestination(icon: Icon(Iconsax.shop), label: "Store"),
-          NavigationDestination(icon: Icon(Iconsax.heart), label: "Favourite"),
-          NavigationDestination(icon: Icon(Iconsax.user), label: "Profile"),
+          NavigationDestination(icon: Icon(Iconsax.home), label: "Trang chủ"),
+          NavigationDestination(icon: Icon(Iconsax.shop), label: "Tìm kiếm"),
+          NavigationDestination(icon: Icon(Iconsax.heart), label: "Yêu thích"),
+          NavigationDestination(icon: Icon(Iconsax.user), label: "Hồ sơ"),
         ],
       ),
     );
@@ -40,7 +40,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   // Xác định tab hiện tại dựa trên location của GoRouter
   int _getCurrentIndex(String location) {
-    if (location.startsWith('/store')) return 1;
+    if (location.startsWith('/search')) return 1;
     if (location.startsWith('/favourite')) return 2;
     if (location.startsWith('/settings') || location.startsWith('/login')) return 3;
     return 0; // Mặc định là Home
@@ -53,7 +53,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
         context.go('/');
         break;
       case 1:
-        context.go('/store');
+        context.go('/search');
         break;
       case 2:
         context.go('/favourite');
