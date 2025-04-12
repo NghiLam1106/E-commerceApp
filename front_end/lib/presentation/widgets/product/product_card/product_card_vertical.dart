@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/colors.dart';
-import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
+import 'package:front_end/model/product_model.dart';
 import 'package:front_end/presentation/styles/shadows.dart';
 import 'package:front_end/presentation/widgets/container/rounded_container.dart';
 import 'package:front_end/presentation/widgets/icon/circular_icon.dart';
@@ -14,7 +14,9 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class ProductCardVertical extends StatelessWidget {
-  const ProductCardVertical({super.key});
+  final ProductModel product;
+
+  const ProductCardVertical({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class ProductCardVertical extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        context.push('/detail');
+        context.push('/detail/${product.id}');
       },
       child: Container(
         width: 100,
@@ -34,7 +36,7 @@ class ProductCardVertical extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Thumbnail, Favourite Icon Button, Sale Tag
+            // Thumbnail, Favourite Icon Button
             RoundedContainer(
               height: 180,
               padding: const EdgeInsets.all(AppSizes.sm),
@@ -42,8 +44,11 @@ class ProductCardVertical extends StatelessWidget {
               child: Stack(
                 children: [
                   // Thumbnail Image
-                  const RoundedImage(
-                      imageUrl: AppImages.iphone, applyImageRadius: true),
+                  RoundedImage(
+                    imageUrl: product.imageUrls[0],
+                    applyImageRadius: true,
+                    isNetworkImage: true,
+                  ),
 
                   // Favourite Icon Button
                   Positioned(
@@ -64,9 +69,11 @@ class ProductCardVertical extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const ProductTitleText(title: 'Iphone 16', smallSize: true),
-                  const SizedBox(height: AppSizes.spaceBtwItems / 2),
-                  BrandTitleAndVerifyIcon(title: 'Iphone',),
+                  ProductTitleText(title: product.name, smallSize: true),
+                  SizedBox(height: AppSizes.spaceBtwItems / 2),
+                  BrandTitleAndVerifyIcon(
+                    title: product.brand,
+                  ),
                 ],
               ),
             ),
@@ -78,8 +85,8 @@ class ProductCardVertical extends StatelessWidget {
                 // Price
                 Padding(
                   padding: EdgeInsets.only(left: AppSizes.sm),
-                  child: const ProductPriceText(
-                    price: '35.0',
+                  child: ProductPriceText(
+                    price: product.price,
                   ),
                 ),
 
@@ -110,4 +117,3 @@ class ProductCardVertical extends StatelessWidget {
     );
   }
 }
-

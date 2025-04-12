@@ -45,7 +45,7 @@ class ProductModel {
       'name': name,
       'categoryId': categoryId,
       'price': price,
-      'imageUrl': imageUrls,
+      'imageUrls': imageUrls,
       'timestamp': timestamp,
       'description': description,
       'brand': brand,

@@ -58,8 +58,8 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: StreamBuilder<QuerySnapshot>(
   stream: productController.getProducts(
-    name: searchController.text,
     isPriceDescending: isPriceDescending,
+    name: searchController.text,
   ),
   builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {

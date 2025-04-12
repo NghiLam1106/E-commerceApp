@@ -10,9 +10,11 @@ import 'package:flutter/material.dart';
 
 class ProductMetaData extends StatelessWidget {
   const ProductMetaData({
-    super.key,
+    super.key, required this.price, required this.title
   });
 
+  final String price;
+  final String title;
   @override
   Widget build(BuildContext context) {
     final dark = AppHelperFunction.isDarkMode(context);
@@ -21,14 +23,15 @@ class ProductMetaData extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Price
-        ProductPriceText(price: '10000', isLarge: true),
+        ProductPriceText(price: price, isLarge: true),
         const SizedBox(height: AppSizes.spaceBtwItems / 1.5), // 10
 
         // Title
-        Text('Iphone 16 pro max', style: Theme.of(context).textTheme.titleLarge,),
+        Text(title, style: Theme.of(context).textTheme.titleLarge,),
         const SizedBox(height: AppSizes.spaceBtwItems / 1.5), // 10
 
-        // Brand
+        // Brand 
+        // cần sửa bên admin sẽ chuyển brand trong productModel thành reference
         Row(children: [
               CircularImages(
                 image: AppImages.google,
