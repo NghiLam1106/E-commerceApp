@@ -13,6 +13,7 @@ import 'package:front_end/presentation/screens/home/home.dart';
 import 'package:front_end/presentation/screens/login/login.dart';
 import 'package:front_end/presentation/screens/oder/order.dart';
 import 'package:front_end/presentation/screens/product_detail/product_detail.dart';
+import 'package:front_end/presentation/screens/product_review/product_review.dart';
 import 'package:front_end/presentation/screens/profile/profile.dart';
 import 'package:front_end/presentation/screens/register/register.dart';
 import 'package:front_end/presentation/screens/setting/setting.dart';
@@ -69,7 +70,8 @@ final GoRouter appRouter = GoRouter(
           name: 'detail',
           path: '/detail/:id',
           builder: (context, state) {
-            final productId = state.pathParameters['id']!; // get the ID from the URL
+            final productId =
+                state.pathParameters['id']!; // get the ID from the URL
             return ProductDetailScreen(productId: productId);
           },
         ),
@@ -109,6 +111,15 @@ final GoRouter appRouter = GoRouter(
           ),
         ),
       ],
+    ),
+    GoRoute(
+      name: 'review',
+      path: '/review/:id',
+      builder: (context, state) {
+        final productId =
+            state.pathParameters['id']!;
+        return ProductReviewScreen(productId: productId);
+      },
     ),
     GoRoute(
       name: 'admin',
