@@ -14,10 +14,6 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void logout() async {
-      final authController = AuthController();
-      await authController.signOut(context);
-    }
 
     return Scaffold(
       body: SingleChildScrollView(

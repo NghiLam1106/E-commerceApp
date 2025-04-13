@@ -48,7 +48,7 @@ class AuthController {
 
       // Chuyển hướng đến màn hình đăng nhập
       // ignore: use_build_context_synchronously
-      context.push('/login');
+      context.push('/');
     } catch (e) {
       // Hiển thị lỗi nếu đăng ký thất bại
       // ignore: use_build_context_synchronously
@@ -133,8 +133,10 @@ class AuthController {
           role: 'user', // Mặc định là 'user'
         );
 
-        // Lưu thông tin vào Firestore (collection: 'users')
-        await _firestore.collection('users').doc(uid).set(newUser.toMap());
+        final doc = await _firestore.collection('users').doc(uid).get();
+        if (!doc.exists) {
+          await _firestore.collection('users').doc(uid).set(newUser.toMap());
+        }
 
         // Chuyển hướng tới trang chủ (HomeScreen) bằng GoRouter
         // ignore: use_build_context_synchronously
@@ -166,11 +168,26 @@ class AuthController {
           const SnackBar(content: Text('Đăng xuất thành công!')),
         );
       }
+      context.push('/'); // Chuyển hướng đến trang đăng nhập
     } catch (e) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Lỗi: $e')),
       );
+    }
+  }
+
+  Future<UserModel?> getUserData() async {
+    final user = _auth.currentUser;
+    if (user == null) return null;
+
+    final docSnapshot =
+        await _firestore.collection('users').doc(user.uid).get();
+
+    if (docSnapshot.exists) {
+      return UserModel.fromMap(docSnapshot.data()!, user.uid);
+    } else {
+      return null;
     }
   }
 }

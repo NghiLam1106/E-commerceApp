@@ -124,12 +124,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                         filled: true,
                         fillColor: Color(0xFFF1F4FF),
                       ),
+                      obscureText: true,
                       validator: (value) {
                         return AppValidator.validatePassword(value);
                       },
-                      // onSaved: (value) {
-                      //   password = value!;
-                      // },
                     ),
                     const SizedBox(height: 20),
                     // Confirm password
@@ -145,6 +143,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         filled: true,
                         fillColor: Color(0xFFF1F4FF),
                       ),
+                      obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Nhập đầy đủ thông tin';
