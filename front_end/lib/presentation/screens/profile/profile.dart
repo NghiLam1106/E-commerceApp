@@ -6,6 +6,7 @@ import 'package:front_end/controller/image/image_controller.dart';
 import 'package:front_end/controller/user/user_controller.dart';
 import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
+import 'package:front_end/presentation/screens/profile/widgets/profile_edit.dart';
 import 'package:front_end/presentation/screens/profile/widgets/profile_menu.dart';
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';
 import 'package:front_end/presentation/widgets/image/circular_image.dart';
@@ -38,6 +39,23 @@ class ProfileScreenState extends State<ProfileScreen> {
       appBar: AppbarCustom(
         showBackArrow: true,
         title: Text('Profile'),
+        actions: [
+          Padding(
+            padding:
+                const EdgeInsets.only(right: 30), // Thêm khoảng cách bên phải
+            child: IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ProfileEditScreen(),
+                  ),
+                );
+              },
+            ),
+          )
+        ],
       ),
       body: FutureBuilder<Map<String, dynamic>?>(
         future: isGoogleSignIn
@@ -59,9 +77,9 @@ class ProfileScreenState extends State<ProfileScreen> {
             String email = isGoogleSignIn
                 ? user.email ?? 'No Email'
                 : userData?['email'] ?? 'No Email';
-            String phoneNumber = isGoogleSignIn
+            String phone = isGoogleSignIn
                 ? user.phoneNumber ?? 'No phone number'
-                : userData?['phoneNumber'] ?? 'No phone number';
+                : userData?['phone'] ?? 'No phone number';
             String address = isGoogleSignIn
                 ? user.photoURL ?? 'No address'
                 : userData?['address'] ?? 'No address';
@@ -105,21 +123,21 @@ class ProfileScreenState extends State<ProfileScreen> {
                                         height: 50,
                                       ),
                           ),
-                          TextButton(
-                              onPressed: () async {
-                                // Chọn ảnh từ thư viện
-                                ImageController imageController =
-                                    ImageController();
-                                File? imageFile = await imageController
-                                    .imagePicker(); // Chờ lấy ảnh xong
-                                if (imageFile != null) {
-                                  setState(() {
-                                    // Cập nhật UI sau khi có ảnh
-                                    productImage = imageFile;
-                                  });
-                                }
-                              },
-                              child: const Text('Change Avatar')),
+                          // TextButton(
+                          //     onPressed: () async {
+                          //       // Chọn ảnh từ thư viện
+                          //       ImageController imageController =
+                          //           ImageController();
+                          //       File? imageFile = await imageController
+                          //           .imagePicker(); // Chờ lấy ảnh xong
+                          //       if (imageFile != null) {
+                          //         setState(() {
+                          //           // Cập nhật UI sau khi có ảnh
+                          //           productImage = imageFile;
+                          //         });
+                          //       }
+                          //     },
+                          //     child: const Text('Change Avatar')),
                         ],
                       ),
                     ),
@@ -139,9 +157,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                         onTap: () {}, value: username, title: 'Username'),
                     ProfileMenu(onTap: () {}, value: email, title: 'E-mail'),
                     ProfileMenu(
-                        onTap: () {},
-                        value: phoneNumber,
-                        title: 'Phone Number'),
+                        onTap: () {}, value: phone, title: 'Phone Number'),
                     ProfileMenu(onTap: () {}, value: address, title: 'Address'),
                   ],
                 ),
