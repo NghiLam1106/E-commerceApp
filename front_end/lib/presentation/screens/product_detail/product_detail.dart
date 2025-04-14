@@ -8,6 +8,7 @@ import 'package:front_end/presentation/screens/product_detail/widgets/product_me
 import 'package:front_end/presentation/screens/product_detail/widgets/rating_and_share.dart';
 import 'package:front_end/presentation/widgets/chips/choice_chip.dart';
 import 'package:front_end/presentation/widgets/texts/section_heading.dart';
+import 'package:go_router/go_router.dart';
 import 'package:readmore/readmore.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -134,6 +135,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     const SizedBox(height: AppSizes.spaceBtwItems),
                     AppSectionHeading(
                       title: 'Reviews(12)',
+                      onPressed: (){
+                        context.push('/review/${_productData.id}');
+                      },
                     ),
                     const SizedBox(height: AppSizes.spaceBtwSections),
                   ],
