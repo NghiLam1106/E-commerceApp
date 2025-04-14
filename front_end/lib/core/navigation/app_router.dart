@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/navigation/navigation_menu.dart';
 import 'package:front_end/presentation/screens/address/add_new_address.dart';
 import 'package:front_end/presentation/screens/address/address.dart';
+import 'package:front_end/presentation/screens/admin/brands/brands.dart';
 import 'package:front_end/presentation/screens/admin/categories/categories.dart';
 import 'package:front_end/presentation/screens/admin/dashboard/dashboard.dart';
 import 'package:front_end/presentation/screens/admin/products/product.dart';
@@ -13,22 +13,18 @@ import 'package:front_end/presentation/screens/home/home.dart';
 import 'package:front_end/presentation/screens/login/login.dart';
 import 'package:front_end/presentation/screens/oder/order.dart';
 import 'package:front_end/presentation/screens/product_detail/product_detail.dart';
+import 'package:front_end/presentation/screens/product_review/product_review.dart';
 import 'package:front_end/presentation/screens/profile/profile.dart';
 import 'package:front_end/presentation/screens/register/register.dart';
 import 'package:front_end/presentation/screens/setting/setting.dart';
-import 'package:front_end/presentation/screens/store/store.dart';
+import 'package:front_end/presentation/screens/search/search.dart';
 import 'package:front_end/presentation/screens/success_screen/success_screen.dart';
 import 'package:go_router/go_router.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
-
 final GoRouter appRouter = GoRouter(
-  navigatorKey: _rootNavigatorKey,
   initialLocation: '/',
   routes: [
     ShellRoute(
-      navigatorKey: _shellNavigatorKey,
       pageBuilder: (context, state, child) {
         return NoTransitionPage(
           child: ScaffoldWithNavBar(child: child),
@@ -61,9 +57,9 @@ final GoRouter appRouter = GoRouter(
           builder: (context, state) => const ProfileScreen(),
         ),
         GoRoute(
-          name: 'store',
-          path: '/store',
-          builder: (context, state) => const StoreScreen(),
+          name: 'search',
+          path: '/search',
+          builder: (context, state) => const SearchScreen(),
         ),
         GoRoute(
           name: 'favourite',
@@ -72,8 +68,12 @@ final GoRouter appRouter = GoRouter(
         ),
         GoRoute(
           name: 'detail',
-          path: '/detail',
-          builder: (context, state) => const ProductDetailScreen(),
+          path: '/detail/:id',
+          builder: (context, state) {
+            final productId =
+                state.pathParameters['id']!; // get the ID from the URL
+            return ProductDetailScreen(productId: productId);
+          },
         ),
         GoRoute(
           name: 'address',
@@ -113,7 +113,15 @@ final GoRouter appRouter = GoRouter(
       ],
     ),
     GoRoute(
-      parentNavigatorKey: _rootNavigatorKey,
+      name: 'review',
+      path: '/review/:id',
+      builder: (context, state) {
+        final productId =
+            state.pathParameters['id']!;
+        return ProductReviewScreen(productId: productId);
+      },
+    ),
+    GoRoute(
       name: 'admin',
       path: '/admin',
       builder: (context, state) => const DashboardScreen(),
@@ -127,6 +135,11 @@ final GoRouter appRouter = GoRouter(
           name: 'categories',
           path: 'categories',
           builder: (context, state) => const CategoriesScreen(),
+        ),
+        GoRoute(
+          name: 'brands',
+          path: 'brands',
+          builder: (context, state) => const BrandScreen(),
         ),
       ],
     ),

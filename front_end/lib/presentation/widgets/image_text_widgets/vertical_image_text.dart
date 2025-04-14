@@ -10,13 +10,14 @@ class VerticalImageText extends StatelessWidget {
     required this.title,
     this.textColor = AppColors.black,
     this.backgroundColor = AppColors.white,
-    this.onTap,
+    this.onTap, this.isNetworkImage = false,
   });
 
   final String image, title;
   final Color textColor;
   final Color? backgroundColor;
   final void Function()? onTap;
+  final bool isNetworkImage;
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +37,15 @@ class VerticalImageText extends StatelessWidget {
                   color: backgroundColor ?? (dark ? AppColors.white : AppColors.black),
                   borderRadius: BorderRadius.circular(100)),
               child: Center(
-                child: Image(
-                    image: AssetImage(image),
-                    fit: BoxFit.cover,
-                    ),
+                child: isNetworkImage
+                    ? Image.network(
+                        image,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        image,
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
 

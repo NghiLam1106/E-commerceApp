@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/category/category_controller.dart';
+import 'package:front_end/controller/category_controller.dart';
 
 class ListviewProduct extends StatefulWidget {
   const ListviewProduct({
