@@ -9,12 +9,16 @@ import 'package:front_end/presentation/widgets/texts/section_heading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<SettingScreen> createState() => SettingScreenState();
+}
 
+class SettingScreenState extends State<SettingScreen> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -31,9 +35,14 @@ class SettingScreen extends StatelessWidget {
                 ),
 
                 // User Profile
-                UserProfileTitle(onPressed: () {
+                UserProfileTitle(onPressed: () async {
                   // Chuyển hướng đến trang đăng nhập
-                  context.push('/profile');
+                  final result = await context.push('/profile');
+                  if (result == true) {
+                    setState(
+                      () {},
+                    ); // Rebuild lại FutureBuilder để fetch dữ liệu mới
+                  }
                 }),
                 const SizedBox(height: AppSizes.spaceBtwItems) // 16
               ],
