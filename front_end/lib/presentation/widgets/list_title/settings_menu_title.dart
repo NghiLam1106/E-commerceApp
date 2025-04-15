@@ -22,7 +22,7 @@ class SettingsMenuTitle extends StatelessWidget {
       child: ListTile(
         leading: Icon(icon, size: 28, color: AppColors.primary),
         title: Text(title, style: Theme.of(context).textTheme.titleMedium),
-        subtitle: Text(title, style: Theme.of(context).textTheme.bodyMedium),
+        subtitle: Text(subtitle, style: Theme.of(context).textTheme.bodyMedium),
         trailing: trailing,
       ),
     );

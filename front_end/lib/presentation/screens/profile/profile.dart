@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/image/image_controller.dart';
 import 'package:front_end/controller/user/user_controller.dart';
 import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
@@ -38,7 +36,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppbarCustom(
         showBackArrow: true,
-        title: Text('Profile'),
+        title: Text('Hồ sơ'),
         actions: [
           Padding(
             padding:
@@ -147,18 +145,18 @@ class ProfileScreenState extends State<ProfileScreen> {
 
                     // Details
                     const AppSectionHeading(
-                      title: 'Profile Information',
+                      title: 'Thông tin người dùng',
                       showActionButton: false,
                     ),
                     const SizedBox(height: AppSizes.spaceBtwItems),
 
                     // Hiển thị thông tin người dùng từ Firestore
                     ProfileMenu(
-                        onTap: () {}, value: username, title: 'Username'),
+                        onTap: () {}, value: username, title: 'Tên người dùng'),
                     ProfileMenu(onTap: () {}, value: email, title: 'E-mail'),
                     ProfileMenu(
-                        onTap: () {}, value: phone, title: 'Phone Number'),
-                    ProfileMenu(onTap: () {}, value: address, title: 'Address'),
+                        onTap: () {}, value: phone, title: 'Số điện thoại'),
+                    ProfileMenu(onTap: () {}, value: address, title: 'Địa chỉ'),
                   ],
                 ),
               ),
