@@ -28,7 +28,7 @@ class ProductController {
     return snapshot.docs.map((doc) => ProductModel.fromSnapshot(doc)).toList();
   }
 
-    Future<List<ProductModel>> getProductsList() async {
+  Future<List<ProductModel>> getProductsList() async {
     final snapshot =
         await products.orderBy('timestamp', descending: true).limit(6).get();
     return snapshot.docs.map((doc) => ProductModel.fromSnapshot(doc)).toList();
@@ -65,5 +65,16 @@ class ProductController {
     }
 
     return query.snapshots();
+  }
+
+
+Stream<ProductModel> streamProductFromRef(DocumentReference ref) {
+  return ref.snapshots().map((snapshot) =>
+      ProductModel.fromSnapshot(snapshot));
+}
+
+
+  DocumentReference createRefProduct(String id) {
+    return products.doc(id);
   }
 }

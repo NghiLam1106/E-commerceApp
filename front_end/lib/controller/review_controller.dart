@@ -8,15 +8,7 @@ class ReviewController {
 
   // Create review
   Future<void> addReview(ReviewModel review) {
-    return reviews.add({
-      'username': review.username,
-      'avatarUrl': review.avatarUrl,
-      'review': review.review,
-      'rating': review.rating,
-      'productId': review.productId,
-      'userId': review.userId,
-      'timestamp': review.timestamp,
-    });
+    return reviews.add(review.toMap());
   }
 
   // Update review
