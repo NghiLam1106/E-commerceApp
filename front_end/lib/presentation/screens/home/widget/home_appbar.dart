@@ -4,6 +4,7 @@ import 'package:front_end/core/constants/text_string.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';
 import 'package:front_end/presentation/widgets/product/cart/cart_menu_icon.dart';
+import 'package:go_router/go_router.dart';
 
 class AppbarHome extends StatelessWidget {
   const AppbarHome({
@@ -28,7 +29,7 @@ class AppbarHome extends StatelessWidget {
         ],
       ),
       actions: [
-        AppCartCounterIcon(onPressed: (){},iconColor: AppColors.black,)
+        AppCartCounterIcon(onPressed: (){context.push('/cart');},iconColor: AppColors.black,)
       ],
     );
   }

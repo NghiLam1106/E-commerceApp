@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/sizes.dart';
+import 'package:front_end/core/utils/calculate_avg_ratings.dart';
+import 'package:front_end/model/review_model.dart';
 
 class RatingAndShare extends StatelessWidget {
   const RatingAndShare({
-    super.key,
+    super.key, required this.reviewlist,
   });
+
+  final List<ReviewModel> reviewlist;
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +24,10 @@ class RatingAndShare extends StatelessWidget {
             const SizedBox(width: AppSizes.spaceBtwItems / 2),
             Text.rich(TextSpan(children: [
               TextSpan(
-                  text: '4.5', // xử lý sau khi hoàn thành review screen
+                  text: calculateAvgRatings(reviews: reviewlist).toString(),
                   style: Theme.of(context).textTheme.bodyLarge),
               TextSpan(
-                  text: '(200)', // xử lý sau khi hoàn thành review screen
+                  text: '(${reviewlist.length.toString()})', 
                   style: TextStyle(color: AppColors.grey))
             ]))
           ],

@@ -17,6 +17,7 @@ import 'package:front_end/presentation/widgets/layout/grid_layout.dart';
 import 'package:front_end/presentation/widgets/product/cart/cart_menu_icon.dart';
 import 'package:front_end/presentation/widgets/product/product_card/product_card_vertical.dart';
 import 'package:front_end/presentation/widgets/texts/section_heading.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -81,7 +82,9 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           actions: [
             AppCartCounterIcon(
-              onPressed: () {},
+              onPressed: () {
+                context.push('/cart');
+              },
               iconColor: AppColors.black,
             )
           ],

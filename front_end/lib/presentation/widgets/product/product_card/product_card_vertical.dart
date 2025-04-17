@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:front_end/controller/brand_controller.dart';
+import 'package:front_end/controller/favorites_controller.dart';
 import 'package:front_end/core/constants/colors.dart';
+import 'package:front_end/core/constants/enums.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
 import 'package:front_end/model/brand_model.dart';
+import 'package:front_end/model/favorites_model.dart';
 import 'package:front_end/model/product_model.dart';
 import 'package:front_end/presentation/styles/shadows.dart';
 import 'package:front_end/presentation/widgets/container/rounded_container.dart';
@@ -16,31 +21,113 @@ import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class ProductCardVertical extends StatefulWidget {
-  final ProductModel product;
+  final ProductModel? product;
+  final String? name;
+  final String? brand;
+  final String? price;
+  final String? imageUrl;
+  final String? productId;
 
-  const ProductCardVertical({super.key, required this.product});
+  const ProductCardVertical(
+      {super.key,
+      this.product,
+      this.name,
+      this.brand,
+      this.price,
+      this.imageUrl,
+      this.productId});
 
   @override
   State<ProductCardVertical> createState() => _ProductCardVerticalState();
 }
 
 class _ProductCardVerticalState extends State<ProductCardVertical> {
+  // controller
   final BrandController brandController = BrandController();
+  final FavoritesController favoritesController = FavoritesController();
+
+  var currentUser = FirebaseAuth.instance.currentUser;
+  List<FavoritesModel> _favouriteList = [];
+
   BrandModel? brand;
+
   bool _isLoadingBrand = true;
+  bool isFavorited = false;
+
+  late String name;
+  late String price;
+  late String brandId;
+  late String imageUrl;
+  late String productId;
 
   @override
   void initState() {
     super.initState();
+    if (widget.product != null) {
+      productId = widget.product!.id!;
+      name = widget.product!.name;
+      price = widget.product!.price;
+      brandId = widget.product!.brandId;
+      imageUrl = widget.product!.imageUrls[0];
+    } else {
+      name = widget.name!;
+      price = widget.price!;
+      brandId = widget.brand!;
+      imageUrl = widget.imageUrl!;
+      productId = widget.productId!;
+    }
     _loadBrand();
+    _loadFavorites();
   }
 
+  // load brand của sản phẩm bằng brandId
   Future<void> _loadBrand() async {
-    final fetchedBrand = await brandController.getBrandById(widget.product.brandId);
+    final fetchedBrand = await brandController.getBrandById(brandId);
     setState(() {
       brand = fetchedBrand;
       _isLoadingBrand = false;
     });
+  }
+
+  // kiểm tra xem người dùng có yêu thích sản phẩm hay kh
+  Future<void> _loadFavorites() async {
+    if (currentUser != null) {
+      final favorites =
+          await favoritesController.getReviewsForProduct(currentUser!.uid);
+          
+      setState(() {
+        _favouriteList = favorites;
+        isFavorited =
+            favorites.any((favorite) => favorite.productId == productId);
+      });
+    }
+  }
+
+  // xử lý khi nhấn yêu thích
+  Future<void> _onFavoritePressed(
+      {required String productId,
+      required String brandId,
+      required String imageUrlProduct,
+      required String priceProduct,
+      required String nameProduct}) async {
+    if (isFavorited) {
+      for (var favorite in _favouriteList) {
+        if (favorite.productId == productId) {
+          favoritesController.removeFavorites(favorite.id!);
+        }
+      }
+    } else {
+      FavoritesModel favorite = FavoritesModel(
+        imageUrlProduct: imageUrlProduct,
+        brandId: brandId,
+        nameProduct: nameProduct,
+        priceProduct: priceProduct,
+        userId: currentUser!.uid,
+        productId: productId,
+        timestamp: Timestamp.now(),
+      );
+      favoritesController.addFavorites(favorite);
+    }
   }
 
   @override
@@ -49,7 +136,7 @@ class _ProductCardVerticalState extends State<ProductCardVertical> {
 
     return GestureDetector(
       onTap: () {
-        context.push('/detail/${widget.product.id}');
+        context.push('/detail/$productId');
       },
       child: Container(
         width: 100,
@@ -69,16 +156,34 @@ class _ProductCardVerticalState extends State<ProductCardVertical> {
               child: Stack(
                 children: [
                   RoundedImage(
-                    imageUrl: widget.product.imageUrls[0],
+                    imageUrl: imageUrl,
                     applyImageRadius: true,
                     isNetworkImage: true,
                   ),
-                  const Positioned(
+                  Positioned(
                     top: 0,
                     right: 0,
                     child: CircularIcon(
+                      onPressed: () {
+                        // nếu người dùng đã đăng nhập
+                        if (currentUser != null) {
+                          _onFavoritePressed(
+                            productId: productId,
+                            brandId: brand?.id ?? '',
+                            nameProduct: name,
+                            imageUrlProduct: imageUrl,
+                            priceProduct: price,
+                          );
+                          setState(() {
+                            isFavorited = !isFavorited;
+                          });
+                        } else {
+                          // nếu không thì điều hướng đến tran login
+                          context.push('/login');
+                        }
+                      },
                       icon: Iconsax.heart,
-                      color: Colors.red,
+                      color: isFavorited ? Colors.red : Colors.grey,
                     ),
                   )
                 ],
@@ -86,17 +191,20 @@ class _ProductCardVerticalState extends State<ProductCardVertical> {
             ),
             const SizedBox(height: AppSizes.spaceBtwItems / 2),
 
-            // Product Info
+            // Thông tin sản phẩm
             Padding(
               padding: const EdgeInsets.only(left: AppSizes.sm),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ProductTitleText(title: widget.product.name, smallSize: true),
+                  ProductTitleText(title: name, smallSize: true),
                   const SizedBox(height: AppSizes.spaceBtwItems / 2),
                   _isLoadingBrand
                       ? const SizedBox(height: 20)
-                      : BrandTitleAndVerifyIcon(title: brand?.name ?? ''),
+                      : BrandTitleAndVerifyIcon(
+                          title: brand!.name,
+                          brandTextSize: TextSizes.medium,
+                        ),
                 ],
               ),
             ),
@@ -109,7 +217,7 @@ class _ProductCardVerticalState extends State<ProductCardVertical> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: AppSizes.sm),
-                  child: ProductPriceText(price: widget.product.price),
+                  child: ProductPriceText(price: price),
                 ),
                 Container(
                   decoration: const BoxDecoration(

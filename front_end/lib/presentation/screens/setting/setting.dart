@@ -47,28 +47,28 @@ class SettingScreen extends StatelessWidget {
               // settings list
               child: Column(
                 children: [
-                  const AppSectionHeading(title: "Account settings"),
+                  const AppSectionHeading(title: "Cài đặt tài khoản"),
                   const SizedBox(height: AppSizes.spaceBtwItems), // 16
                   SettingsMenuTitle(
                     icon: Iconsax.safe_home,
-                    title: 'My Addresses',
-                    subtitle: 'Set shopping delevery address',
+                    title: 'Địa chỉ',
+                    subtitle: 'Thêm, sửa địa chỉ giao hàng',
                     onTap: () {
                       context.push('/address');
                     },
                   ),
                   SettingsMenuTitle(
                     icon: Iconsax.shopping_cart,
-                    title: 'My cart',
-                    subtitle: 'Add, remove products',
+                    title: 'Giỏ hàng',
+                    subtitle: 'Xem các sản phẩm đã chọn',
                     onTap: () {
                       context.push('/cart');
                     },
                   ),
                   SettingsMenuTitle(
                     icon: Iconsax.bag_tick,
-                    title: 'My Orders',
-                    subtitle: 'In-progress and Completed Orders',
+                    title: 'Đơn đặt hàng',
+                    subtitle: 'Lịch sử và trạng thái đơn hàng',
                     onTap: () {
                       context.push('/myOrder');
                     },
@@ -83,7 +83,7 @@ class SettingScreen extends StatelessWidget {
                             final authController = AuthController();
                             authController.signOut(context);
                           },
-                          child: const Text('Logout'))),
+                          child: const Text('Đăng xuất'))),
 
                   const SizedBox(height: AppSizes.spaceBtwSections * 2.5), // 80
                 ],
