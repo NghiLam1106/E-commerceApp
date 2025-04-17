@@ -87,9 +87,8 @@ class AuthController {
         if (role == 'admin') {
           // ignore: use_build_context_synchronously
           // Đợi 1 frame để tránh bị lock
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushReplacementNamed('/products');
-          });
+          if (!context.mounted) return;
+          Navigator.of(context).pushReplacementNamed('/products');
         } else {
           // Chuyển hướng tới trang chủ (HomeScreen) bằng GoRouter
           // ignore: use_build_context_synchronously

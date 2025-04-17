@@ -44,6 +44,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
     if (location.startsWith('/favourite')) return 2;
     if (location.startsWith('/settings') ||
         location.startsWith('/login') ||
+        location.startsWith('/signup') ||
         location.startsWith('/profile') ||
         location.startsWith('/profileEdit') ||
         location.startsWith('/address') ||
