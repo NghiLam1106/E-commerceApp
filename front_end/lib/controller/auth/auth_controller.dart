@@ -53,7 +53,7 @@ class AuthController {
       // Hiển thị lỗi nếu đăng ký thất bại
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi: $e')),
+        SnackBar(content: Text('Lỗi: Đăng ký không thành công')),
       );
     }
   }
@@ -106,7 +106,7 @@ class AuthController {
       // Hiển thị lỗi nếu đăng nhập thất bại
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi: $e')),
+        SnackBar(content: Text('Lỗi: Đăng nhập không thành công')),
       );
     }
   }
@@ -207,7 +207,7 @@ class AuthController {
     } catch (e) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi: $e')),
+        SnackBar(content: Text('Lỗi: Đăng xuất thất bại')),
       );
     }
   }

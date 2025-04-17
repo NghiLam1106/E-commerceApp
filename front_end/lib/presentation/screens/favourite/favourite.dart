@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/product_controller.dart';
+import 'package:front_end/controller/favorites_controller.dart';
 import 'package:front_end/core/constants/sizes.dart';
-import 'package:front_end/model/product_model.dart';
+import 'package:front_end/model/favorites_model.dart';
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';
 import 'package:front_end/presentation/widgets/icon/circular_icon.dart';
 import 'package:front_end/presentation/widgets/layout/grid_layout.dart';
@@ -17,20 +18,24 @@ class FavouriteScreen extends StatefulWidget {
 }
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
-      List<ProductModel> _productsList = [];
-    final ProductController productController = ProductController();
+  List<FavoritesModel> _favouriteList = [];
+  final FavoritesController favoritesController = FavoritesController();
+  var currentUser = FirebaseAuth.instance.currentUser;
 
-    @override
+  @override
   void initState() {
     super.initState();
-    _getProductsList();
+    _loadFavorites();
   }
 
-  Future<void> _getProductsList() async {
-    final products = await productController.getProductsList();
-    setState(() {
-      _productsList = products;
-    });
+  Future<void> _loadFavorites() async {
+    if (currentUser != null) {
+      final favorites = await favoritesController.getReviewsForProduct(currentUser!.uid);
+
+      setState(() {
+        _favouriteList = favorites;
+      });
+    }
   }
 
   @override
@@ -38,14 +43,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     return Scaffold(
       appBar: AppbarCustom(
         title: Text(
-          "Favourite",
+          "Sản phẩm yêu thích",
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         actions: [
           CircularIcon(
             icon: Iconsax.add,
             onPressed: () {
-              context.push('/homne');
+              context.push('/search');
             },
           )
         ],
@@ -56,8 +61,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           child: Column(
             children: [
               AppGridLayout(
-                itemCount: _productsList.length,
-                itemBuilder: (_, items) => ProductCardVertical(product: _productsList[items],),
+                itemCount: _favouriteList.length,
+                itemBuilder: (_, items) => ProductCardVertical(
+                  name: _favouriteList[items].nameProduct,
+                  brand: _favouriteList[items].brandId,
+                  imageUrl: _favouriteList[items].imageUrlProduct,
+                  price: _favouriteList[items].priceProduct,
+                  productId: _favouriteList[items].productId,
+                ),
               )
             ],
           ),

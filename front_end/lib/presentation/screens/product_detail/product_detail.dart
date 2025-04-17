@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/controller/product_controller.dart';
+import 'package:front_end/controller/review_controller.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/model/product_model.dart';
+import 'package:front_end/model/review_model.dart';
 import 'package:front_end/presentation/screens/product_detail/widgets/product_add_to_cart.dart';
 import 'package:front_end/presentation/screens/product_detail/widgets/product_image_slider.dart';
 import 'package:front_end/presentation/screens/product_detail/widgets/product_meta_data.dart';
@@ -23,9 +25,12 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   // Controllers
   final ProductController productController = ProductController();
+  final ReviewController reviewController = ReviewController();
   late ProductModel _productData;
+  List<ReviewModel> _reviewlist = [];
   bool _isLoading = true;
   bool isSelected = false;
+  String isColorSelected = '';
 
   @override
   void initState() {
@@ -35,16 +40,19 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   Future<void> _getData() async {
     final products = await productController.getProductById(id: widget.productId);
+    final reviews = await reviewController.getReviewsForProduct(widget.productId);
     setState(() {
       _productData = products;
+      _reviewlist = reviews;
       _isLoading = false;
     });
   }
 
-  int? _selectedColorIndex; // Thay vì dùng String?
+  int? _selectedColorIndex; 
 
-  void _onColorSelected(int index) {
+  void _onColorSelected(int index, String color) {
     setState(() {
+      isColorSelected = color;
       _selectedColorIndex = index;
     });
   }
@@ -55,7 +63,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       return const Center(child: CircularProgressIndicator());
     }
     return Scaffold(
-      bottomSheet: const ProductAddToCart(),
+      bottomSheet: ProductAddToCart(productId: _productData.id ?? '', color: isColorSelected),
       body: Padding(
         padding: EdgeInsets.only(bottom: 60),
         child: SingleChildScrollView(
@@ -73,12 +81,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 child: Column(
                   children: [
                     // Rating and share button
-                    const RatingAndShare(), // chờ xong review screen mới update lại
+                    RatingAndShare(reviewlist: _reviewlist,), // chờ xong review screen mới update lại
 
-                    // Price, title, stock, brand
+                    // Price, title, brand
                     ProductMetaData(
                         title: _productData.name, price: _productData.price, brandId: _productData.brandId,),
-
                     // Colors
                     Column(
                       children: [
@@ -99,7 +106,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 return CustomChoiceChip(
                                   text: color,
                                   isSelected: _selectedColorIndex == index,
-                                  onSelected: (_) => _onColorSelected(index),
+                                  onSelected: (_) => _onColorSelected(index, color),
                                 );
                               })
                           ],
@@ -111,7 +118,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () { context.push('/checkout');},
                         child: const Text('Thanh toán'),
                       ),
                     ),
@@ -134,7 +141,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     const Divider(),
                     const SizedBox(height: AppSizes.spaceBtwItems),
                     AppSectionHeading(
-                      title: 'Reviews(12)',
+                      title: 'Đánh giá(${_reviewlist.length})',
                       onPressed: (){
                         context.push('/review/${_productData.id}');
                       },

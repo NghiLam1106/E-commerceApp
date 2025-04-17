@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/colors.dart';
-import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
+import 'package:front_end/model/product_model.dart';
 import 'package:front_end/presentation/widgets/image/rounded_image.dart';
-import 'package:front_end/presentation/widgets/texts/brand_title_and_verify_icon.dart';
 
 class CartItem extends StatelessWidget {
   const CartItem({
-    super.key,
+    super.key, required this.product, required this.color,
   });
+
+  final ProductModel? product;
+  final String color;
 
   @override
   Widget build(BuildContext context) {
@@ -17,22 +19,23 @@ class CartItem extends StatelessWidget {
     return Row(
       children: [
         RoundedImage(
-          imageUrl: AppImages.iphone,
-          width: 60, heigth: 60, 
+          isNetworkImage: true,
+          imageUrl: product!.imageUrls[0],
+          width: 75, heigth: 75, 
           padding: const EdgeInsets.all(AppSizes.sm),
           backgroundColor: dark ? AppColors.darkerGrey : AppColors.light),
-        const SizedBox(height: AppSizes.spaceBtwItems),
+        const SizedBox(width: AppSizes.spaceBtwItems),
     
-        // title, price
+        // title
         Expanded(child: Column( 
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const BrandTitleAndVerifyIcon(title: 'iphone'),
+            Text(product!.name, style: Theme.of(context).textTheme.bodyLarge),
             Text.rich(
               TextSpan(children: [
-                TextSpan(text: 'Color:', style: Theme.of(context).textTheme.bodySmall),
-                TextSpan(text: 'White', style: Theme.of(context).textTheme.bodyLarge)
+                TextSpan(text: 'Màu sắc: ', style: Theme.of(context).textTheme.bodySmall),
+                TextSpan(text: color, style: Theme.of(context).textTheme.bodyLarge)
               ])
             )
         ],))

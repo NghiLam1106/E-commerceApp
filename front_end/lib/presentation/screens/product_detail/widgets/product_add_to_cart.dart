@@ -1,25 +1,41 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:front_end/controller/cart_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
 import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
+import 'package:front_end/model/cart_model.dart';
 import 'package:front_end/presentation/widgets/icon/circular_icon.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductAddToCart extends StatefulWidget {
-  const ProductAddToCart({super.key});
+  const ProductAddToCart(
+      {super.key, required this.productId, required this.color});
+
+  final String productId;
+  final String color;
 
   @override
   State<ProductAddToCart> createState() => _ProductAddToCartState();
 }
 
 class _ProductAddToCartState extends State<ProductAddToCart> {
-  int _quantity = 1; // Sử dụng int thay vì String để dễ xử lý
+  // controller
+  final CartController cartController = CartController();
+  final ProductController productController = ProductController();
 
+  int _quantity = 1;
+
+  // hàm tăng số lượng
   void _incrementQuantity() {
     setState(() {
       _quantity++;
     });
   }
 
+  // hàm giảm số lượng
   void _decrementQuantity() {
     if (_quantity > 1) {
       setState(() {
@@ -28,13 +44,39 @@ class _ProductAddToCartState extends State<ProductAddToCart> {
     }
   }
 
-  void _addToCart() {
-    // Xử lý thêm vào giỏ hàng với số lượng _quantity
-    debugPrint('Thêm vào giỏ hàng: $_quantity sản phẩm');
-    // Có thể thêm SnackBar thông báo
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Đã thêm $_quantity sản phẩm vào giỏ hàng')),
-    );
+  void _addToCart() async {
+    final user = FirebaseAuth.instance.currentUser;
+    // kiểm tra xem đã đang nhập hay chưa
+    if (user != null) {
+      // kiểm tra xem đã chọn màu hay chưa
+      if (widget.color != '') {
+        final productRef = productController.createRefProduct(widget.productId);
+        final cartItem = CartModel(
+          quantity: _quantity,
+          color: widget.color,
+          timestamp: Timestamp.now(),
+          productRef: productRef,
+        );
+
+        // thêm vào csdl
+        await cartController.addOrUpdateCartItem(cart: cartItem, userId: user.uid, productRef: productRef);
+
+        // Thông báo thành công
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Đã thêm $_quantity sản phẩm vào giỏ hàng')),
+        );
+      } else {
+        // thông báo khi người dùng chưa chọn màu
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Vui lòng chọn màu sắc cho sản phẩm')),
+        );
+      }
+    } else {
+      // điều hướng khi chưa đăng nhập
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.go('/login');
+      });
+    }
   }
 
   @override
@@ -43,7 +85,7 @@ class _ProductAddToCartState extends State<ProductAddToCart> {
 
     return Container(
       padding: const EdgeInsets.symmetric(
-        horizontal: AppSizes.defaultSpace, 
+        horizontal: AppSizes.defaultSpace,
         vertical: AppSizes.defaultSpace,
       ),
       decoration: BoxDecoration(
@@ -71,7 +113,7 @@ class _ProductAddToCartState extends State<ProductAddToCart> {
               // Hiển thị số lượng
               const SizedBox(width: AppSizes.spaceBtwItems),
               Text(
-                '$_quantity', 
+                '$_quantity',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
 
@@ -87,7 +129,7 @@ class _ProductAddToCartState extends State<ProductAddToCart> {
               ),
             ],
           ),
-          
+
           // Nút thêm vào giỏ hàng
           ElevatedButton(
             onPressed: _addToCart,
