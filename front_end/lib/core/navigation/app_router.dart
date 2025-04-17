@@ -133,17 +133,17 @@ final GoRouter appRouter = GoRouter(
       routes: [
         GoRoute(
           name: 'products',
-          path: 'products',
+          path: '/products',
           builder: (context, state) => const ProductScreen(),
         ),
         GoRoute(
           name: 'categories',
-          path: 'categories',
+          path: '/categories',
           builder: (context, state) => const CategoriesScreen(),
         ),
         GoRoute(
           name: 'brands',
-          path: 'brands',
+          path: '/brands',
           builder: (context, state) => const BrandScreen(),
         ),
       ],

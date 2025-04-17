@@ -48,7 +48,7 @@ class AuthController {
 
       // Chuyển hướng đến màn hình đăng nhập
       // ignore: use_build_context_synchronously
-      context.push('/');
+      context.pop();
     } catch (e) {
       // Hiển thị lỗi nếu đăng ký thất bại
       // ignore: use_build_context_synchronously
@@ -63,20 +63,45 @@ class AuthController {
       BuildContext context, String email, String password) async {
     try {
       // Đăng nhập với Firebase Authentication
-      await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // Lấy UID người dùng
+      String uid = userCredential.user!.uid;
+
+      // Lấy dữ liệu người dùng từ Firestore
+      DocumentSnapshot userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      // Kiểm tra và lấy trường 'role'
+      if (userDoc.exists) {
+        final userData = userDoc.data() as Map<String, dynamic>;
+        final String role = userData['role'] ?? 'user'; // Giá trị mặc định
+
+        // In ra hoặc dùng role (tuỳ theo mục đích)
+        print('Vai trò người dùng: $role');
+
+        // Có thể chuyển hướng tùy theo vai trò
+        if (role == 'admin') {
+          // ignore: use_build_context_synchronously
+          // Đợi 1 frame để tránh bị lock
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacementNamed('/products');
+          });
+        } else {
+          // Chuyển hướng tới trang chủ (HomeScreen) bằng GoRouter
+          // ignore: use_build_context_synchronously
+          context.push('/');
+        }
+      }
 
       // Hiển thị thông báo thành công
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Đăng nhập thành công!')),
       );
-
-      // Chuyển hướng tới trang chủ (HomeScreen) bằng GoRouter
-      // ignore: use_build_context_synchronously
-      context.push('/');
     } catch (e) {
       // Hiển thị lỗi nếu đăng nhập thất bại
       // ignore: use_build_context_synchronously
