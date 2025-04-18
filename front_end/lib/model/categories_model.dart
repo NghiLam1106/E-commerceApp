@@ -15,6 +15,9 @@ class CategoryModel {
 
   // Convert từ Firestore document
   factory CategoryModel.fromDocument(DocumentSnapshot doc) {
+    if (!doc.exists || doc.data() == null) {
+      throw Exception("Tài liệu không tồn tại hoặc không có dữ liệu.");
+    }
     final data = doc.data() as Map<String, dynamic>;
     return CategoryModel(
       id: doc.id,

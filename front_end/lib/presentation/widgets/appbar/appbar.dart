@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/divice/divice_utils.dart';
 import 'package:go_router/go_router.dart';
+
 class AppbarCustom extends StatelessWidget implements PreferredSizeWidget {
   const AppbarCustom(
       {super.key,
@@ -19,21 +19,18 @@ class AppbarCustom extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSizes.md),
-      child: AppBar(
-        automaticallyImplyLeading: false,
-        leading: showBackArrow
-            ? IconButton(
-                onPressed: () => context.pop(),
-                icon: const Icon(Icons.arrow_back))
-            : leadingIcon != null
-                ? IconButton(
-                    onPressed: () => leadingOnPressed, icon: Icon(leadingIcon))
-                : null,
-        title: title,
-        actions: actions,
-      ),
+    return AppBar(
+      automaticallyImplyLeading: false,
+      leading: showBackArrow
+          ? IconButton(
+              onPressed: () => context.pop(true),
+              icon: const Icon(Icons.arrow_back))
+          : leadingIcon != null
+              ? IconButton(
+                  onPressed: () => leadingOnPressed, icon: Icon(leadingIcon))
+              : null,
+      title: title,
+      actions: actions,
     );
   }
 

@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/utils/Helper/helper_functions.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class ScaffoldWithNavBar extends StatelessWidget {
   const ScaffoldWithNavBar({super.key, required this.child});
@@ -42,7 +42,18 @@ class ScaffoldWithNavBar extends StatelessWidget {
   int _getCurrentIndex(String location) {
     if (location.startsWith('/search')) return 1;
     if (location.startsWith('/favourite')) return 2;
-    if (location.startsWith('/settings') || location.startsWith('/login')) return 3;
+    if (location.startsWith('/settings') ||
+        location.startsWith('/login') ||
+        location.startsWith('/signup') ||
+        location.startsWith('/profile') ||
+        location.startsWith('/profileEdit') ||
+        location.startsWith('/address') ||
+        location.startsWith('/newAddress') ||
+        location.startsWith('/cart') ||
+        location.startsWith('/checkout') ||
+        location.startsWith('/myOrder')) {
+      return 3;
+    }
     return 0; // Mặc định là Home
   }
 

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:front_end/controller/user/user_controller.dart';
 import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
-import 'package:front_end/presentation/screens/profile/widgets/profile_edit.dart';
 import 'package:front_end/presentation/screens/profile/widgets/profile_menu.dart';
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';
 import 'package:front_end/presentation/widgets/image/circular_image.dart';
 import 'package:front_end/presentation/widgets/texts/section_heading.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -43,13 +43,13 @@ class ProfileScreenState extends State<ProfileScreen> {
                 const EdgeInsets.only(right: 30), // Thêm khoảng cách bên phải
             child: IconButton(
               icon: const Icon(Icons.edit),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfileEditScreen(),
-                  ),
-                );
+              onPressed: () async {
+                final result = await context.push('/profileEdit');
+                if (result == true) {
+                  setState(
+                    () {},
+                  ); // Rebuild lại FutureBuilder để fetch dữ liệu mới
+                }
               },
             ),
           )
@@ -77,10 +77,13 @@ class ProfileScreenState extends State<ProfileScreen> {
                 : userData?['email'] ?? 'No Email';
             String phone = isGoogleSignIn
                 ? user.phoneNumber ?? 'No phone number'
-                : userData?['phone'] ?? 'No phone number';
+                : userData?['phoneNumber'] ?? 'No phone number';
             String address = isGoogleSignIn
-                ? user.photoURL ?? 'No address'
-                : userData?['address'] ?? 'No address';
+                ? (userData?['address'] ?? 'No address')
+                : (userData?['address'] ?? 'No address');
+            String productImageUrl = isGoogleSignIn
+                ? (user.photoURL ?? 'No image')
+                : (userData?['avatar'] ?? 'No image');
 
             return SingleChildScrollView(
               child: Padding(
@@ -93,28 +96,19 @@ class ProfileScreenState extends State<ProfileScreen> {
                       child: Column(
                         children: [
                           ClipOval(
-                            child: user.photoURL != null &&
-                                    user.photoURL!.isNotEmpty
+                            child: productImageUrl.isNotEmpty
                                 ? Image.network(
-                                    user.photoURL!,
+                                    productImageUrl,
                                     width: 50,
                                     height: 50,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return CircularImages(
-                                        image: AppImages.google,
+                                  )
+                                : user.photoURL != null &&
+                                        user.photoURL!.isNotEmpty
+                                    ? Image.network(user.photoURL!,
                                         width: 50,
                                         height: 50,
-                                      );
-                                    },
-                                  )
-                                : productImage != null
-                                    ? Image.file(
-                                        productImage!,
-                                        height: 100,
-                                        width: 100,
-                                        fit: BoxFit.cover,
-                                      )
+                                        fit: BoxFit.cover)
                                     : CircularImages(
                                         image: AppImages.google,
                                         width: 50,
