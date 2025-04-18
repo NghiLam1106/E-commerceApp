@@ -57,4 +57,19 @@ class UserController {
 
     Navigator.pop(context, true);
   }
+
+  // Lấy thông tin người dùng theo id
+  Future<UserModel?> getUserById(String uid) async {
+    try {
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      if (snapshot.exists) {
+        return UserModel.fromMap(snapshot.data() as Map<String, dynamic>, uid);
+      }
+    } catch (e) {
+      print('Error getting user from Firestore: $e');
+    }
+    return null;
+  }
 }
