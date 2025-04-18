@@ -42,16 +42,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
   int _getCurrentIndex(String location) {
     if (location.startsWith('/search')) return 1;
     if (location.startsWith('/favourite')) return 2;
-    if (location.startsWith('/settings') ||
-        location.startsWith('/login') ||
-        location.startsWith('/signup') ||
-        location.startsWith('/profile') ||
-        location.startsWith('/profileEdit') ||
-        location.startsWith('/address') ||
-        location.startsWith('/newAddress') ||
-        location.startsWith('/cart') ||
-        location.startsWith('/checkout') ||
-        location.startsWith('/myOrder')) {
+    if (location.startsWith('/settings')) {
       return 3;
     }
     return 0; // Mặc định là Home
@@ -61,18 +52,18 @@ class ScaffoldWithNavBar extends StatelessWidget {
   void _onTabTapped(BuildContext context, int index) {
     switch (index) {
       case 0:
-        context.go('/');
+        context.push('/');
         break;
       case 1:
-        context.go('/search');
+        context.push('/search');
         break;
       case 2:
-        context.go('/favourite');
+        context.push('/favourite');
         break;
       case 3:
         FirebaseAuth.instance.currentUser != null
-            ? context.go('/settings')
-            : context.go('/login');
+            ? context.push('/settings')
+            : context.push('/login');
         break;
     }
   }

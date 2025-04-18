@@ -60,6 +60,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           padding: EdgeInsets.all(AppSizes.defaultSpace),
           child: Column(
             children: [
+              _favouriteList.isEmpty? 
+                Center(child: Text('Bạn chưa yêu thích sản phẩm nào',style: Theme.of(context).textTheme.headlineSmall,))
+              :
               AppGridLayout(
                 itemCount: _favouriteList.length,
                 itemBuilder: (_, items) => ProductCardVertical(

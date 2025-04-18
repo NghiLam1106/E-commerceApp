@@ -3,6 +3,7 @@ import 'package:front_end/controller/auth/auth_controller.dart';
 import 'package:front_end/core/constants/image_string.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/core/utils/validatiors/validation.dart';
+import 'package:front_end/presentation/widgets/appbar/appbar.dart';
 import 'package:front_end/presentation/widgets/image/circular_image.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,6 +41,7 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppbarCustom(showBackArrow: true),
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Container(
