@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:front_end/controller/brand_controller.dart';
 import 'package:front_end/controller/favorites_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
 import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/enums.dart';
 import 'package:front_end/core/constants/sizes.dart';
@@ -22,20 +23,11 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class ProductCardVertical extends StatefulWidget {
   final ProductModel? product;
-  final String? name;
-  final String? brand;
-  final String? price;
-  final String? imageUrl;
-  final String? productId;
 
   const ProductCardVertical(
       {super.key,
       this.product,
-      this.name,
-      this.brand,
-      this.price,
-      this.imageUrl,
-      this.productId});
+      });
 
   @override
   State<ProductCardVertical> createState() => _ProductCardVerticalState();
@@ -45,6 +37,7 @@ class _ProductCardVerticalState extends State<ProductCardVertical> {
   // controller
   final BrandController brandController = BrandController();
   final FavoritesController favoritesController = FavoritesController();
+  final ProductController productController = ProductController();
 
   var currentUser = FirebaseAuth.instance.currentUser;
   List<FavoritesModel> _favouriteList = [];
@@ -69,13 +62,7 @@ class _ProductCardVerticalState extends State<ProductCardVertical> {
       price = widget.product!.price;
       brandId = widget.product!.brandId;
       imageUrl = widget.product!.imageUrls[0];
-    } else {
-      name = widget.name!;
-      price = widget.price!;
-      brandId = widget.brand!;
-      imageUrl = widget.imageUrl!;
-      productId = widget.productId!;
-    }
+    } 
     _loadBrand();
     _loadFavorites();
   }
@@ -93,8 +80,8 @@ class _ProductCardVerticalState extends State<ProductCardVertical> {
   Future<void> _loadFavorites() async {
     if (currentUser != null) {
       final favorites =
-          await favoritesController.getReviewsForProduct(currentUser!.uid);
-          
+          await favoritesController.getFavoritesForProduct(currentUser!.uid);
+
       setState(() {
         _favouriteList = favorites;
         isFavorited =
@@ -104,12 +91,9 @@ class _ProductCardVerticalState extends State<ProductCardVertical> {
   }
 
   // xử lý khi nhấn yêu thích
-  Future<void> _onFavoritePressed(
-      {required String productId,
-      required String brandId,
-      required String imageUrlProduct,
-      required String priceProduct,
-      required String nameProduct}) async {
+  Future<void> _onFavoritePressed({
+    required String productId,
+  }) async {
     if (isFavorited) {
       for (var favorite in _favouriteList) {
         if (favorite.productId == productId) {
@@ -117,15 +101,16 @@ class _ProductCardVerticalState extends State<ProductCardVertical> {
         }
       }
     } else {
+      // tạo productref
+      final productRef = productController.createRefProduct(productId);
+      // tạo FavoritesModel
       FavoritesModel favorite = FavoritesModel(
-        imageUrlProduct: imageUrlProduct,
-        brandId: brandId,
-        nameProduct: nameProduct,
-        priceProduct: priceProduct,
-        userId: currentUser!.uid,
+        productRef: productRef,
         productId: productId,
+        userId: currentUser!.uid,
         timestamp: Timestamp.now(),
       );
+      // thêm Favorites
       favoritesController.addFavorites(favorite);
     }
   }
@@ -169,10 +154,6 @@ class _ProductCardVerticalState extends State<ProductCardVertical> {
                         if (currentUser != null) {
                           _onFavoritePressed(
                             productId: productId,
-                            brandId: brand?.id ?? '',
-                            nameProduct: name,
-                            imageUrlProduct: imageUrl,
-                            priceProduct: price,
                           );
                           setState(() {
                             isFavorited = !isFavorited;

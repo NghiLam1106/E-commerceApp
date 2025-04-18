@@ -19,7 +19,7 @@ class CheckoutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppbarCustom(
           showBackArrow: true,
-          title: Text('Oder Review',
+          title: Text('Tổng quan đơn hàng',
               style: Theme.of(context).textTheme.headlineSmall)),
       body: SingleChildScrollView(
         child: Padding(

@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (user != null && user.role == 'admin') {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        context.go('/admin/products');
+        context.go('/admin');
       });
     }
   }

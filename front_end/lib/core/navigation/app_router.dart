@@ -33,16 +33,6 @@ final GoRouter appRouter = GoRouter(
       },
       routes: [
         GoRoute(
-          name: 'login',
-          path: '/login',
-          builder: (context, state) => const LoginScreen(),
-        ),
-        GoRoute(
-          name: 'signup',
-          path: '/signup',
-          builder: (context, state) => const RegisterScreen(),
-        ),
-        GoRoute(
           name: 'home',
           path: '/',
           builder: (context, state) => const HomeScreen(),
@@ -51,16 +41,6 @@ final GoRouter appRouter = GoRouter(
           name: 'settings',
           path: '/settings',
           builder: (context, state) => const SettingScreen(),
-        ),
-        GoRoute(
-          name: 'profile',
-          path: '/profile',
-          builder: (context, state) => const ProfileScreen(),
-        ),
-        GoRoute(
-          name: 'profileEdit',
-          path: '/profileEdit',
-          builder: (context, state) => const ProfileEditScreen(),
         ),
         GoRoute(
           name: 'search',
@@ -72,51 +52,27 @@ final GoRouter appRouter = GoRouter(
           path: '/favourite',
           builder: (context, state) => const FavouriteScreen(),
         ),
-        GoRoute(
-          name: 'detail',
-          path: '/detail/:id',
-          builder: (context, state) {
-            final productId =
-                state.pathParameters['id']!; // get the ID from the URL
-            return ProductDetailScreen(productId: productId);
-          },
-        ),
-        GoRoute(
-          name: 'address',
-          path: '/address',
-          builder: (context, state) => const AddressScreen(),
-        ),
-        GoRoute(
-          name: 'newAddress',
-          path: '/newAddress',
-          builder: (context, state) => const AddNewAddressScreen(),
-        ),
-        GoRoute(
-          name: 'cart',
-          path: '/cart',
-          builder: (context, state) => const CartScreen(),
-        ),
-        GoRoute(
-          name: 'checkout',
-          path: '/checkout',
-          builder: (context, state) => const CheckoutScreen(),
-        ),
-        GoRoute(
-          name: 'myOrder',
-          path: '/myOrder',
-          builder: (context, state) => const OrderScreen(),
-        ),
-        GoRoute(
-          name: 'success',
-          path: '/success',
-          builder: (context, state) => SuccessScreen(
-            image: AppImages.checked,
-            title: 'Payment Success!',
-            subTitle: 'Your item will be shipped soon',
-            onPressed: () => context.go('/'),
-          ),
-        ),
       ],
+    ),
+    GoRoute(
+      name: 'address',
+      path: '/address',
+      builder: (context, state) => const AddressScreen(),
+    ),
+    GoRoute(
+      name: 'newAddress',
+      path: '/newAddress',
+      builder: (context, state) => const AddNewAddressScreen(),
+    ),
+    GoRoute(
+      name: 'login',
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      name: 'signup',
+      path: '/signup',
+      builder: (context, state) => const RegisterScreen(),
     ),
     GoRoute(
       name: 'review',
@@ -125,6 +81,50 @@ final GoRouter appRouter = GoRouter(
         final productId = state.pathParameters['id']!;
         return ProductReviewScreen(productId: productId);
       },
+    ),
+    GoRoute(
+      name: 'profile',
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      name: 'profileEdit',
+      path: '/profileEdit',
+      builder: (context, state) => const ProfileEditScreen(),
+    ),
+    GoRoute(
+      name: 'detail',
+      path: '/detail/:id',
+      builder: (context, state) {
+        final productId =
+            state.pathParameters['id']!; // get the ID from the URL
+        return ProductDetailScreen(productId: productId);
+      },
+    ),
+    GoRoute(
+      name: 'cart',
+      path: '/cart',
+      builder: (context, state) => const CartScreen(),
+    ),
+    GoRoute(
+      name: 'checkout',
+      path: '/checkout',
+      builder: (context, state) => const CheckoutScreen(),
+    ),
+    GoRoute(
+      name: 'myOrder',
+      path: '/myOrder',
+      builder: (context, state) => const OrderScreen(),
+    ),
+    GoRoute(
+      name: 'success',
+      path: '/success',
+      builder: (context, state) => SuccessScreen(
+        image: AppImages.checked,
+        title: 'Payment Success!',
+        subTitle: 'Your item will be shipped soon',
+        onPressed: () => context.go('/'),
+      ),
     ),
     GoRoute(
       name: 'admin',

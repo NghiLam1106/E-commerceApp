@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:front_end/controller/favorites_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
 import 'package:front_end/core/constants/sizes.dart';
 import 'package:front_end/model/favorites_model.dart';
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';
@@ -20,6 +21,7 @@ class FavouriteScreen extends StatefulWidget {
 class _FavouriteScreenState extends State<FavouriteScreen> {
   List<FavoritesModel> _favouriteList = [];
   final FavoritesController favoritesController = FavoritesController();
+  final ProductController productController = ProductController();
   var currentUser = FirebaseAuth.instance.currentUser;
 
   @override
@@ -30,7 +32,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
   Future<void> _loadFavorites() async {
     if (currentUser != null) {
-      final favorites = await favoritesController.getReviewsForProduct(currentUser!.uid);
+      final favorites =
+          await favoritesController.getFavoritesForProduct(currentUser!.uid);
 
       setState(() {
         _favouriteList = favorites;
@@ -60,16 +63,30 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           padding: EdgeInsets.all(AppSizes.defaultSpace),
           child: Column(
             children: [
-              AppGridLayout(
-                itemCount: _favouriteList.length,
-                itemBuilder: (_, items) => ProductCardVertical(
-                  name: _favouriteList[items].nameProduct,
-                  brand: _favouriteList[items].brandId,
-                  imageUrl: _favouriteList[items].imageUrlProduct,
-                  price: _favouriteList[items].priceProduct,
-                  productId: _favouriteList[items].productId,
-                ),
-              )
+              _favouriteList.isEmpty
+                  ? Center(
+                      child: Text(
+                      'Bạn chưa yêu thích sản phẩm nào',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ))
+                  : AppGridLayout(
+                      itemCount: _favouriteList.length,
+                      itemBuilder: (_, items) {
+                        return StreamBuilder(
+                            stream: productController.streamProductFromRef(
+                                _favouriteList[items].productRef),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              final product = snapshot.data!;
+
+                              return ProductCardVertical(
+                                product: product,
+                              );
+                            });
+                      })
             ],
           ),
         ),

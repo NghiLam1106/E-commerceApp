@@ -17,7 +17,7 @@ class FavoritesController {
   }
 
   // danh sách yêu thích theo userId
-  Future<List<FavoritesModel>> getReviewsForProduct(String userId) async {
+  Future<List<FavoritesModel>> getFavoritesForProduct(String userId) async {
     final query = await favorites
         .where('userId', isEqualTo: userId)
         .orderBy('timestamp', descending: true)
