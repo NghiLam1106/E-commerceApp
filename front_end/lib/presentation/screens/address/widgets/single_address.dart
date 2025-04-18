@@ -30,11 +30,11 @@ class _SingleAddressScreenState extends State<SingleAddress> {
     _loadAddresses();
   }
 
-  // @override
-  // void didUpdateWidget(covariant SingleAddress oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   _loadAddresses(); // đảm bảo Future được gọi lại khi key thay đổi
-  // }
+  @override
+  void didUpdateWidget(covariant SingleAddress oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _loadAddresses(); // đảm bảo Future được gọi lại khi key thay đổi
+  }
 
   void _loadAddresses() {
     _addressFuture =
