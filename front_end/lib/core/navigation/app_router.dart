@@ -15,9 +15,10 @@ import 'package:front_end/presentation/screens/oder/order.dart';
 import 'package:front_end/presentation/screens/product_detail/product_detail.dart';
 import 'package:front_end/presentation/screens/product_review/product_review.dart';
 import 'package:front_end/presentation/screens/profile/profile.dart';
+import 'package:front_end/presentation/screens/profile/widgets/profile_edit.dart';
 import 'package:front_end/presentation/screens/register/register.dart';
-import 'package:front_end/presentation/screens/setting/setting.dart';
 import 'package:front_end/presentation/screens/search/search.dart';
+import 'package:front_end/presentation/screens/setting/setting.dart';
 import 'package:front_end/presentation/screens/success_screen/success_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -55,6 +56,11 @@ final GoRouter appRouter = GoRouter(
           name: 'profile',
           path: '/profile',
           builder: (context, state) => const ProfileScreen(),
+        ),
+        GoRoute(
+          name: 'profileEdit',
+          path: '/profileEdit',
+          builder: (context, state) => const ProfileEditScreen(),
         ),
         GoRoute(
           name: 'search',
@@ -116,8 +122,7 @@ final GoRouter appRouter = GoRouter(
       name: 'review',
       path: '/review/:id',
       builder: (context, state) {
-        final productId =
-            state.pathParameters['id']!;
+        final productId = state.pathParameters['id']!;
         return ProductReviewScreen(productId: productId);
       },
     ),
@@ -128,17 +133,17 @@ final GoRouter appRouter = GoRouter(
       routes: [
         GoRoute(
           name: 'products',
-          path: 'products',
+          path: '/products',
           builder: (context, state) => const ProductScreen(),
         ),
         GoRoute(
           name: 'categories',
-          path: 'categories',
+          path: '/categories',
           builder: (context, state) => const CategoriesScreen(),
         ),
         GoRoute(
           name: 'brands',
-          path: 'brands',
+          path: '/brands',
           builder: (context, state) => const BrandScreen(),
         ),
       ],

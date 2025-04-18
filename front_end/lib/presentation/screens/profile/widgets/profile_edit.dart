@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:front_end/presentation/widgets/image/circular_image.dart';
-import 'package:front_end/core/constants/image_string.dart';
+import 'package:flutter/material.dart';
 import 'package:front_end/controller/image/image_controller.dart';
+import 'package:front_end/controller/user/user_controller.dart';
+import 'package:front_end/core/constants/image_string.dart';
+import 'package:front_end/presentation/widgets/appbar/appbar.dart';
+import 'package:front_end/presentation/widgets/image/circular_image.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({super.key});
@@ -20,68 +21,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  bool isLoading = true;
   File? productImage;
-  User? user;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData();
-  }
-
-  Future<void> _loadUserData() async {
-    user = _auth.currentUser;
-    final uid = _auth.currentUser?.uid;
-    if (uid != null) {
-      final docRef = _firestore.collection('users').doc(uid);
-      final snapshot = await docRef.get();
-      if (snapshot.exists) {
-        final data = snapshot.data();
-        if (data != null) {
-          nameController.text = data['name'] ?? '';
-          emailController.text = data['email'] ?? '';
-          phoneController.text = data['phone'] ?? '';
-          addressController.text = data['address'] ?? '';
-        }
-      } else {
-        // Nếu chưa có dữ liệu, đặt mặc định
-        nameController.text = '';
-        emailController.text = _auth.currentUser?.email ?? '';
-        phoneController.text = '';
-        addressController.text = '';
-      }
-    }
-    setState(() => isLoading = false);
-  }
-
-  Future<void> _saveProfile() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid == null) return;
-
-    final userData = {
-      'name': nameController.text.trim(),
-      'email': emailController.text.trim(),
-      'phone': phoneController.text.trim(),
-      'address': addressController.text.trim(),
-    };
-
-    final docRef = _firestore.collection('users').doc(uid);
-    final doc = await docRef.get();
-    if (doc.exists) {
-      await docRef.update(userData);
-    } else {
-      await docRef.set(userData);
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile updated successfully')),
-    );
-    Navigator.pop(context);
-  }
+  String productImageUrl = "";
+  String username = "";
+  String email = "";
+  String phone = "";
+  String address = "";
 
   @override
   void dispose() {
@@ -94,36 +39,60 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+    // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
         Navigator.pop(context);
         return false;
       },
       child: Scaffold(
-        appBar: AppBar(
+        appBar: AppbarCustom(
+          showBackArrow: true,
           title: const Text('Edit Profile'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right:30), 
-              child: Tooltip(
-                message: 'Save',
-                child: IconButton(
-                  icon: const Icon(Icons.save),
-                  onPressed: _saveProfile,
-                ),
+              padding:
+                  const EdgeInsets.only(right: 30), // Thêm khoảng cách bên phải
+              child: IconButton(
+                icon: const Icon(Icons.save),
+                onPressed: () async {
+                  // Lưu thông tin người dùng/
+                  UserController().saveProfile(
+                      nameController,
+                      emailController,
+                      phoneController,
+                      addressController,
+                      productImage,
+                      productImageUrl,
+                      context); // Lưu thông tin người dùng
+                },
               ),
             ),
           ],
         ),
-        body: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
+        body: FutureBuilder<Map<String, dynamic>?>(
+          future: UserController().getUserFromFirestore(user!.uid),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              // Dữ liệu người dùng từ Firestore
+              var userData = snapshot.data;
+              username = userData?['name'] ?? '';
+              email = userData?['email'] ?? '';
+              phone = userData?['phoneNumber'] ?? '';
+              address = userData?['address'] ?? '';
+              productImageUrl = userData?['avatar'] ?? AppImages.google;
+
+              nameController.text = username;
+              emailController.text = email;
+              phoneController.text = phone;
+              addressController.text = address;
+
+              return SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
@@ -134,32 +103,31 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       child: Column(
                         children: [
                           ClipOval(
-                            child: user?.photoURL?.isNotEmpty == true
-                                ? Image.network(
-                                    user!.photoURL!,
-                                    width: 50,
-                                    height: 50,
+                            child: productImage != null
+                                ? Image.file(
+                                    productImage!,
+                                    height: 100,
+                                    width: 100,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return CircularImages(
-                                        image: AppImages.google,
+                                  )
+                                : productImageUrl.isNotEmpty
+                                    ? Image.network(
+                                        productImageUrl,
                                         width: 50,
                                         height: 50,
-                                      );
-                                    },
-                                  )
-                                : productImage != null
-                                    ? Image.file(
-                                        productImage!,
-                                        height: 100,
-                                        width: 100,
                                         fit: BoxFit.cover,
                                       )
-                                    : CircularImages(
-                                        image: AppImages.google,
-                                        width: 50,
-                                        height: 50,
-                                      ),
+                                    : user.photoURL != null &&
+                                            user.photoURL!.isNotEmpty
+                                        ? Image.network(user.photoURL!,
+                                            width: 50,
+                                            height: 50,
+                                            fit: BoxFit.cover)
+                                        : const CircularImages(
+                                            image: AppImages.google,
+                                            width: 50,
+                                            height: 50,
+                                          ),
                           ),
                           TextButton(
                               onPressed: () async {
@@ -241,7 +209,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     ),
                   ],
                 ),
-              ),
+              );
+            } else {
+              return Center(child: Text('No user data found.'));
+            }
+          },
+        ),
       ),
     );
   }

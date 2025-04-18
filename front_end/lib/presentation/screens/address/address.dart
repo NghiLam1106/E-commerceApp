@@ -5,16 +5,32 @@ import 'package:front_end/presentation/screens/address/widgets/single_address.da
 import 'package:front_end/presentation/widgets/appbar/appbar.dart';
 import 'package:go_router/go_router.dart';
 
-class AddressScreen extends StatelessWidget {
+class AddressScreen extends StatefulWidget {
   const AddressScreen({super.key});
+
+  @override
+  State<AddressScreen> createState() => _AddressScreenState();
+}
+
+class _AddressScreenState extends State<AddressScreen> {
+  bool selectedAddress = false;
+
+  /// Tạo key để buộc `SingleAddress` rebuild lại khi thay đổi
+  Key _addressListKey = UniqueKey();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primary,
-        onPressed: () {
-          context.push('/newAddress');
+        onPressed: () async {
+          final result = await context.push('/newAddress');
+          if (result == true) {
+            /// Thay key mới => ép `SingleAddress` gọi lại `initState()`
+            setState(() {
+              _addressListKey = UniqueKey();
+            });
+          }
         },
         child: Icon(
           Icons.add,
@@ -24,18 +40,23 @@ class AddressScreen extends StatelessWidget {
       appBar: AppbarCustom(
         showBackArrow: true,
         title:
-            Text('Addresses', style: Theme.of(context).textTheme.headlineSmall),
+            Text('Địa chỉ', style: Theme.of(context).textTheme.headlineSmall),
       ),
-      body: const SingleChildScrollView(
-          child: Padding(
-        padding: EdgeInsets.all(AppSizes.defaultSpace),
-        child: Column(
-          children: [
-            SingleAddress(selectedAddress: true),
-            SingleAddress(selectedAddress: false),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSizes.defaultSpace),
+          child: Column(
+            children: [
+              SingleAddress(
+                key: _addressListKey, // ép reload Future
+                onTap: (address) {
+                  selectedAddress = true;
+                },
+              ),
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }

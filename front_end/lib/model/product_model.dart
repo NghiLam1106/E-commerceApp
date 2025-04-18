@@ -25,6 +25,9 @@ class ProductModel {
 
   // Convert từ Firestore document
   factory ProductModel.fromSnapshot(DocumentSnapshot doc) {
+    if (!doc.exists || doc.data() == null) {
+      throw Exception("Tài liệu không tồn tại hoặc không có dữ liệu.");
+    }
     final data = doc.data() as Map<String, dynamic>;
     return ProductModel(
       id: doc.id,

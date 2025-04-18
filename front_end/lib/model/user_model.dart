@@ -35,8 +35,8 @@ class UserModel {
     return {
       'name': name,
       'email': email,
-      'avatar': '',
-      'phoneNumber': '',
+      'avatar': avatar,
+      'phoneNumber': phoneNumber,
       'address': address,
       'role': role,
       'createdAt': DateTime.now(),
