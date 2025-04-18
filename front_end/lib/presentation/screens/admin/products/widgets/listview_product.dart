@@ -1,80 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:front_end/controller/category_controller.dart';
+import 'package:front_end/controller/product_controller.dart';
+import 'package:front_end/core/utils/dialog_utils.dart';
+import 'package:front_end/presentation/screens/admin/products/widgets/card_product.dart';
+import 'package:front_end/presentation/screens/admin/products/widgets/product_dialog.dart';
 
-class ListviewProduct extends StatefulWidget {
+class ListviewProduct extends StatelessWidget {
   const ListviewProduct({
     super.key,
-    required this.id,
-    required this.name,
-    required this.categoryId,
-    required this.price,
-    required this.imageURL,
-    required this.onEdit,
-    required this.onDelete,
+    required this.productsList,
   });
 
-  final String id, name, categoryId, price, imageURL;
-  final VoidCallback onEdit, onDelete;
-
-  @override
-  State<ListviewProduct> createState() => _ListviewProductState();
-}
-
-class _ListviewProductState extends State<ListviewProduct> {
-  final CategoryController categoryController = CategoryController();
-  String _categoryName = 'Đang tải...';
-
-  @override
-  void initState() {
-    super.initState();
-    _loadCategoryName();
-  }
-
-  // Hàm để lấy tên loại sản phẩm từ ID
-  Future<void> _loadCategoryName() async {
-    final category = await categoryController.getCategoryById(widget.categoryId);
-    setState(() {
-      _categoryName = category.name;
-    });
-  }
+  final List<DocumentSnapshot<Object?>> productsList;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      margin: const EdgeInsets.all(10),
-      elevation: 5,
-      child: ListTile(
-        leading: Image.network(widget.imageURL),
-        title: Text(widget.name, style: Theme.of(context).textTheme.titleMedium!),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Loại: $_categoryName',
-              style: Theme.of(context).textTheme.titleSmall!.apply(color: Colors.grey),
-            ),
-            const SizedBox(height: 5),
-            Text(
-              'Giá: ${widget.price} Đồng',
-              style: Theme.of(context).textTheme.titleSmall!.apply(color: Colors.red),
-            ),
-          ],
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              onPressed: widget.onEdit,
-              icon: const Icon(Icons.settings),
-            ),
-            IconButton(
-              onPressed: widget.onDelete,
-              icon: const Icon(Icons.delete),
-            ),
-          ],
-        ),
-      ),
+    final ProductController productController = ProductController();
+    return ListView.builder(
+      itemCount: productsList.length,
+      itemBuilder: (context, index) {
+        DocumentSnapshot doc = productsList[index];
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    
+        return CardProduct(
+            name: data['name'],
+            categoryId: data['categoryId'],
+            price: data['price'],
+            imageURL: data['imageUrls'][0],
+            id: doc.id,
+            onDelete: () => showDeleteConfirmationDialog(
+                  context: context,
+                  onConfirm: () {
+                    productController.removeProduct(doc.id);
+                  },
+                ),
+            onEdit: () => showDialog(
+                context: context,
+                builder: (context) => ProductDialog(
+                      id: doc.id,
+                      name: data['name'],
+                      categoryId: data['categoryId'],
+                      price: data['price'],
+                      imageURLs: (data['imageUrls'] as List<dynamic>)
+                          .cast<String>(),
+                      description: data['description'],
+                      brandId: data['brandId'],
+                      colors: (data['colors'] as List<dynamic>)
+                          .cast<String>(),
+                    )));
+      },
     );
   }
 }

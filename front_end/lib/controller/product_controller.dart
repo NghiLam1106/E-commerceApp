@@ -30,7 +30,7 @@ class ProductController {
 
   Future<List<ProductModel>> getProductsList() async {
     final snapshot =
-        await products.orderBy('timestamp', descending: true).limit(6).get();
+        await products.orderBy('timestamp', descending: true).get();
     return snapshot.docs.map((doc) => ProductModel.fromSnapshot(doc)).toList();
   }
 
