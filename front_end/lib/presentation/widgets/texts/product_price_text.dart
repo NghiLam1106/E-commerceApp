@@ -18,7 +18,7 @@ class ProductPriceText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      currencySign + price,
+      price + currencySign,
       maxLines: maxLines,
       overflow: TextOverflow.ellipsis,
       style: isLarge

@@ -5,6 +5,7 @@ class CartModel {
   final DocumentReference? productRef;
   late final int quantity;
   final String color;
+  final bool paid;
   final Timestamp timestamp;
 
   CartModel({
@@ -12,6 +13,7 @@ class CartModel {
     this.productRef,
     required this.quantity,
     required this.color,
+    required this.paid,    
     required this.timestamp,
   });
 
@@ -21,7 +23,8 @@ class CartModel {
       id: doc.id,
       productRef: data['productRef'],
       quantity: data['quantity'] ?? 1,
-      color: data['color'] ?? '',      
+      color: data['color'] ?? '', 
+      paid: data['paid'] ?? '',
       timestamp: data['timestamp'] ?? Timestamp.now(),
     );
   }
@@ -31,6 +34,7 @@ class CartModel {
       'productRef': productRef,
       'quantity': quantity,
       'color': color,
+      'paid': paid,
       'timestamp': timestamp,
     };
   }

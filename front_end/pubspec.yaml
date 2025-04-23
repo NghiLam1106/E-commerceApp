@@ -21,6 +21,8 @@ dependencies:
   cloudinary: ^1.2.0
   cloudinary_public: ^0.23.1
   image_picker: ^1.1.2
+  flutter_stripe: ^11.5.0
+  dio: ^5.8.0+1
 
   # icons
   iconsax_flutter: ^1.0.0
