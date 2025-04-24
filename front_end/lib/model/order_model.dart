@@ -2,40 +2,40 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OrderModel {
   final String? id;
-  final DocumentReference? productRef;
-  late final int quantity;
-  final String color;
+  final List<DocumentReference> cartRef;
+  final DocumentReference addressRef;
   final String userId;
-  final Timestamp timestamp;
+  final Timestamp? deleveryDate;
+  final Timestamp? orderDate;
 
   OrderModel({
     this.id,
-    this.productRef,
-    required this.quantity,
-    required this.color,
+    required this.cartRef,
     required this.userId,
-    required this.timestamp,
+    this.deleveryDate,
+    required this.addressRef,
+    this.orderDate,
   });
 
   factory OrderModel.fromDocument(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return OrderModel(
       id: doc.id,
-      productRef: data['productRef'],
-      quantity: data['quantity'] ?? 1,
-      color: data['color'] ?? '',  
-      userId: data['userId'] ?? '',    
-      timestamp: data['timestamp'] ?? Timestamp.now(),
+      cartRef: data['cartRef'],
+      addressRef: data['addressRef'],
+      userId: data['userId'] ?? '',
+      deleveryDate: Timestamp.now(),
+      orderDate: Timestamp.now(),
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'productRef': productRef,
-      'quantity': quantity,
-      'color': color,
+      'cartRef': cartRef,
+      'addressRef': addressRef,
       'userId': userId,
-      'timestamp': timestamp,
+      'deleveryDate': deleveryDate,
+      'orderDate': orderDate,
     };
   }
 }

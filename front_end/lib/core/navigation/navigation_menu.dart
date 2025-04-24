@@ -42,7 +42,9 @@ class ScaffoldWithNavBar extends StatelessWidget {
   int _getCurrentIndex(String location) {
     if (location.startsWith('/search')) return 1;
     if (location.startsWith('/favourite')) return 2;
-    if (location.startsWith('/settings')) {
+    if (location.startsWith('/settings') ||
+        location.startsWith('/signup') ||
+        location.startsWith('/login')) {
       return 3;
     }
     return 0; // Mặc định là Home

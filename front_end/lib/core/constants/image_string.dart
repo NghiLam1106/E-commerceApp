@@ -17,6 +17,6 @@ class AppImages{
   static const String iphone = 'assets/images/iphone_16pro_large.png';
 
   //Success Screen
-  static const String checked = 'assets/images/checked.png.png';
+  static const String checked = 'assets/images/checked.png';
 
 }

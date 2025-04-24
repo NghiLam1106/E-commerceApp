@@ -52,6 +52,16 @@ final GoRouter appRouter = GoRouter(
           path: '/favourite',
           builder: (context, state) => const FavouriteScreen(),
         ),
+            GoRoute(
+      name: 'login',
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      name: 'signup',
+      path: '/signup',
+      builder: (context, state) => const RegisterScreen(),
+    ),
       ],
     ),
     GoRoute(
@@ -63,16 +73,6 @@ final GoRouter appRouter = GoRouter(
       name: 'newAddress',
       path: '/newAddress',
       builder: (context, state) => const AddNewAddressScreen(),
-    ),
-    GoRoute(
-      name: 'login',
-      path: '/login',
-      builder: (context, state) => const LoginScreen(),
-    ),
-    GoRoute(
-      name: 'signup',
-      path: '/signup',
-      builder: (context, state) => const RegisterScreen(),
     ),
     GoRoute(
       name: 'review',

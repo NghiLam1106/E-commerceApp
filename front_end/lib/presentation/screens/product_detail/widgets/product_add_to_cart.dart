@@ -54,6 +54,7 @@ class _ProductAddToCartState extends State<ProductAddToCart> {
         final cartItem = CartModel(
           quantity: _quantity,
           color: widget.color,
+          paid: false,
           timestamp: Timestamp.now(),
           productRef: productRef,
         );
