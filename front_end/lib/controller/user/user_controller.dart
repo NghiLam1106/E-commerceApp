@@ -22,14 +22,14 @@ class UserController {
 
   // Cập nhật thông tin người dùng trong Firestore
   Future<void> saveProfile(nameController, emailController, phoneController,
-      addressController, productImage, productImageUrl, context) async {
+      addressController, avatarImage, avatarImageUrl, context) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
 
-    String updatedImageUrl = productImageUrl;
-    if (productImage != null) {
+    String updatedImageUrl = avatarImageUrl;
+    if (avatarImage != null) {
       ImageController imageService = ImageController();
-      updatedImageUrl = await imageService.saveImageLocally(productImage);
+      updatedImageUrl = await imageService.saveImageLocally(avatarImage);
     }
 
     UserModel newUser = UserModel(

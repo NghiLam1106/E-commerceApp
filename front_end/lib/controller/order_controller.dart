@@ -24,4 +24,39 @@ class OrderController {
 
     return snapshot.docs.map((doc) => OrderModel.fromDocument(doc)).toList();
   }
+
+
+
+Future<Map<DateTime, int>> getOrderCountLast7Days() async {
+  final now = DateTime.now();
+  final sevenDaysAgo = now.subtract(Duration(days: 6)); // Tính từ 6 ngày trước + hôm nay = 7 ngày
+
+  final snapshot = await FirebaseFirestore.instance
+      .collection('orders')
+      .where('orderDate', isGreaterThanOrEqualTo: Timestamp.fromDate(
+        DateTime(sevenDaysAgo.year, sevenDaysAgo.month, sevenDaysAgo.day),
+      ))
+      .orderBy('orderDate')
+      .get();
+
+  Map<DateTime, int> ordersPerDay = {};
+
+  for (var doc in snapshot.docs) {
+    Timestamp timestamp = doc['orderDate'];
+    DateTime orderDate = timestamp.toDate();
+    DateTime dayOnly = DateTime(orderDate.year, orderDate.month, orderDate.day);
+
+    ordersPerDay[dayOnly] = (ordersPerDay[dayOnly] ?? 0) + 1;
+  }
+
+  // Đảm bảo tất cả 7 ngày đều có giá trị (dù 0 đơn cũng có)
+  for (int i = 0; i < 7; i++) {
+    final date = DateTime(now.year, now.month, now.day).subtract(Duration(days: i));
+    ordersPerDay.putIfAbsent(date, () => 0);
+  }
+
+  return ordersPerDay;
+}
+
+
 }

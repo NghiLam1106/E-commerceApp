@@ -9,7 +9,7 @@ class GridDashboard extends StatelessWidget {
     required this.orderQuantity,
     required this.productQuantity,
     required this.brandQuantity,
-    required this.categoriesQuantity,
+    required this.categoriesQuantity
   });
 
   final int orderQuantity;
@@ -25,7 +25,7 @@ class GridDashboard extends StatelessWidget {
         label: 'Đơn hàng',
         count: orderQuantity.toString(),
         color: Colors.blueAccent,
-        route: '/admin/orders',
+        route: '/admin',
       ),
       _DashboardItem(
         icon: Icons.category,
