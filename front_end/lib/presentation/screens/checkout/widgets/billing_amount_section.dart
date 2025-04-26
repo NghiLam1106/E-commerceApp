@@ -6,14 +6,13 @@ import 'package:front_end/core/utils/calculate_sum_price.dart';
 class BillingAmountSection extends StatefulWidget {
   const BillingAmountSection({super.key});
 
-
   @override
   State<BillingAmountSection> createState() => _BillingAmountSectionState();
 }
 
 class _BillingAmountSectionState extends State<BillingAmountSection> {
   String price = '';
-    final CartController cartController = CartController();
+  final CartController cartController = CartController();
 
   @override
   void initState() {
@@ -21,7 +20,7 @@ class _BillingAmountSectionState extends State<BillingAmountSection> {
     _getData();
   }
 
-    void _getData() async {
+  void _getData() async {
     final data = await cartController
         .getUserCartFuture(FirebaseAuth.instance.currentUser!.uid);
     final calculate = await calculateSumPrice(cartList: data);
@@ -32,17 +31,11 @@ class _BillingAmountSectionState extends State<BillingAmountSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Tổng số tiền:',
-                style: Theme.of(context).textTheme.bodyMedium),
-            Text('$price₫',
-                style: Theme.of(context).textTheme.bodyMedium),
-          ],
-        ),
+        Text('Tổng số tiền:', style: Theme.of(context).textTheme.bodyMedium),
+        Text('$price₫', style: Theme.of(context).textTheme.bodyMedium),
       ],
     );
   }

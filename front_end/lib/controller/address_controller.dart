@@ -55,4 +55,9 @@ class AddressController {
   DocumentReference createRefAddress(String id) {
     return address.doc(id);
   }
+
+  Future<AddressModel> getAddressFromRef(DocumentReference ref) async {
+    final snapshot = await ref.get();
+    return AddressModel.fromSnapshot(snapshot);
+  }
 }

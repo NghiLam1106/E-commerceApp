@@ -61,7 +61,7 @@ class SettingScreenState extends State<SettingScreen> {
                   SettingsMenuTitle(
                     icon: Iconsax.safe_home,
                     title: 'Địa chỉ',
-                    subtitle: 'Thêm, sửa địa chỉ giao hàng',
+                    subtitle: 'Thêm, sửa địa chỉ giao hàng.',
                     onTap: () {
                       context.push('/address');
                     },
@@ -69,7 +69,7 @@ class SettingScreenState extends State<SettingScreen> {
                   SettingsMenuTitle(
                     icon: Iconsax.shopping_cart,
                     title: 'Giỏ hàng',
-                    subtitle: 'Xem các sản phẩm đã chọn',
+                    subtitle: 'Xem các sản phẩm đã chọn.',
                     onTap: () {
                       context.push('/cart');
                     },
@@ -77,7 +77,7 @@ class SettingScreenState extends State<SettingScreen> {
                   SettingsMenuTitle(
                     icon: Iconsax.bag_tick,
                     title: 'Đơn đặt hàng',
-                    subtitle: 'Lịch sử và trạng thái đơn hàng',
+                    subtitle: 'Lịch sử đặt hàng của bạn.',
                     onTap: () {
                       context.push('/myOrder');
                     },

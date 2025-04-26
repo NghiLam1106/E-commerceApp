@@ -3,8 +3,6 @@ class UserModel {
   final String name;
   final String email;
   final String avatar;
-  final String phoneNumber;
-  final String address;
   final String role;
 
   UserModel({
@@ -12,8 +10,6 @@ class UserModel {
     required this.name,
     required this.email,
     required this.avatar,
-    required this.phoneNumber,
-    required this.address,
     required this.role,
   });
 
@@ -24,8 +20,6 @@ class UserModel {
       name: data['name'] ?? '',
       email: data['email'] ?? '',
       avatar: data['avatar'] ?? '',
-      phoneNumber: data['phoneNumber'] ?? '',
-      address: data['address'] ?? '',
       role: data['role'] ?? 'user',
     );
   }
@@ -36,8 +30,6 @@ class UserModel {
       'name': name,
       'email': email,
       'avatar': avatar,
-      'phoneNumber': phoneNumber,
-      'address': address,
       'role': role,
       'createdAt': DateTime.now(),
     };

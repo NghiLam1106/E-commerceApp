@@ -5,11 +5,14 @@ import 'package:front_end/core/constants/constants.dart';
 import 'package:front_end/core/navigation/app_router.dart';
 import 'package:front_end/core/themes/theme.dart';
 import 'package:front_end/firebase_options.dart';
+import 'package:flutter/foundation.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = publishableKey;
-  await Stripe.instance.applySettings();
+  if (!kIsWeb) {
+    Stripe.publishableKey = publishableKey;
+    await Stripe.instance.applySettings();
+  }
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
