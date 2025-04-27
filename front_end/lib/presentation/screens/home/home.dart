@@ -50,15 +50,19 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _getData() async {
-    final products = await productController.getProductsListLimit();
-    final categories = await categoryController.getCategories();
-    setState(() {
-      _productsList.addAll(products);
-      _categoriesList.addAll(categories);
-      _isLoading = false;
-    });
-  }
+Future<void> _getData() async {
+  final products = await productController.getProductsListLimit();
+  final categories = await categoryController.getCategories();
+  
+  if (!mounted) return; // ⛑ Ngăn lỗi nếu widget đã bị dispose
+
+  setState(() {
+    _productsList.addAll(products);
+    _categoriesList.addAll(categories);
+    _isLoading = false;
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {

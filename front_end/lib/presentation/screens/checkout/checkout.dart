@@ -103,7 +103,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               userId: user!.uid,
               addressRef: addressRef,
               cartRef: cartRef,
-              deleveryDate: Timestamp.now(),
+              deliveryDate: Timestamp.now(),
               orderDate: Timestamp.now());
           await orderController.addOrder(order);
           await cartController.markCartsAsPaid(
@@ -181,8 +181,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     const SizedBox(height: AppSizes.spaceBtwItems),
 
                     const Divider(),
-                    const SizedBox(height: AppSizes.spaceBtwItems),
-
                     const SizedBox(height: AppSizes.spaceBtwItems),
 
                     StreamBuilder<List<AddressModel>>(

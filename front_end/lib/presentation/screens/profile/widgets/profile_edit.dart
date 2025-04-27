@@ -21,8 +21,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
 
-  File? productImage;
-  String productImageUrl = "";
+  File? avatarImage;
+  String avatarImageUrl = "";
   String username = "";
   String email = "";
   String phone = "";
@@ -63,8 +63,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       emailController,
                       phoneController,
                       addressController,
-                      productImage,
-                      productImageUrl,
+                      avatarImage,
+                      avatarImageUrl,
                       context); // Lưu thông tin người dùng
                 },
               ),
@@ -85,7 +85,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               email = userData?['email'] ?? '';
               phone = userData?['phoneNumber'] ?? '';
               address = userData?['address'] ?? '';
-              productImageUrl = userData?['avatar'] ?? AppImages.google;
+              avatarImageUrl = userData?['avatar'] ?? AppImages.google;
 
               nameController.text = username;
               emailController.text = email;
@@ -103,16 +103,16 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       child: Column(
                         children: [
                           ClipOval(
-                            child: productImage != null
+                            child: avatarImage != null
                                 ? Image.file(
-                                    productImage!,
+                                    avatarImage!,
                                     height: 100,
                                     width: 100,
                                     fit: BoxFit.cover,
                                   )
-                                : productImageUrl.isNotEmpty
+                                : avatarImageUrl.isNotEmpty
                                     ? Image.network(
-                                        productImageUrl,
+                                        avatarImageUrl,
                                         width: 50,
                                         height: 50,
                                         fit: BoxFit.cover,
@@ -139,7 +139,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 if (imageFile != null) {
                                   setState(() {
                                     // Cập nhật UI sau khi có ảnh
-                                    productImage = imageFile;
+                                    avatarImage = imageFile;
                                   });
                                 }
                               },

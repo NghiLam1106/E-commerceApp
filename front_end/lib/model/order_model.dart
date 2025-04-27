@@ -5,14 +5,14 @@ class OrderModel {
   final List<DocumentReference> cartRef;
   final DocumentReference addressRef;
   final String userId;
-  final Timestamp? deleveryDate;
+  final Timestamp? deliveryDate;
   final Timestamp? orderDate;
 
   OrderModel({
     this.id,
     required this.cartRef,
     required this.userId,
-    this.deleveryDate,
+    this.deliveryDate,
     required this.addressRef,
     this.orderDate,
   });
@@ -21,11 +21,11 @@ class OrderModel {
     final data = doc.data() as Map<String, dynamic>;
     return OrderModel(
       id: doc.id,
-      cartRef: data['cartRef'],
-      addressRef: data['addressRef'],
+      cartRef: (data['cartRef'] as List<dynamic>).map((e) => e as DocumentReference<Object?>).toList(),
+      addressRef: data['addressRef'] as DocumentReference<Object?>,
       userId: data['userId'] ?? '',
-      deleveryDate: Timestamp.now(),
-      orderDate: Timestamp.now(),
+      deliveryDate: data['deliveryDate'],
+      orderDate: data['orderDate'],
     );
   }
 
@@ -34,7 +34,7 @@ class OrderModel {
       'cartRef': cartRef,
       'addressRef': addressRef,
       'userId': userId,
-      'deleveryDate': deleveryDate,
+      'deliveryDate': deliveryDate,
       'orderDate': orderDate,
     };
   }

@@ -12,6 +12,7 @@ import 'package:front_end/presentation/screens/favourite/favourite.dart';
 import 'package:front_end/presentation/screens/home/home.dart';
 import 'package:front_end/presentation/screens/login/login.dart';
 import 'package:front_end/presentation/screens/oder/order.dart';
+import 'package:front_end/presentation/screens/oder/order_detail.dart';
 import 'package:front_end/presentation/screens/product_detail/product_detail.dart';
 import 'package:front_end/presentation/screens/product_review/product_review.dart';
 import 'package:front_end/presentation/screens/profile/profile.dart';
@@ -115,6 +116,15 @@ final GoRouter appRouter = GoRouter(
       name: 'myOrder',
       path: '/myOrder',
       builder: (context, state) => const OrderScreen(),
+    ),
+    GoRoute(
+      name: 'orderDetail',
+      path: '/orderDetail/:id',
+      builder: (context, state) {
+        final orderId =
+            state.pathParameters['id']!;
+        return OrderDetailScreen(orderId: orderId);
+      },
     ),
     GoRoute(
       name: 'success',

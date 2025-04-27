@@ -17,6 +17,8 @@ class AddNewAddressScreen extends StatefulWidget {
 }
 
 class AddNewAddressScreenState extends State<AddNewAddressScreen> {
+  final _formKey = GlobalKey<FormState>(); // Thêm key để validate form
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
@@ -24,8 +26,8 @@ class AddNewAddressScreenState extends State<AddNewAddressScreen> {
   final AddressController addressController1 = AddressController();
 
   bool _isLoading = true;
-
   final User? user = FirebaseAuth.instance.currentUser;
+
   @override
   void initState() {
     super.initState();
@@ -41,9 +43,7 @@ class AddNewAddressScreenState extends State<AddNewAddressScreen> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     } else {
       return Scaffold(
         appBar: const AppbarCustom(
@@ -54,51 +54,81 @@ class AddNewAddressScreenState extends State<AddNewAddressScreen> {
           child: Padding(
             padding: const EdgeInsets.all(AppSizes.defaultSpace),
             child: Form(
-                child: Column(
-              children: [
-                TextFormField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Iconsax.user), label: Text('Họ và tên')),
-                ),
-                const SizedBox(height: AppSizes.spaceBtwInputField),
-                TextFormField(
-                  controller: phoneController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Iconsax.mobile),
-                      label: Text('Số điện thoại')),
-                ),
-                const SizedBox(height: AppSizes.spaceBtwInputField),
-                TextFormField(
-                  controller: addressController,
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(Iconsax.mobile), label: Text('Địa chỉ')),
-                ),
-                const SizedBox(height: AppSizes.spaceBtwInputField),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      AddressModel addressModel = AddressModel(
-                        uid: user!.uid,
-                        name: nameController.text,
-                        phoneNumber: phoneController.text,
-                        address: addressController.text,
-                      );
-                      addressController1.addAddress(addressModel);
-                      Navigator.pop(context,
-                          true); // Trả về giá trị true khi lưu thành công
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Thêm địa chỉ thành công'),
-                        ),
-                      );
+              key: _formKey, // Gán form key
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Iconsax.user),
+                      labelText: 'Họ và tên',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Vui lòng nhập họ và tên';
+                      }
+                      return null;
                     },
-                    child: Text('Lưu'),
                   ),
-                )
-              ],
-            )),
+                  const SizedBox(height: AppSizes.spaceBtwInputField),
+                  TextFormField(
+                    controller: phoneController,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Iconsax.mobile),
+                      labelText: 'Số điện thoại',
+                    ),
+                    keyboardType: TextInputType.phone,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Vui lòng nhập số điện thoại';
+                      }
+                      if (value.length < 9 || value.length > 11) {
+                        return 'Số điện thoại không hợp lệ';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: AppSizes.spaceBtwInputField),
+                  TextFormField(
+                    controller: addressController,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Iconsax.location),
+                      labelText: 'Địa chỉ',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Vui lòng nhập địa chỉ';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: AppSizes.spaceBtwInputField),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          AddressModel addressModel = AddressModel(
+                            uid: user!.uid,
+                            name: nameController.text.trim(),
+                            phoneNumber: phoneController.text.trim(),
+                            address: addressController.text.trim(),
+                          );
+                          await addressController1.addAddress(addressModel);
+                          if (context.mounted) {
+                            Navigator.pop(context, true);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Thêm địa chỉ thành công')),
+                            );
+                          }
+                        }
+                      },
+                      child: const Text('Lưu'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       );
