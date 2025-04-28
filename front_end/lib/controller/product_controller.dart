@@ -67,12 +67,16 @@ class ProductController {
     return query.snapshots();
   }
 
+  Stream<ProductModel> streamProductFromRef(DocumentReference ref) {
+    return ref
+        .snapshots()
+        .map((snapshot) => ProductModel.fromSnapshot(snapshot));
+  }
 
-Stream<ProductModel> streamProductFromRef(DocumentReference ref) {
-  return ref.snapshots().map((snapshot) =>
-      ProductModel.fromSnapshot(snapshot));
-}
-
+  Future<ProductModel> getProductFromRef(DocumentReference ref) async {
+    final snapshot = await ref.get();
+    return ProductModel.fromSnapshot(snapshot);
+  }
 
   DocumentReference createRefProduct(String id) {
     return products.doc(id);

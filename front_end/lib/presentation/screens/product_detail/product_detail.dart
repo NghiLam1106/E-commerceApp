@@ -39,8 +39,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   Future<void> _getData() async {
-    final products = await productController.getProductById(id: widget.productId);
-    final reviews = await reviewController.getReviewsForProduct(widget.productId);
+    final products =
+        await productController.getProductById(id: widget.productId);
+    final reviews =
+        await reviewController.getReviewsForProduct(widget.productId);
     setState(() {
       _productData = products;
       _reviewlist = reviews;
@@ -48,7 +50,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     });
   }
 
-  int? _selectedColorIndex; 
+  int? _selectedColorIndex;
 
   void _onColorSelected(int index, String color) {
     setState(() {
@@ -63,7 +65,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       return const Center(child: CircularProgressIndicator());
     }
     return Scaffold(
-      bottomSheet: ProductAddToCart(productId: _productData.id ?? '', color: isColorSelected),
+      bottomSheet: ProductAddToCart(
+          productId: _productData.id ?? '', color: isColorSelected),
       body: Padding(
         padding: EdgeInsets.only(bottom: 60),
         child: SingleChildScrollView(
@@ -81,15 +84,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 child: Column(
                   children: [
                     // Rating and share button
-                    RatingAndShare(reviewlist: _reviewlist,), // chờ xong review screen mới update lại
+                    RatingAndShare(
+                      reviewlist: _reviewlist,
+                    ), // chờ xong review screen mới update lại
 
                     // Price, title, brand
                     ProductMetaData(
-                        title: _productData.name, price: _productData.price, brandId: _productData.brandId,),
+                      title: _productData.name,
+                      price: _productData.price,
+                      brandId: _productData.brandId,
+                    ),
                     // Colors
                     Column(
                       children: [
-                        AppSectionHeading(title: 'Màu sắc',showActionButton: false,),
+                        AppSectionHeading(
+                          title: 'Màu sắc',
+                          showActionButton: false,
+                        ),
                         SizedBox(height: AppSizes.spaceBtwItems / 2),
                         Wrap(
                           spacing: AppSizes.spaceBtwItems,
@@ -106,7 +117,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 return CustomChoiceChip(
                                   text: color,
                                   isSelected: _selectedColorIndex == index,
-                                  onSelected: (_) => _onColorSelected(index, color),
+                                  onSelected: (_) =>
+                                      _onColorSelected(index, color),
                                 );
                               })
                           ],
@@ -118,31 +130,40 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () { context.push('/checkout');},
+                        onPressed: () {
+                          context.push('/checkout');
+                        },
                         child: const Text('Thanh toán'),
                       ),
                     ),
                     const SizedBox(height: AppSizes.spaceBtwItems),
 
                     // Description
-                    ReadMoreText(
-                      _productData.description,
-                      trimLines: 2,
-                      trimMode: TrimMode.Line,
-                      trimCollapsedText: 'Show more',
-                      trimExpandedText: 'Less',
-                      moreStyle:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
-                      lessStyle:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
-                    ),
-
+                    Column(children: [
+                      Text(
+                        'Giới thiệu sản phẩm',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: AppSizes.spaceBtwItems),
+                      ReadMoreText(
+                        _productData.description,
+                        trimLines: 2,
+                        trimMode: TrimMode.Line,
+                        trimCollapsedText: 'Show more',
+                        trimExpandedText: 'Less',
+                        moreStyle: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w800),
+                        lessStyle: TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w800),
+                      ),
+                    ]),
+                    const SizedBox(height: AppSizes.spaceBtwItems),
                     // Review
                     const Divider(),
                     const SizedBox(height: AppSizes.spaceBtwItems),
                     AppSectionHeading(
                       title: 'Đánh giá(${_reviewlist.length})',
-                      onPressed: (){
+                      onPressed: () {
                         context.push('/review/${_productData.id}');
                       },
                     ),

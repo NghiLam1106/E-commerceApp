@@ -1,29 +1,41 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:front_end/core/constants/sizes.dart';
+import 'package:front_end/controller/cart_controller.dart';
+import 'package:front_end/core/utils/calculate_sum_price.dart';
 
-class BillingAmountSection extends StatelessWidget {
+class BillingAmountSection extends StatefulWidget {
   const BillingAmountSection({super.key});
 
   @override
+  State<BillingAmountSection> createState() => _BillingAmountSectionState();
+}
+
+class _BillingAmountSectionState extends State<BillingAmountSection> {
+  String price = '';
+  final CartController cartController = CartController();
+
+  @override
+  void initState() {
+    super.initState();
+    _getData();
+  }
+
+  void _getData() async {
+    final data = await cartController
+        .getUserCartFuture(FirebaseAuth.instance.currentUser!.uid);
+    final calculate = await calculateSumPrice(cartList: data);
+    setState(() {
+      price = calculate;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // SubTotal
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('SubTotal:', style: Theme.of(context).textTheme.bodyMedium),
-            Text('\$256', style: Theme.of(context).textTheme.bodyMedium),
-          ],
-        ),
-        const SizedBox(height: AppSizes.spaceBtwItems / 2),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Shipping Fee', style: Theme.of(context).textTheme.bodyMedium),
-            Text('\$6.0', style: Theme.of(context).textTheme.labelLarge),
-          ],
-        ),
+        Text('Tổng số tiền:', style: Theme.of(context).textTheme.bodyMedium),
+        Text('$price₫', style: Theme.of(context).textTheme.bodyMedium),
       ],
     );
   }

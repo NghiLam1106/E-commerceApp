@@ -20,6 +20,15 @@ class CartController {
     return getUserCartCollection(userId).doc(id).delete();
   }
 
+  Future<void> clearUserCart(String userId) async {
+    final cartCollection = getUserCartCollection(userId);
+    final snapshot = await cartCollection.get();
+
+    for (final doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
+
   Future<void> updateQuantity(
       String userId, String cartItemId, int newQuantity) {
     return getUserCartCollection(userId).doc(cartItemId).update({
@@ -30,10 +39,18 @@ class CartController {
 
   Stream<List<CartModel>> getUserCart(String userId) {
     return getUserCartCollection(userId)
+        .where('paid', isEqualTo: false)
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => CartModel.fromDocument(doc)).toList());
+  }
+
+  Future<List<CartModel>> getUserCartFuture(String userId) async {
+    final snapshot = await getUserCartCollection(userId)
+        .orderBy('timestamp', descending: true)
+        .get();
+    return snapshot.docs.map((doc) => CartModel.fromDocument(doc)).toList();
   }
 
   Future<void> addOrUpdateCartItem({
@@ -41,25 +58,56 @@ class CartController {
     required DocumentReference productRef,
     required CartModel cart,
   }) async {
-    // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
     final cartItemQuery = await getUserCartCollection(userId)
         .where('productRef', isEqualTo: productRef)
+        .where('paid',
+            isEqualTo: false) // Chỉ thao tác với giỏ hàng chưa thanh toán
         .limit(1)
         .get();
 
     if (cartItemQuery.docs.isNotEmpty) {
-      // Nếu sản phẩm đã có trong giỏ, tăng số lượng
+      // Sản phẩm đã có trong giỏ chưa thanh toán
       final doc = cartItemQuery.docs.first;
       final currentQty = doc['quantity'] ?? 1;
 
-      // Cập nhật số lượng sản phẩm trong giỏ
       await doc.reference.update({
         'quantity': currentQty + 1,
-        'timestamp': Timestamp.now(), // Cập nhật thời gian
+        'timestamp': Timestamp.now(),
       });
     } else {
-      // Nếu sản phẩm chưa có trong giỏ, thêm mới vào giỏ hàng
-      await getUserCartCollection(userId).add(cart.toMap());
+      // Sản phẩm chưa có trong giỏ -> thêm mới
+      final newCart = cart.toMap();
+
+      await getUserCartCollection(userId).add(newCart);
     }
+  }
+
+  DocumentReference createRefCart(String cartId, String userId) {
+    return getUserCartCollection(userId).doc(cartId);
+  }
+
+  Future<void> markCartsAsPaid({
+    required String userId,
+    required List<CartModel> cartList,
+  }) async {
+    final batch = FirebaseFirestore.instance.batch();
+
+    for (final cart in cartList) {
+      if (cart.id == null) continue;
+
+      final cartRef = getUserCartCollection(userId).doc(cart.id);
+
+      batch.update(cartRef, {
+        'paid': true,
+        'timestamp': Timestamp.now(), // nếu muốn cập nhật luôn thời gian
+      });
+    }
+
+    await batch.commit();
+  }
+
+  Future<CartModel> getCartFromRef(DocumentReference ref) async {
+    final snapshot = await ref.get();
+    return CartModel.fromDocument(snapshot);
   }
 }

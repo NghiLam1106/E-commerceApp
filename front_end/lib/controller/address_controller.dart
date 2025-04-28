@@ -42,4 +42,22 @@ class AddressController {
     }
     return []; // Return an empty list if no addresses are found
   }
+
+  Stream<List<AddressModel>> getAddressIdsByUserIdStream(String userId) {
+    return address
+        .where('uid', isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => AddressModel.fromSnapshot(doc))
+            .toList());
+  }
+
+  DocumentReference createRefAddress(String id) {
+    return address.doc(id);
+  }
+
+  Future<AddressModel> getAddressFromRef(DocumentReference ref) async {
+    final snapshot = await ref.get();
+    return AddressModel.fromSnapshot(snapshot);
+  }
 }
