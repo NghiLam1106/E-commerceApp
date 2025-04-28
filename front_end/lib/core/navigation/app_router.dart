@@ -53,16 +53,16 @@ final GoRouter appRouter = GoRouter(
           path: '/favourite',
           builder: (context, state) => const FavouriteScreen(),
         ),
-            GoRoute(
-      name: 'login',
-      path: '/login',
-      builder: (context, state) => const LoginScreen(),
-    ),
-    GoRoute(
-      name: 'signup',
-      path: '/signup',
-      builder: (context, state) => const RegisterScreen(),
-    ),
+        GoRoute(
+          name: 'login',
+          path: '/login',
+          builder: (context, state) => const LoginScreen(),
+        ),
+        GoRoute(
+          name: 'signup',
+          path: '/signup',
+          builder: (context, state) => const RegisterScreen(),
+        ),
       ],
     ),
     GoRoute(
@@ -121,8 +121,7 @@ final GoRouter appRouter = GoRouter(
       name: 'orderDetail',
       path: '/orderDetail/:id',
       builder: (context, state) {
-        final orderId =
-            state.pathParameters['id']!;
+        final orderId = state.pathParameters['id']!;
         return OrderDetailScreen(orderId: orderId);
       },
     ),
