@@ -42,7 +42,6 @@ class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarCustom(showBackArrow: true),
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Container(

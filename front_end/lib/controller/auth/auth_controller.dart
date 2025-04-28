@@ -88,7 +88,7 @@ class AuthController {
           // ignore: use_build_context_synchronously
           // Đợi 1 frame để tránh bị lock
           if (!context.mounted) return;
-          Navigator.of(context).pushReplacementNamed('/products');
+          Navigator.of(context).pushReplacementNamed('/admin');
         } else {
           // Chuyển hướng tới trang chủ (HomeScreen) bằng GoRouter
           // ignore: use_build_context_synchronously
@@ -202,7 +202,6 @@ class AuthController {
         // ignore: use_build_context_synchronously
         context.push('/');
       }
-      context.push('/'); // Chuyển hướng đến trang đăng nhập
     } catch (e) {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(

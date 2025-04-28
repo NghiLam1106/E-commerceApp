@@ -23,7 +23,9 @@ class AppbarCustom extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       leading: showBackArrow
           ? IconButton(
-              onPressed: () {context.pop();},
+              onPressed: () {
+                context.pop(true);
+              },
               icon: const Icon(Icons.arrow_back))
           : leadingIcon != null
               ? IconButton(
