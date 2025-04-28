@@ -44,12 +44,8 @@ class AddressController {
   }
 
   Stream<List<AddressModel>> getAddressIdsByUserIdStream(String userId) {
-    return address
-        .where('uid', isEqualTo: userId)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => AddressModel.fromSnapshot(doc))
-            .toList());
+    return address.where('uid', isEqualTo: userId).snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => AddressModel.fromSnapshot(doc)).toList());
   }
 
   DocumentReference createRefAddress(String id) {
@@ -59,5 +55,13 @@ class AddressController {
   Future<AddressModel> getAddressFromRef(DocumentReference ref) async {
     final snapshot = await ref.get();
     return AddressModel.fromSnapshot(snapshot);
+  }
+
+  Future<void> deleteAddress(String addressId) async {
+    try {
+      await address.doc(addressId).delete();
+    } catch (e) {
+      throw Exception('Không thể xóa địa chỉ: $e');
+    }
   }
 }

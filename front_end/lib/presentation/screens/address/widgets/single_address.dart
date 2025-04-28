@@ -130,16 +130,36 @@ class _SingleAddressScreenState extends State<SingleAddress> {
                   child: Stack(
                     children: [
                       Positioned(
-                          right: 5,
-                          top: 0,
-                          child: Icon(
-                            isSelected ? Iconsax.tick_circle : null,
-                            color: isSelected
-                                ? dark
-                                    ? AppColors.light
-                                    : AppColors.dark
-                                : null,
-                          )),
+                        right: 5,
+                        top: 0,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Nút tick chọn
+                            if (isSelected)
+                              Icon(
+                                Iconsax.tick_circle,
+                                color: dark ? AppColors.light : AppColors.dark,
+                              ),
+                            // Khoảng cách nhỏ
+                            const SizedBox(width: 8),
+                            // Nút xóa
+                            IconButton(
+                              icon: Icon(Iconsax.trash),
+                              color: Colors.red,
+                              onPressed: () async {
+                                if (addressList[index].id != null) {
+                                  await addressController
+                                      .deleteAddress(addressList[index].id!);
+                                  _loadAddresses();
+                                  setState(() {});
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Nội dung địa chỉ
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
