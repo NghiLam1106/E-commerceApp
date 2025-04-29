@@ -54,7 +54,7 @@ class ProductController {
     if (name != null && name.isNotEmpty) {
       query = query
           .where('name', isGreaterThanOrEqualTo: name)
-          .where('name', isLessThan: name + 'z');
+          .where('name', isLessThan: '${name}z');
       return query.snapshots();
     }
 
@@ -80,5 +80,15 @@ class ProductController {
 
   DocumentReference createRefProduct(String id) {
     return products.doc(id);
+  }
+
+  Future<List<ProductModel>> getProductsByBrand(
+      {String? brandId, String? categoryId}) async {
+    final snapshot = await products
+        .where('brandId', isEqualTo: brandId)
+        .where('categoryId', isEqualTo: categoryId)
+        .get();
+
+    return snapshot.docs.map((doc) => ProductModel.fromSnapshot(doc)).toList();
   }
 }

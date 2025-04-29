@@ -31,7 +31,11 @@ class _SearchScreenState extends State<SearchScreen> {
   List<BrandModel> _brandsList = [];
   final CategoryController categoryController = CategoryController();
   final BrandController brandController = BrandController();
+  final ProductController productController = ProductController();
   bool _isLoading = true;
+
+  // State mới
+  String? _selectedBrandId;
 
   @override
   void initState() {
@@ -52,6 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final brands = await brandController.getBrands();
     setState(() {
       _brandsList = brands;
+      _isLoading = false;
     });
   }
 
@@ -121,25 +126,48 @@ class _SearchScreenState extends State<SearchScreen> {
                           return BrandCard(
                             showBorder: true,
                             brand: _brandsList[index],
+                            onTap: () {
+                              setState(() {
+                                // if (_selectedBrandId == _brandsList[index].id) {
+                                //   _selectedBrandId = null;
+                                // } else {
+                                _selectedBrandId = _brandsList[index].id;
+                                // }
+                                // _selectedBrandName = brand.name;
+                              });
+                            },
                           );
                         },
                       )
                     ],
                   ),
                 ),
-                bottom: AppTabBar(
-                  tabs: _categoriesList
-                      .map((category) => Tab(child: Text(category.name)))
-                      .toList(),
-                ),
+                bottom: _selectedBrandId == null
+                    ? AppTabBar(
+                        tabs: _categoriesList
+                            .map((category) => Tab(child: Text(category.name)))
+                            .toList(),
+                      )
+                    : AppTabBar(
+                        tabs: _categoriesList
+                            .map((category) => Tab(child: Text(category.name)))
+                            .toList(),
+                      ), // Khi đang chọn brand thì không show tab
               ),
             ];
           },
-          body: TabBarView(
-            children: _categoriesList
-                .map((category) => CategoryTab(categoryId: category.id))
-                .toList(),
-          ),
+          body: _selectedBrandId == null
+              ? TabBarView(
+                  children: _categoriesList
+                      .map((category) => CategoryTab(categoryId: category.id))
+                      .toList(),
+                )
+              : TabBarView(
+                  children: _categoriesList
+                      .map((category) => BrandTab(
+                          brandId: _selectedBrandId, categoryId: category.id))
+                      .toList(),
+                ),
         ),
       ),
     );
@@ -167,7 +195,8 @@ class _CategoryTabState extends State<CategoryTab> {
   }
 
   Future<void> _getProductsList() async {
-    final products = await productController.getProductsByCategory(categoryId: widget.categoryId!);
+    final products = await productController.getProductsByCategory(
+        categoryId: widget.categoryId!);
     setState(() {
       _productsList = products;
       _isLoading = false;
@@ -210,6 +239,84 @@ class _CategoryTabState extends State<CategoryTab> {
                   ],
                 ),
               )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class BrandTab extends StatefulWidget {
+  final String? brandId;
+  final String? categoryId;
+
+  const BrandTab({super.key, required this.brandId, required this.categoryId});
+
+  @override
+  State<BrandTab> createState() => _BrandTabState();
+}
+
+class _BrandTabState extends State<BrandTab> {
+  List<ProductModel> _productsList = [];
+  final ProductController productController = ProductController();
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _getProductsByBrand();
+  }
+
+  @override
+  void didUpdateWidget(covariant BrandTab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.brandId != oldWidget.brandId ||
+        widget.categoryId != oldWidget.categoryId) {
+      setState(() {
+        _isLoading = true; // Đặt lại trạng thái loading
+        _productsList = []; // Xóa dữ liệu cũ
+      });
+      _getProductsByBrand(); // Gọi lại khi brandId hoặc categoryId thay đổi
+    }
+  }
+
+  Future<void> _getProductsByBrand() async {
+    if (widget.brandId != null && widget.categoryId != null) {
+      final products = await productController.getProductsByBrand(
+        brandId: widget.brandId,
+        categoryId: widget.categoryId!,
+      );
+      setState(() {
+        _productsList = products;
+        _isLoading = false; // Dữ liệu đã được tải xong
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_productsList.isEmpty) {
+      return const Center(child: Text('Không có sản phẩm nào.'));
+    }
+
+    return ListView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(AppSizes.defaultSpace),
+          child: Column(
+            children: [
+              AppGridLayout(
+                itemCount: _productsList.length,
+                itemBuilder: (_, index) =>
+                    ProductCardVertical(product: _productsList[index]),
+              ),
             ],
           ),
         ),
