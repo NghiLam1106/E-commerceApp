@@ -17,32 +17,31 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   List<CartModel> cartList = [];
   final CartController cartController = CartController();
-  final user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
     _check();
-    _getData();
   }
 
   Future<void> _check() async {
     final user = FirebaseAuth.instance.currentUser;
-
     if (user == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.go('/login');
       });
+      return;
     }
+    await _getData(user);
   }
 
-    void snackbar() {
+  void snackbar() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Bạn chưa thêm sản phẩm nào.')),
     );
   }
 
-    Future<void> _getData() async {
-    final data = await cartController.getUserCartFuture(user!.uid);
+  Future<void> _getData(User user) async {
+    final data = await cartController.getUserCartFuture(user.uid);
     final dataNotPaid = data.where((e) => e.paid == false).toList();
     setState(() {
       cartList = dataNotPaid;
@@ -64,9 +63,11 @@ class _CartScreenState extends State<CartScreen> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(AppSizes.defaultSpace),
         child: ElevatedButton(
-          onPressed: cartList.isEmpty ? () => snackbar(): () {
-            context.push('/checkout');
-          },
+          onPressed: cartList.isEmpty
+              ? () => snackbar()
+              : () {
+                  context.push('/checkout');
+                },
           child: const Text('Thánh toán'),
         ),
       ),

@@ -9,6 +9,7 @@ import 'package:front_end/model/cart_model.dart';
 import 'package:front_end/presentation/widgets/icon/circular_icon.dart';
 import 'package:front_end/presentation/widgets/product/cart/cart_item.dart';
 import 'package:front_end/presentation/widgets/texts/product_price_text.dart';
+import 'package:go_router/go_router.dart';
 
 class CartItems extends StatefulWidget {
   const CartItems({
@@ -57,9 +58,19 @@ class _CartItemsState extends State<CartItems> {
   Widget build(BuildContext context) {
     final dark = AppHelperFunction.isDarkMode(context);
 
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      // Nếu chưa đăng nhập, điều hướng sang trang đăng nhập
+      Future.microtask(() {
+        context.push('/login'); // Thay '/login' bằng route name của bạn
+      });
+
+      return const Center(child: CircularProgressIndicator()); // Hiển thị tạm loading
+    }
+
     return StreamBuilder(
         stream:
-            cartController.getUserCart(FirebaseAuth.instance.currentUser!.uid),
+            cartController.getUserCart(currentUser.uid),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
