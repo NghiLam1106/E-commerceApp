@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
 Future<void> _getData() async {
   final products = await productController.getProductsListLimit();
   final categories = await categoryController.getCategories();
-  
+
   if (!mounted) return; // ⛑ Ngăn lỗi nếu widget đã bị dispose
 
   setState(() {
@@ -92,9 +92,10 @@ Future<void> _getData() async {
                       children: [
                         PromoSlider(
                           banners: [
-                            AppImages.logoLight,
-                            AppImages.logoLight,
-                            AppImages.logoLight,
+                            AppImages.slide1,
+                            AppImages.slide2,
+                            AppImages.slide3,
+                            AppImages.slide4,
                           ],
                         ),
                         const SizedBox(height: AppSizes.spaceBtwItems),

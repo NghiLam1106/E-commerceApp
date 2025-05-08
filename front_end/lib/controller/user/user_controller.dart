@@ -36,6 +36,8 @@ class UserController {
       uid: uid,
       name: nameController.text.trim(),
       email: emailController.text.trim(),
+      phoneNumber: phoneController.text.trim(),
+      address: addressController.text.trim(),
       avatar: updatedImageUrl,
       role: 'user', // Mặc định là 'user'
     );

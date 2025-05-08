@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:front_end/core/constants/colors.dart';
 import 'package:front_end/core/constants/sizes.dart';
 
 class RoundedImage extends StatelessWidget {
@@ -10,7 +9,7 @@ class RoundedImage extends StatelessWidget {
     required this.imageUrl,
     this.applyImageRadius = true,
     this.border,
-    this.backgroundColor = AppColors.light,
+    this.backgroundColor = Colors.white,
     this.fit = BoxFit.contain,
     this.padding,
     this.isNetworkImage = false,
@@ -34,14 +33,22 @@ class RoundedImage extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: width,
-        height: heigth,
-        padding: padding,
-          decoration:
-              BoxDecoration(borderRadius: BorderRadius.circular(borderRadius), border: border, color: backgroundColor),
+          width: width,
+          height: heigth,
+          padding: padding,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(borderRadius),
+              border: border,
+              color: backgroundColor),
           child: ClipRRect(
-              borderRadius: applyImageRadius ?  BorderRadius.circular(borderRadius) : BorderRadius.zero,
-              child: Image( fit: fit,image: isNetworkImage ? NetworkImage(imageUrl) : AssetImage(imageUrl) as ImageProvider))),
+              borderRadius: applyImageRadius
+                  ? BorderRadius.circular(borderRadius)
+                  : BorderRadius.zero,
+              child: Image(
+                  fit: fit,
+                  image: isNetworkImage
+                      ? NetworkImage(imageUrl)
+                      : AssetImage(imageUrl) as ImageProvider))),
     );
   }
 }
