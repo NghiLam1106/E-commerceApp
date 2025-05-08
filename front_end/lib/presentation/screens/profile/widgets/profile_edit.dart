@@ -49,7 +49,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       child: Scaffold(
         appBar: AppbarCustom(
           showBackArrow: true,
-          title: const Text('Edit Profile'),
+          title: const Text('Chỉnh sửa thông tin cá nhân'),
           actions: [
             Padding(
               padding:
@@ -151,7 +151,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Profile Information',
+                        'Thông tin người dùng',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
@@ -164,7 +164,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       child: TextField(
                         controller: nameController,
                         decoration: const InputDecoration(
-                          labelText: 'Username',
+                          labelText: 'Tên người dùng',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -190,7 +190,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         controller: phoneController,
                         keyboardType: TextInputType.phone,
                         decoration: const InputDecoration(
-                          labelText: 'Phone Number',
+                          labelText: 'Số điện thoại',
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -202,7 +202,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       child: TextField(
                         controller: addressController,
                         decoration: const InputDecoration(
-                          labelText: 'Address',
+                          labelText: 'Điạ chỉ',
                           border: OutlineInputBorder(),
                         ),
                       ),

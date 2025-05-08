@@ -32,6 +32,8 @@ class AuthController {
         name: name,
         email: email,
         avatar: '',
+        phoneNumber: '',
+        address: '',
         role: 'user', // Mặc định là 'user'
       );
 
@@ -150,6 +152,8 @@ class AuthController {
           name: name,
           email: email,
           avatar: '',
+          phoneNumber: '',
+          address: '',
           role: 'user', // Mặc định là 'user'
         );
 

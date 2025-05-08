@@ -19,4 +19,10 @@ class AppImages{
   //Success Screen
   static const String checked = 'assets/images/checked.png';
 
+  //Slide
+  static const String slide1 = 'assets/images/dien-thoai-samsung-galaxy-s25-ultra-banner-home.png';
+  static const String slide2 = 'assets/images/iphone-16-pro-max-thu-cu-moi-home.png';
+  static const String slide3 = 'assets/images/m4-len-doi-tang-airpods-4.png';
+  static const String slide4 = 'assets/images/oppo-find-n5-home-mu-ngay-14-4.png';
+
 }
